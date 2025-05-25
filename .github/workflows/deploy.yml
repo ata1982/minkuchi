@@ -1,0 +1,107 @@
+name: Deploy to Render
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+env:
+  NODE_VERSION: '20'
+
+jobs:
+  test:
+    name: Run Tests and Quality Checks
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Generate Prisma Client
+        run: npx prisma generate
+
+      - name: Run TypeScript type checking
+        run: npm run type-check
+
+      - name: Run ESLint
+        run: npm run lint
+
+      - name: Run tests
+        run: npm run test --if-present
+
+      - name: Build application
+        run: npm run build
+
+      - name: Check build output
+        run: |
+          if [ ! -d ".next" ]; then
+            echo "Build failed: .next directory not found"
+            exit 1
+          fi
+          echo "Build successful: .next directory exists"
+
+  deploy:
+    name: Deploy to Render
+    needs: test
+    runs-on: ubuntu-latest
+    if: (github.event_name == 'push' && github.ref == 'refs/heads/main') || github.event_name == 'workflow_dispatch'
+    steps:
+      - name: Trigger Render Deploy Hook
+        env:
+          RENDER_DEPLOY_HOOK_URL: ${{ secrets.RENDER_DEPLOY_HOOK_URL }}
+        run: |
+          if [ -z "$RENDER_DEPLOY_HOOK_URL" ]; then
+            echo "Error: RENDER_DEPLOY_HOOK_URL secret is not set"
+            exit 1
+          fi
+          
+          echo "Triggering Render deployment..."
+          response=$(curl -s -w "%{http_code}" -X POST "$RENDER_DEPLOY_HOOK_URL" \
+            -H "Content-Type: application/json" \
+            -d '{"clear_cache": false}')
+          
+          http_code=$(echo "$response" | tail -n1)
+          
+          if [ "$http_code" -ge 200 ] && [ "$http_code" -lt 300 ]; then
+            echo "✅ Successfully triggered Render deployment (HTTP $http_code)"
+          else
+            echo "❌ Failed to trigger Render deployment (HTTP $http_code)"
+            echo "Response: $(echo "$response" | sed '$d')"
+            exit 1
+          fi
+
+      - name: Wait for deployment
+        run: |
+          echo "⏳ Waiting for deployment to complete..."
+          sleep 30
+
+      - name: Verify deployment
+        env:
+          HEALTH_CHECK_URL: ${{ secrets.HEALTH_CHECK_URL }}
+        run: |
+          if [ -z "$HEALTH_CHECK_URL" ]; then
+            echo "⚠️  HEALTH_CHECK_URL not set, skipping verification"
+            exit 0
+          fi
+          
+          echo "🔍 Verifying deployment at $HEALTH_CHECK_URL"
+          for i in {1..10}; do
+            if curl -f -s "$HEALTH_CHECK_URL" > /dev/null; then
+              echo "✅ Deployment verified successfully"
+              exit 0
+            fi
+            echo "Attempt $i/10 failed, retrying in 15 seconds..."
+            sleep 15
+          done
+          
+          echo "❌ Deployment verification failed after 10 attempts"
+          exit 1

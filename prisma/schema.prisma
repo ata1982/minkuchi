@@ -1,0 +1,189 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           Int      @id @default(autoincrement())
+  username     String   @unique @db.VarChar(50)
+  email        String   @unique @db.VarChar(100)
+  passwordHash String   @map("password_hash") @db.VarChar(255)
+  displayName  String?  @map("display_name") @db.VarChar(100)
+  profileImage String?  @map("profile_image") @db.VarChar(255)
+  prefecture   String?  @db.VarChar(20)
+  city         String?  @db.VarChar(50)
+  isActive     Boolean  @default(true) @map("is_active")
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+
+  reviews  Review[]
+  accounts Account[]
+  sessions Session[]
+
+  @@index([prefecture, city])
+  @@index([username])
+  @@index([email])
+  @@map("users")
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            Int     @map("user_id")
+  type              String
+  provider          String
+  providerAccountId String  @map("provider_account_id")
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@map("accounts")
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique @map("session_token")
+  userId       Int      @map("user_id")
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("sessions")
+}
+
+model Category {
+  id          Int       @id @default(autoincrement())
+  name        String    @db.VarChar(100)
+  slug        String    @unique @db.VarChar(100)
+  description String?   @db.Text
+  parentId    Int?      @map("parent_id")
+  icon        String?   @db.VarChar(100)
+  sortOrder   Int       @default(0) @map("sort_order")
+  isActive    Boolean   @default(true) @map("is_active")
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @updatedAt @map("updated_at")
+
+  parent   Category?  @relation("CategoryTree", fields: [parentId], references: [id])
+  children Category[] @relation("CategoryTree")
+  services Service[]
+
+  @@index([parentId])
+  @@index([slug])
+  @@index([sortOrder])
+  @@map("categories")
+}
+
+model Service {
+  id                     Int               @id @default(autoincrement())
+  name                   String            @db.VarChar(255)
+  slug                   String            @unique @db.VarChar(255)
+  description            String?           @db.Text
+  categoryId             Int?              @map("category_id")
+  logoUrl                String?           @map("logo_url") @db.VarChar(255)
+  websiteUrl             String?           @map("website_url") @db.VarChar(255)
+  phone                  String?           @db.VarChar(20)
+  address                String?           @db.Text
+  prefecture             String            @db.VarChar(20)
+  city                   String            @db.VarChar(50)
+  latitude               Decimal?          @db.Decimal(10, 8)
+  longitude              Decimal?          @db.Decimal(11, 8)
+  businessHours          Json?             @map("business_hours")
+  averageRating          Decimal           @default(0) @map("average_rating") @db.Decimal(3, 2)
+  reviewCount            Int               @default(0) @map("review_count")
+  geminiDataSource       String?           @map("gemini_data_source") @db.VarChar(100)
+  geminiLastUpdated      DateTime?         @map("gemini_last_updated")
+  aiGeneratedDescription String?           @map("ai_generated_description") @db.Text
+  verificationStatus     VerificationStatus @default(PENDING) @map("verification_status")
+  createdAt              DateTime          @default(now()) @map("created_at")
+  updatedAt              DateTime          @updatedAt @map("updated_at")
+
+  category Category? @relation(fields: [categoryId], references: [id])
+  reviews  Review[]
+
+  @@index([prefecture, city])
+  @@index([averageRating])
+  @@index([categoryId])
+  @@index([slug])
+  @@map("services")
+}
+
+model Review {
+  id            Int      @id @default(autoincrement())
+  userId        Int      @map("user_id")
+  serviceId     Int      @map("service_id")
+  rating        Decimal  @db.Decimal(2, 1)
+  title         String?  @db.VarChar(255)
+  content       String   @db.Text
+  pros          String?  @db.Text
+  cons          String?  @db.Text
+  visitDate     DateTime? @map("visit_date") @db.Date
+  photos        Json?
+  likesCount    Int      @default(0) @map("likes_count")
+  dislikesCount Int      @default(0) @map("dislikes_count")
+  isVerified    Boolean  @default(false) @map("is_verified")
+  isHidden      Boolean  @default(false) @map("is_hidden")
+  adminComment  String?  @map("admin_comment") @db.Text
+  aiSummary     String?  @map("ai_summary") @db.Text
+  aiSentiment   String?  @map("ai_sentiment") @db.VarChar(20)
+  aiKeywords    Json?    @map("ai_keywords")
+  createdAt     DateTime @default(now()) @map("created_at")
+  updatedAt     DateTime @updatedAt @map("updated_at")
+
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  service Service @relation(fields: [serviceId], references: [id], onDelete: Cascade)
+
+  @@index([serviceId])
+  @@index([userId])
+  @@index([rating])
+  @@index([createdAt])
+  @@map("reviews")
+}
+
+model GeminiSyncLog {
+  id               Int         @id @default(autoincrement())
+  syncType         SyncType    @map("sync_type")
+  targetTable      String?     @map("target_table") @db.VarChar(50)
+  targetId         Int?        @map("target_id")
+  geminiRequest    String?     @map("gemini_request") @db.Text
+  geminiResponse   String?     @map("gemini_response") @db.Text
+  status           SyncStatus
+  errorMessage     String?     @map("error_message") @db.Text
+  processingTimeMs Int?        @map("processing_time_ms")
+  createdAt        DateTime    @default(now()) @map("created_at")
+
+  @@index([syncType])
+  @@index([status])
+  @@index([createdAt])
+  @@map("gemini_sync_log")
+}
+
+enum VerificationStatus {
+  PENDING  @map("pending")
+  VERIFIED @map("verified")
+  REJECTED @map("rejected")
+}
+
+enum SyncType {
+  SERVICE_DISCOVERY @map("service_discovery")
+  REVIEW_ANALYSIS   @map("review_analysis")
+  CATEGORIZATION    @map("categorization")
+  LOCATION_UPDATE   @map("location_update")
+}
+
+enum SyncStatus {
+  SUCCESS @map("success")
+  ERROR   @map("error")
+  PARTIAL @map("partial")
+}
