@@ -77,6 +77,28 @@ Instance Type: Free (開発用) / Starter (本番用)
 
 ⚠️ **重要**: `--ignore-scripts` でHuskyエラーを回避
 
+### 2-4. 手動設定が必要な場合
+もしビルドエラーが発生する場合は、Renderダッシュボードで手動設定：
+
+1. [Renderダッシュボード](https://dashboard.render.com)にアクセス
+2. `minkuchi`サービスを選択
+3. **Settings**タブ → **Build & Deploy**セクション
+4. **Build Command**を確認・修正：
+   ```bash
+   npm install --ignore-scripts && npm run build
+   ```
+5. **Start Command**を確認・修正：
+   ```bash
+   npm start
+   ```
+6. **Save Changes** → **Manual Deploy**で再デプロイ
+
+### トラブルシューティング
+- **Prismaエラー**: `--ignore-scripts`が正しく設定されているか確認
+- **ビルド失敗**: `npm run build`が含まれているか確認
+- **起動失敗**: Start Commandが`npm start`であることを確認
+- **.nextディレクトリ未生成**: Build Commandに`npm run build`が含まれているか確認
+
 ---
 
 ## ⚙️ STEP 3: Render環境変数設定
