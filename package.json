@@ -6,15 +6,15 @@
     "dev": "next dev",
     "build": "next build",
     "build:ci": "SKIP_ENV_VALIDATION=true DATABASE_URL=\"postgresql://localhost:5432/placeholder\" next build",
-    "build:render": "npx prisma generate && next build",
+    "build:render": "npx prisma generate --schema=prisma/schema.prisma && next build",
     "start": "next start",
     "lint": "next lint",
     "type-check": "tsc --noEmit",
     "test": "jest",
-    "db:migrate": "prisma migrate deploy",
-    "db:generate": "prisma generate",
-    "db:seed": "prisma db seed",
-    "db:studio": "prisma studio",
+    "db:migrate": "prisma migrate deploy --schema=prisma/schema.prisma",
+    "db:generate": "prisma generate --schema=prisma/schema.prisma",
+    "db:seed": "prisma db seed --schema=prisma/schema.prisma",
+    "db:studio": "prisma studio --schema=prisma/schema.prisma",
     "analyze": "ANALYZE=true next build"
   },
   "dependencies": {
@@ -63,6 +63,7 @@
     "node": ">=18.0.0"
   },
   "prisma": {
-    "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"
+    "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts",
+    "schema": "prisma/schema.prisma"
   }
 }
