@@ -14,28 +14,32 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-      - name: Checkout code
+      - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 1
         
-      - name: Debug environment
+      - name: Verify repository structure
         run: |
-          echo "=== Environment Debug ==="
+          echo "=== Repository Structure Debug ==="
           echo "Current working directory: $(pwd)"
           echo "GitHub workspace: $GITHUB_WORKSPACE"
-          echo "Contents of current directory:"
+          echo "Repository owner: $GITHUB_REPOSITORY_OWNER"
+          echo "Repository name: $GITHUB_REPOSITORY"
+          echo ""
+          echo "Current directory contents:"
           ls -la
-          echo "Contents of GitHub workspace:"
-          ls -la $GITHUB_WORKSPACE
-          echo "Looking for package.json:"
-          find . -name "package.json" -type f -maxdepth 2
-          echo "Checking if package.json exists:"
+          echo ""
+          echo "Checking for package.json:"
           if [ -f package.json ]; then
-            echo "✅ package.json found"
-            cat package.json | head -10
+            echo "✅ package.json found at: $(pwd)/package.json"
+            echo "First few lines of package.json:"
+            head -5 package.json
           else
-            echo "❌ package.json NOT found"
+            echo "❌ package.json NOT found in current directory"
+            echo "Searching for package.json in subdirectories:"
+            find . -name "package.json" -type f 2>/dev/null || echo "No package.json found anywhere"
           fi
           echo "=== End Debug ==="
         
@@ -44,60 +48,31 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: 'npm'
-          cache-dependency-path: package-lock.json
-          
-      - name: Verify package.json before install
-        run: |
-          echo "Verifying package.json existence..."
-          if [ ! -f package.json ]; then
-            echo "❌ ERROR: package.json not found in $(pwd)"
-            exit 1
-          fi
-          echo "✅ package.json exists"
           
       - name: Install dependencies
         run: |
-          echo "Installing dependencies..."
+          echo "Installing dependencies in $(pwd)..."
           if [ -f package-lock.json ]; then
             echo "Using npm ci with package-lock.json"
             npm ci
           else
-            echo "Using npm install (no package-lock.json found)"
+            echo "Using npm install"
             npm install
           fi
           
-      - name: Verify node_modules
-        run: |
-          echo "Checking node_modules..."
-          if [ -d node_modules ]; then
-            echo "✅ node_modules directory exists"
-            echo "Number of packages: $(ls node_modules | wc -l)"
-          else
-            echo "❌ node_modules directory not found"
-            exit 1
-          fi
-          
       - name: Generate Prisma client
-        run: |
-          echo "Generating Prisma client..."
-          npx prisma generate --schema=./prisma/schema.prisma
+        run: npx prisma generate --schema=./prisma/schema.prisma
         env:
           DATABASE_URL: "postgresql://localhost:5432/placeholder"
           
       - name: Type check
-        run: |
-          echo "Running TypeScript type check..."
-          npm run type-check
+        run: npm run type-check
         
       - name: Lint check
-        run: |
-          echo "Running ESLint check..."
-          npm run lint
+        run: npm run lint
         
       - name: Build test
-        run: |
-          echo "Running production build test..."
-          npm run build:ci
+        run: npm run build:ci
         env:
           NEXTAUTH_SECRET: "test-secret-for-ci-build-only"
           NEXTAUTH_URL: "http://localhost:3000"
@@ -114,7 +89,7 @@ jobs:
     if: github.ref == 'refs/heads/main'
     
     steps:
-      - name: Deploy to Render
+      - name: Trigger Render Deploy
         id: deploy
         uses: fjogeleit/http-request-action@v1
         with:
@@ -127,15 +102,16 @@ jobs:
       - name: Check deploy result
         run: |
           echo "Deploy status: ${{ steps.deploy.outputs.status }}"
-          echo "Deploy response: ${{ steps.deploy.outputs.response }}"
           if [ "${{ steps.deploy.outcome }}" != "success" ]; then
-            echo "Deploy failed, but continuing..."
+            echo "Deploy request failed, but continuing to verify service..."
+          else
+            echo "Deploy request successful"
           fi
           
-      - name: Wait for deployment
+      - name: Wait for deployment to start
         run: sleep 30
         
-      - name: Verify deployment status
+      - name: Verify service status
         id: status-check
         uses: fjogeleit/http-request-action@v1
         with:
@@ -145,10 +121,10 @@ jobs:
           timeout: 30000
         continue-on-error: true
         
-      - name: Show deployment status
+      - name: Show service status
         run: |
-          echo "Status check result: ${{ steps.status-check.outputs.status }}"
-          echo "Status response: ${{ steps.status-check.outputs.response }}"
+          echo "Service status check: ${{ steps.status-check.outputs.status }}"
+          echo "Service response: ${{ steps.status-check.outputs.response }}"
           
   verify:
     name: Verify Deployment

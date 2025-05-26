@@ -3,7 +3,8 @@ services:
     name: minkuchi
     runtime: node
     plan: free
-    buildCommand: npm install --production=false && npm run build
+    rootDir: .
+    buildCommand: npm ci && npm run build
     startCommand: npm start
     envVars:
       - key: NODE_ENV
