@@ -6,22 +6,16 @@
     "dev": "next dev",
     "build": "next build",
     "build:ci": "SKIP_ENV_VALIDATION=true DATABASE_URL=\"postgresql://localhost:5432/placeholder\" next build",
-    "build:render": "npx prisma generate && next build",
+    "build:render": "next build",
     "prepare:build": "node scripts/prepare-build.js",
     "start": "next start",
     "lint": "next lint",
     "type-check": "tsc --noEmit",
     "test": "jest",
-    "db:migrate": "prisma migrate deploy --schema=prisma/schema.prisma",
-    "db:generate": "prisma generate --schema=prisma/schema.prisma",
-    "db:seed": "prisma db seed --schema=prisma/schema.prisma",
-    "db:studio": "prisma studio --schema=prisma/schema.prisma",
     "analyze": "ANALYZE=true next build"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.4.0",
-    "@next-auth/prisma-adapter": "^1.0.7",
-    "@prisma/client": "^5.13.0",
     "@radix-ui/react-dialog": "^1.0.5",
     "@radix-ui/react-dropdown-menu": "^2.0.6",
     "@radix-ui/react-toast": "^1.1.5",
@@ -57,14 +51,9 @@
     "eslint-config-next": "^14.2.3",
     "jest": "^29.7.0",
     "jest-environment-jsdom": "^29.7.0",
-    "prisma": "^5.13.0",
     "typescript": "^5.4.5"
   },
   "engines": {
     "node": ">=18.0.0"
-  },
-  "prisma": {
-    "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts",
-    "schema": "prisma/schema.prisma"
   }
 }
