@@ -3,7 +3,7 @@ services:
     name: minkuchi
     runtime: node
     plan: free
-    buildCommand: npm install --production=false && npx prisma generate --schema=./prisma/schema.prisma && npm run build
+    buildCommand: npm install --production=false && npm run build
     startCommand: npm start
     envVars:
       - key: NODE_ENV
