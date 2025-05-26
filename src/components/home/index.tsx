@@ -170,3 +170,11 @@ export function Hero() {
     </section>
   )
 }
+
+export default function HomeComponent() {
+  return (
+    <div>
+      <h1>Welcome to Minkuchi</h1>
+    </div>
+  )
+}
