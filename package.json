@@ -6,7 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "build:ci": "SKIP_ENV_VALIDATION=true DATABASE_URL=\"postgresql://localhost:5432/placeholder\" next build",
-    "build:render": "ls -la prisma/ && npx prisma generate --schema=prisma/schema.prisma && next build",
+    "build:render": "npx prisma generate && next build",
     "prepare:build": "node scripts/prepare-build.js",
     "start": "next start",
     "lint": "next lint",

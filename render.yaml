@@ -3,7 +3,7 @@ services:
     name: minkuchi
     runtime: node
     plan: free
-    buildCommand: npm install --ignore-scripts && ls -la prisma/ && npx prisma generate --schema=prisma/schema.prisma && npx prisma migrate deploy --schema=prisma/schema.prisma && npm run build
+    buildCommand: npm install --ignore-scripts && npx prisma generate && npx prisma migrate deploy && npm run build
     startCommand: npm start
     envVars:
       - key: NODE_ENV
