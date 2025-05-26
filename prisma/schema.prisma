@@ -11,11 +11,15 @@ datasource db {
 }
 
 model User {
-  id            String    @id @default(cuid())
+  id            Int       @id @default(autoincrement())
   name          String?
   email         String    @unique
   emailVerified DateTime?
   image         String?
+  passwordHash  String?   // For credentials auth
+  displayName   String?   // For user profile
+  username      String?   // For user profile
+  profileImage  String?   // For user profile
   accounts      Account[]
   sessions      Session[]
   reviews       Review[]
@@ -26,8 +30,8 @@ model User {
 }
 
 model Account {
-  id                String  @id @default(cuid())
-  userId            String
+  id                Int     @id @default(autoincrement())
+  userId            Int
   type              String
   provider          String
   providerAccountId String
@@ -46,9 +50,9 @@ model Account {
 }
 
 model Session {
-  id           String   @id @default(cuid())
+  id           Int      @id @default(autoincrement())
   sessionToken String   @unique
-  userId       String
+  userId       Int
   expires      DateTime
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
@@ -66,27 +70,33 @@ model VerificationToken {
 }
 
 model Service {
-  id          String   @id @default(cuid())
-  name        String
-  description String?
-  category    String
-  location    String
-  website     String?
-  phone       String?
-  reviews     Review[]
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id            Int      @id @default(autoincrement())
+  name          String
+  description   String?
+  category      String
+  location      String
+  website       String?
+  phone         String?
+  averageRating Float?   // For calculated average rating
+  reviewCount   Int      @default(0) // For review count
+  reviews       Review[]
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
 
   @@map("services")
 }
 
 model Review {
-  id        String   @id @default(cuid())
+  id        Int      @id @default(autoincrement())
   title     String
   content   String
   rating    Int      @db.SmallInt
-  userId    String
-  serviceId String
+  pros      String?  // Additional fields from schema
+  cons      String?  // Additional fields from schema
+  visitDate DateTime? // Additional fields from schema
+  isHidden  Boolean  @default(false) // For moderation
+  userId    Int
+  serviceId Int
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
