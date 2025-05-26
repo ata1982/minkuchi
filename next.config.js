@@ -13,6 +13,10 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: 'https',
+        hostname: 'lh3.googleusercontent.com', // Google OAuth用画像
+      },
+      {
+        protocol: 'https',
         hostname: 'your-image-provider.com',
       },
       {
