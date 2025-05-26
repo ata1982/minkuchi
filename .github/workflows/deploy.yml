@@ -59,25 +59,58 @@ jobs:
           echo "RENDER_DEPLOY_HOOK_URL is set: ${{ secrets.RENDER_DEPLOY_HOOK_URL != '' }}"
           echo "RENDER_SERVICE_ID is set: ${{ secrets.RENDER_SERVICE_ID != '' }}"
           echo "RENDER_API_KEY is set: ${{ secrets.RENDER_API_KEY != '' }}"
+          echo "Service ID starts with srv-: ${{ startsWith(secrets.RENDER_SERVICE_ID, 'srv-') }}"
           
       - name: Deploy to Render
+        id: deploy
         uses: fjogeleit/http-request-action@v1
         with:
           url: ${{ secrets.RENDER_DEPLOY_HOOK_URL }}
           method: 'POST'
           customHeaders: '{"Content-Type": "application/json"}'
           timeout: 60000
+        continue-on-error: true
+          
+      - name: Check deploy result
+        run: |
+          echo "Deploy status: ${{ steps.deploy.outputs.status }}"
+          echo "Deploy response: ${{ steps.deploy.outputs.response }}"
+          if [ "${{ steps.deploy.outcome }}" != "success" ]; then
+            echo "Deploy failed, but continuing to check service status..."
+          fi
           
       - name: Wait for deployment
-        run: sleep 45
+        run: sleep 30
+        
+      - name: List all services (debug)
+        id: list-services
+        uses: fjogeleit/http-request-action@v1
+        with:
+          url: 'https://api.render.com/v1/services'
+          method: 'GET'
+          customHeaders: '{"Authorization": "Bearer ${{ secrets.RENDER_API_KEY }}"}'
+          timeout: 30000
+        continue-on-error: true
+        
+      - name: Show services list
+        run: |
+          echo "Services list status: ${{ steps.list-services.outputs.status }}"
+          echo "Services response: ${{ steps.list-services.outputs.response }}"
         
       - name: Check deployment status
+        id: status-check
         uses: fjogeleit/http-request-action@v1
         with:
           url: 'https://api.render.com/v1/services/${{ secrets.RENDER_SERVICE_ID }}'
           method: 'GET'
           customHeaders: '{"Authorization": "Bearer ${{ secrets.RENDER_API_KEY }}"}'
           timeout: 30000
+        continue-on-error: true
+        
+      - name: Check status result
+        run: |
+          echo "Status check result: ${{ steps.status-check.outputs.status }}"
+          echo "Status response: ${{ steps.status-check.outputs.response }}"
           
   verify:
     name: Verify Deployment
