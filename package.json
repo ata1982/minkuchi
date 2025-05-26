@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "build:ci": "SKIP_ENV_VALIDATION=true DATABASE_URL=\"postgresql://localhost:5432/placeholder\" next build",
     "build:render": "npm install --ignore-scripts && npx prisma generate && npm run build",
     "start": "next start",
     "lint": "next lint",

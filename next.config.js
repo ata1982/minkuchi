@@ -35,6 +35,9 @@ const nextConfig = {
   },
   env: {
     CUSTOM_KEY: process.env.CUSTOM_KEY,
+    // ビルド時のエラー回避用デフォルト値
+    NEXTAUTH_URL: process.env.NEXTAUTH_URL || 'http://localhost:3000',
+    APP_URL: process.env.APP_URL || 'http://localhost:3000',
   },
   // WebSocket support for chat
   webpack: (config, { isServer }) => {

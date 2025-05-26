@@ -5,7 +5,7 @@ import { NextApiResponseServerIO } from '@/types/socket'
 export default function handler(_req: NextApiRequest, res: NextApiResponseServerIO) {
   if (!res.socket.server.io) {
     console.log('Socket is initializing')
-    const io = new Server(res.socket.server as any, {
+    const io = new Server(res.socket.server, {
       path: '/api/socketio',
       addTrailingSlash: false,
       cors: {

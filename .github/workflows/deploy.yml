@@ -38,13 +38,14 @@ jobs:
         run: npm run lint
         
       - name: Build test
-        run: npm run build
+        run: npm run build:ci
         env:
-          DATABASE_URL: ${{ secrets.DATABASE_URL }}
           NEXTAUTH_SECRET: ${{ secrets.NEXTAUTH_SECRET }}
           NEXTAUTH_URL: ${{ secrets.NEXTAUTH_URL }}
           GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
           GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
+          APP_URL: ${{ secrets.NEXTAUTH_URL }}
+          NODE_ENV: production
 
   deploy:
     name: Deploy to Render

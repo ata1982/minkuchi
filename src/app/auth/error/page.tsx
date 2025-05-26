@@ -1,7 +1,8 @@
 'use client'
 
-import { useRouter, useSearchParams } from 'next/navigation'
-import { useEffect, useState } from 'react'
+import { useRouter } from 'next/navigation'
+import { useEffect, useState, Suspense } from 'react'
+import { useSearchParams } from 'next/navigation'
 
 const errorMessages = {
   Configuration: 'OAuth設定に問題があります。管理者にお問い合わせください。',
@@ -16,7 +17,7 @@ const errorMessages = {
   CredentialsSignin: 'メールアドレスまたはパスワードが正しくありません。',
 }
 
-export default function AuthErrorPage() {
+function AuthErrorContent() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const [error, setError] = useState<string>('')
@@ -96,11 +97,19 @@ export default function AuthErrorPage() {
             <h4 className="text-sm font-medium text-gray-900 mb-2">開発者情報:</h4>
             <p className="text-xs text-gray-600">
               Error: {error}<br/>
-              URL: {window.location.href}
+              URL: {typeof window !== 'undefined' ? window.location.href : 'N/A'}
             </p>
           </div>
         )}
       </div>
     </div>
+  )
+}
+
+export default function AuthErrorPage() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <AuthErrorContent />
+    </Suspense>
   )
 }
