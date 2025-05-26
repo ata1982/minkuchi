@@ -14,44 +14,90 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-      - name: Checkout
+      - name: Checkout code
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
         
-      - name: Debug working directory
+      - name: Debug environment
         run: |
+          echo "=== Environment Debug ==="
           echo "Current working directory: $(pwd)"
+          echo "GitHub workspace: $GITHUB_WORKSPACE"
           echo "Contents of current directory:"
           ls -la
+          echo "Contents of GitHub workspace:"
+          ls -la $GITHUB_WORKSPACE
           echo "Looking for package.json:"
-          find . -name "package.json" -type f
+          find . -name "package.json" -type f -maxdepth 2
+          echo "Checking if package.json exists:"
+          if [ -f package.json ]; then
+            echo "✅ package.json found"
+            cat package.json | head -10
+          else
+            echo "❌ package.json NOT found"
+          fi
+          echo "=== End Debug ==="
         
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: 'npm'
+          cache-dependency-path: package-lock.json
+          
+      - name: Verify package.json before install
+        run: |
+          echo "Verifying package.json existence..."
+          if [ ! -f package.json ]; then
+            echo "❌ ERROR: package.json not found in $(pwd)"
+            exit 1
+          fi
+          echo "✅ package.json exists"
           
       - name: Install dependencies
         run: |
+          echo "Installing dependencies..."
           if [ -f package-lock.json ]; then
+            echo "Using npm ci with package-lock.json"
             npm ci
           else
+            echo "Using npm install (no package-lock.json found)"
             npm install
           fi
           
+      - name: Verify node_modules
+        run: |
+          echo "Checking node_modules..."
+          if [ -d node_modules ]; then
+            echo "✅ node_modules directory exists"
+            echo "Number of packages: $(ls node_modules | wc -l)"
+          else
+            echo "❌ node_modules directory not found"
+            exit 1
+          fi
+          
       - name: Generate Prisma client
-        run: npx prisma generate --schema=./prisma/schema.prisma
+        run: |
+          echo "Generating Prisma client..."
+          npx prisma generate --schema=./prisma/schema.prisma
         env:
           DATABASE_URL: "postgresql://localhost:5432/placeholder"
           
       - name: Type check
-        run: npm run type-check
+        run: |
+          echo "Running TypeScript type check..."
+          npm run type-check
         
       - name: Lint check
-        run: npm run lint
+        run: |
+          echo "Running ESLint check..."
+          npm run lint
         
       - name: Build test
-        run: npm run build:ci
+        run: |
+          echo "Running production build test..."
+          npm run build:ci
         env:
           NEXTAUTH_SECRET: "test-secret-for-ci-build-only"
           NEXTAUTH_URL: "http://localhost:3000"
@@ -68,13 +114,6 @@ jobs:
     if: github.ref == 'refs/heads/main'
     
     steps:
-      - name: Debug Secrets (安全な確認)
-        run: |
-          echo "RENDER_DEPLOY_HOOK_URL is set: ${{ secrets.RENDER_DEPLOY_HOOK_URL != '' }}"
-          echo "RENDER_SERVICE_ID is set: ${{ secrets.RENDER_SERVICE_ID != '' }}"
-          echo "RENDER_API_KEY is set: ${{ secrets.RENDER_API_KEY != '' }}"
-          echo "Service ID starts with srv-: ${{ startsWith(secrets.RENDER_SERVICE_ID, 'srv-') }}"
-          
       - name: Deploy to Render
         id: deploy
         uses: fjogeleit/http-request-action@v1
@@ -90,28 +129,13 @@ jobs:
           echo "Deploy status: ${{ steps.deploy.outputs.status }}"
           echo "Deploy response: ${{ steps.deploy.outputs.response }}"
           if [ "${{ steps.deploy.outcome }}" != "success" ]; then
-            echo "Deploy failed, but continuing to check service status..."
+            echo "Deploy failed, but continuing..."
           fi
           
       - name: Wait for deployment
         run: sleep 30
         
-      - name: List all services (debug)
-        id: list-services
-        uses: fjogeleit/http-request-action@v1
-        with:
-          url: 'https://api.render.com/v1/services'
-          method: 'GET'
-          customHeaders: '{"Authorization": "Bearer ${{ secrets.RENDER_API_KEY }}"}'
-          timeout: 30000
-        continue-on-error: true
-        
-      - name: Show services list
-        run: |
-          echo "Services list status: ${{ steps.list-services.outputs.status }}"
-          echo "Services response: ${{ steps.list-services.outputs.response }}"
-        
-      - name: Check deployment status
+      - name: Verify deployment status
         id: status-check
         uses: fjogeleit/http-request-action@v1
         with:
@@ -121,7 +145,7 @@ jobs:
           timeout: 30000
         continue-on-error: true
         
-      - name: Check status result
+      - name: Show deployment status
         run: |
           echo "Status check result: ${{ steps.status-check.outputs.status }}"
           echo "Status response: ${{ steps.status-check.outputs.response }}"
