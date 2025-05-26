@@ -1,0 +1,12 @@
+services:
+  - type: web
+    name: minkuchi
+    runtime: node
+    plan: free
+    buildCommand: npm install --ignore-scripts && node scripts/prepare-build.js && npx prisma generate --schema=prisma/schema.prisma && npx prisma migrate deploy --schema=prisma/schema.prisma && npm run build
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
