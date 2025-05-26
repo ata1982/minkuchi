@@ -1,0 +1,22 @@
+# Ensure Prisma files are properly tracked
+prisma/schema.prisma text
+prisma.config.ts text
+
+# Standard text handling
+*.js text
+*.ts text
+*.tsx text
+*.jsx text
+*.json text
+*.md text
+*.yml text
+*.yaml text
+*.sql text
+
+# Binary files
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.pdf binary

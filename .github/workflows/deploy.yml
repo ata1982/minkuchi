@@ -26,8 +26,18 @@ jobs:
       - name: Install dependencies
         run: npm ci
         
+      - name: Check Prisma setup
+        run: |
+          echo "Current directory: $(pwd)"
+          echo "Listing project files:"
+          ls -la
+          echo "Checking for prisma directory:"
+          ls -la prisma/ || echo "prisma directory not found"
+          echo "Checking for schema file:"
+          ls -la prisma/schema.prisma || echo "schema.prisma not found"
+        
       - name: Generate Prisma Client
-        run: npx prisma generate
+        run: npx prisma generate --schema=prisma/schema.prisma
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
           
