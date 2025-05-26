@@ -1,4 +1,6 @@
 /** @type {import('next').NextConfig} */
+const path = require('path');
+
 const nextConfig = {
   // プロダクション用最適化
   compress: true, // gzip圧縮を有効化
@@ -39,8 +41,19 @@ const nextConfig = {
     NEXTAUTH_URL: process.env.NEXTAUTH_URL || 'http://localhost:3000',
     APP_URL: process.env.APP_URL || 'http://localhost:3000',
   },
-  // WebSocket support for chat
+  // WebSocket support for chat + パスエイリアス解決強化
   webpack: (config, { isServer }) => {
+    // パスエイリアスの明示的な設定（Renderビルド対応）
+    config.resolve.alias = {
+      ...config.resolve.alias,
+      '@': path.resolve(__dirname, 'src'),
+      '@/components': path.resolve(__dirname, 'src/components'),
+      '@/lib': path.resolve(__dirname, 'src/lib'),
+      '@/app': path.resolve(__dirname, 'src/app'),
+      '@/types': path.resolve(__dirname, 'src/types'),
+      '@/pages': path.resolve(__dirname, 'src/pages'),
+    };
+
     if (!isServer) {
       config.resolve.fallback = {
         ...config.resolve.fallback,
