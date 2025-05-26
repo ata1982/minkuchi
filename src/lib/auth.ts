@@ -69,14 +69,14 @@ export const authOptions: NextAuthOptions = {
       else if (new URL(url).origin === baseUrl) return url
       return `${baseUrl}/dashboard`
     },
-    async session({ session, token, user }) {
+    async session({ session, user }) {
       // セッション情報の設定
       if (session?.user && user) {
         session.user.id = user.id
       }
       return session
     },
-    async jwt({ user, token, account }) {
+    async jwt({ user, token }) {
       if (user) {
         token.uid = user.id
       }

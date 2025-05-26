@@ -22,7 +22,7 @@ export default function AuthErrorPage() {
   const [error, setError] = useState<string>('')
 
   useEffect(() => {
-    const errorParam = searchParams.get('error')
+    const errorParam = searchParams?.get('error')
     if (errorParam) {
       setError(errorParam)
     }
