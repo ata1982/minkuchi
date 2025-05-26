@@ -72,8 +72,8 @@ async function updateServiceRating(serviceId: number) {
     select: { rating: true }
   })
 
-  const averageRating = reviews.length > 0 
-    ? reviews.reduce((sum, review) => sum + Number(review.rating), 0) / reviews.length
+  const averageRating = reviews.length > 0
+    ? reviews.reduce((sum: number, review) => sum + Number(review.rating), 0) / reviews.length
     : 0
 
   await prisma.service.update({

@@ -67,7 +67,7 @@ Runtime: Node
 ### 2-3. ビルド・起動設定
 ```bash
 Build Command:
-npm install --ignore-scripts && npm run build
+npm install && npx prisma generate && npm run build
 
 Start Command:
 npm start
@@ -85,7 +85,7 @@ Instance Type: Free (開発用) / Starter (本番用)
 3. **Settings**タブ → **Build & Deploy**セクション
 4. **Build Command**を確認・修正：
    ```bash
-   npm install --ignore-scripts && npm run build
+   npm install && npx prisma generate && npm run build
    ```
 5. **Start Command**を確認・修正：
    ```bash
