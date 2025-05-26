@@ -32,10 +32,17 @@ jobs:
           cache: 'npm'
           
       - name: Install dependencies
-        run: npm ci
+        run: |
+          if [ -f package-lock.json ]; then
+            npm ci
+          else
+            npm install
+          fi
           
       - name: Generate Prisma client
         run: npx prisma generate --schema=./prisma/schema.prisma
+        env:
+          DATABASE_URL: "postgresql://localhost:5432/placeholder"
           
       - name: Type check
         run: npm run type-check
@@ -46,11 +53,12 @@ jobs:
       - name: Build test
         run: npm run build:ci
         env:
-          NEXTAUTH_SECRET: ${{ secrets.NEXTAUTH_SECRET }}
-          NEXTAUTH_URL: ${{ secrets.NEXTAUTH_URL }}
-          GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
-          GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
-          APP_URL: ${{ secrets.NEXTAUTH_URL }}
+          NEXTAUTH_SECRET: "test-secret-for-ci-build-only"
+          NEXTAUTH_URL: "http://localhost:3000"
+          DATABASE_URL: "postgresql://localhost:5432/placeholder"
+          GOOGLE_CLIENT_ID: "placeholder"
+          GOOGLE_CLIENT_SECRET: "placeholder"
+          APP_URL: "http://localhost:3000"
           NODE_ENV: production
 
   deploy:
