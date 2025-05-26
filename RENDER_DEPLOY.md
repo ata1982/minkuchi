@@ -67,7 +67,7 @@ Runtime: Node
 ### 2-3. ビルド・起動設定
 ```bash
 Build Command:
-npm install --ignore-scripts && npx prisma generate --schema=prisma/schema.prisma && npx prisma migrate deploy --schema=prisma/schema.prisma && npm run build
+npm install --ignore-scripts && ls -la prisma/ && npx prisma generate --schema=prisma/schema.prisma && npx prisma migrate deploy --schema=prisma/schema.prisma && npm run build
 
 Start Command:
 npm start
