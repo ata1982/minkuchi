@@ -45,8 +45,19 @@ const nextConfig = {
   },
 }
 
-const withBundleAnalyzer = require('@next/bundle-analyzer')({
-  enabled: process.env.ANALYZE === 'true',
-})
+// Bundle Analyzerは開発環境でのみ使用
+let finalConfig = nextConfig;
 
-module.exports = withBundleAnalyzer(nextConfig)
+// 開発環境かつANALYZE=trueの場合のみBundle Analyzerを適用
+if (process.env.NODE_ENV !== 'production' && process.env.ANALYZE === 'true') {
+  try {
+    const withBundleAnalyzer = require('@next/bundle-analyzer')({
+      enabled: true,
+    });
+    finalConfig = withBundleAnalyzer(nextConfig);
+  } catch (error) {
+    console.warn('Bundle analyzer not available, using default config');
+  }
+}
+
+module.exports = finalConfig
