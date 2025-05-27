@@ -1,8 +1,9 @@
 'use client'
 
-import { createContext, useContext, useEffect, useState } from 'react'
+import { createContext, useContext, useEffect, useState, ReactNode } from 'react'
 import { io, Socket } from 'socket.io-client'
 
+// Socket Context
 interface SocketContextType {
   socket: Socket | null
   isConnected: boolean
@@ -13,7 +14,7 @@ const SocketContext = createContext<SocketContextType>({
   isConnected: false,
 })
 
-export function SocketProvider({ children }: { children: React.ReactNode }) {
+export function SocketProvider({ children }: { children: ReactNode }) {
   const [socket, setSocket] = useState<Socket | null>(null)
   const [isConnected, setIsConnected] = useState(false)
 
@@ -52,6 +53,48 @@ export const useSocket = () => {
   const context = useContext(SocketContext)
   if (!context) {
     throw new Error('useSocket must be used within a SocketProvider')
+  }
+  return context
+}
+
+// App Provider - Main provider wrapper
+export function AppProvider({ children }: { children: ReactNode }) {
+  return (
+    <SocketProvider>
+      {children}
+    </SocketProvider>
+  )
+}
+
+// Theme Context (for future use)
+interface ThemeContextType {
+  theme: 'light' | 'dark'
+  toggleTheme: () => void
+}
+
+const ThemeContext = createContext<ThemeContextType>({
+  theme: 'light',
+  toggleTheme: () => {},
+})
+
+export function ThemeProvider({ children }: { children: ReactNode }) {
+  const [theme, setTheme] = useState<'light' | 'dark'>('light')
+
+  const toggleTheme = () => {
+    setTheme(prev => prev === 'light' ? 'dark' : 'light')
+  }
+
+  return (
+    <ThemeContext.Provider value={{ theme, toggleTheme }}>
+      {children}
+    </ThemeContext.Provider>
+  )
+}
+
+export const useTheme = () => {
+  const context = useContext(ThemeContext)
+  if (!context) {
+    throw new Error('useTheme must be used within a ThemeProvider')
   }
   return context
 }

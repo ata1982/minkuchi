@@ -1,14 +1,73 @@
+import { PrismaClient } from '@prisma/client'
+import { NextAuthOptions } from "next-auth"
+import { PrismaAdapter } from "@next-auth/prisma-adapter"
 import OpenAI from 'openai'
-import { ElevenLabs } from 'elevenlabs-node'
 
+// Prisma Client Setup
+declare global {
+  // eslint-disable-next-line no-var
+  var prisma: PrismaClient | undefined
+}
+
+export const prisma = globalThis.prisma || new PrismaClient()
+
+if (process.env.NODE_ENV !== 'production') {
+  globalThis.prisma = prisma
+}
+
+// NextAuth Configuration
+export const authOptions: NextAuthOptions = {
+  adapter: PrismaAdapter(prisma),
+  providers: [
+    // プロバイダーを追加
+  ],
+  session: {
+    strategy: "jwt",
+  },
+  callbacks: {
+    jwt: async ({ token, user }) => {
+      if (user) {
+        token.id = user.id
+      }
+      return token
+    },
+    session: async ({ session, token }) => {
+      if (token) {
+        session.user.id = token.id as string
+      }
+      return session
+    },
+  },
+}
+
+// AI Service Setup
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 })
 
-const elevenlabs = new ElevenLabs({
-  apiKey: process.env.ELEVENLABS_API_KEY,
-})
+// ElevenLabsクライアントの型定義
+interface ElevenLabsClient {
+  textToSpeech: (params: {
+    voiceId: string
+    textInput: string
+    modelId: string
+  }) => Promise<ArrayBuffer | Buffer | null>
+}
 
+// ElevenLabsクライアントを条件付きで初期化
+let elevenlabs: ElevenLabsClient | null = null
+if (typeof window === 'undefined' && process.env.ELEVENLABS_API_KEY) {
+  // サーバーサイドでのみ動的インポート
+  import('elevenlabs-node').then(({ ElevenLabs }) => {
+    elevenlabs = new ElevenLabs({
+      apiKey: process.env.ELEVENLABS_API_KEY,
+    })
+  }).catch(error => {
+    console.warn('ElevenLabs initialization failed:', error)
+  })
+}
+
+// AI Service Class
 export class AIService {
   // レビュー感情分析とキーワード抽出
   static async analyzeReview(content: string) {
@@ -63,8 +122,13 @@ export class AIService {
     }
   }
 
-  // 音声読み上げ機能
+  // 音声読み上げ機能（ElevenLabsが利用可能な場合のみ）
   static async generateSpeech(text: string, voiceId: string = 'pNInz6obpgDQGcFmaJgB') {
+    if (!elevenlabs) {
+      console.warn('ElevenLabs not initialized')
+      return null
+    }
+
     try {
       const audioStream = await elevenlabs.textToSpeech({
         voiceId: voiceId,
@@ -103,5 +167,53 @@ export class AIService {
       console.error('OpenAI API error:', error)
       return "申し訳ございません。現在、回答を生成できません。"
     }
+  }
+}
+
+// Database Utilities
+export class DatabaseUtils {
+  // ユーザー関連
+  static async getUserById(id: string) {
+    return await prisma.user.findUnique({
+      where: { id: Number(id) }
+    })
+  }
+
+  // サービス関連
+  static async getServiceById(id: number) {
+    return await prisma.service.findUnique({
+      where: { id },
+      include: {
+        category: true,
+        reviews: {
+          where: { isHidden: false },
+          include: { user: true },
+          orderBy: { createdAt: 'desc' }
+        }
+      }
+    })
+  }
+
+  // 検索機能
+  static async searchServices(query: string, category?: string) {
+    return await prisma.service.findMany({
+      where: {
+        AND: [
+          {
+            OR: [
+              { name: { contains: query, mode: 'insensitive' } },
+              { description: { contains: query, mode: 'insensitive' } },
+              { address: { contains: query, mode: 'insensitive' } }
+            ]
+          },
+          category ? { category: { name: category } } : {}
+        ]
+      },
+      include: {
+        category: true,
+        _count: { select: { reviews: true } }
+      },
+      orderBy: { averageRating: 'desc' }
+    })
   }
 }

@@ -11,20 +11,24 @@ datasource db {
 }
 
 model User {
-  id            Int       @id @default(autoincrement())
+  id            Int          @id @default(autoincrement())
   name          String?
-  email         String    @unique
+  email         String       @unique
   emailVerified DateTime?
   image         String?
-  passwordHash  String?   // For credentials auth
-  displayName   String?   // For user profile
-  username      String?   // For user profile
-  profileImage  String?   // For user profile
+  passwordHash  String?      // For credentials auth
+  displayName   String?      // For user profile
+  username      String?      // For user profile
+  profileImage  String?      // For user profile
+  bio           String?      // For user bio
+  location      String?      // For user location
   accounts      Account[]
   sessions      Session[]
   reviews       Review[]
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
+  reviewLikes   ReviewLike[] // Add review likes
+  services      Service[]    // Services created by user
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
 
   @@map("users")
 }
@@ -69,39 +73,68 @@ model VerificationToken {
   @@map("verificationtokens")
 }
 
+model Category {
+  id          Int       @id @default(autoincrement())
+  name        String    @unique
+  description String?
+  slug        String    @unique
+  services    Service[]
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@map("categories")
+}
+
 model Service {
-  id            Int      @id @default(autoincrement())
+  id            Int          @id @default(autoincrement())
   name          String
   description   String?
-  category      String
-  location      String
+  address       String       // Changed from location to address
   website       String?
   phone         String?
-  averageRating Float?   // For calculated average rating
-  reviewCount   Int      @default(0) // For review count
+  openingHours  String?      // Add opening hours
+  averageRating Float        @default(0) // For calculated average rating
+  reviewCount   Int          @default(0) // For review count
+  categoryId    Int          // Add category relation
+  createdById   Int          // Add creator relation
   reviews       Review[]
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
+  category      Category     @relation(fields: [categoryId], references: [id])
+  createdBy     User         @relation(fields: [createdById], references: [id])
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
 
   @@map("services")
 }
 
 model Review {
-  id        Int      @id @default(autoincrement())
-  title     String
-  content   String
-  rating    Int      @db.SmallInt
-  pros      String?  // Additional fields from schema
-  cons      String?  // Additional fields from schema
-  visitDate DateTime? // Additional fields from schema
-  isHidden  Boolean  @default(false) // For moderation
-  userId    Int
-  serviceId Int
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id          Int          @id @default(autoincrement())
+  title       String
+  content     String
+  rating      Int          @db.SmallInt
+  pros        String?      // Additional fields from schema
+  cons        String?      // Additional fields from schema
+  visitDate   DateTime?    // Additional fields from schema
+  isHidden    Boolean      @default(false) // For moderation
+  userId      Int
+  serviceId   Int
+  reviewLikes ReviewLike[] // Add review likes relation
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
 
   user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
   service Service @relation(fields: [serviceId], references: [id], onDelete: Cascade)
 
   @@map("reviews")
+}
+
+model ReviewLike {
+  id       Int @id @default(autoincrement())
+  userId   Int
+  reviewId Int
+
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  review Review @relation(fields: [reviewId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, reviewId])
+  @@map("review_likes")
 }

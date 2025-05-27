@@ -7,10 +7,71 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        sans: ['-apple-system', 'BlinkMacSystemFont', 'SF Pro Display', 'Segoe UI', 'Roboto', 'sans-serif'],
+        sans: ['var(--font-noto-sans-jp)', 'Noto Sans JP', 'Hiragino Sans', 'Yu Gothic', '-apple-system', 'BlinkMacSystemFont', 'SF Pro Display', 'Segoe UI', 'Roboto', 'sans-serif'],
       },
       colors: {
-        // Apple-inspired color palette
+        // Minhyo-inspired professional color palette
+        primary: {
+          50: '#dbeafe',
+          100: '#bfdbfe',
+          200: '#93c5fd',
+          300: '#60a5fa',
+          400: '#3b82f6',
+          500: '#2563eb',  // Main primary color
+          600: '#1d4ed8',  // Primary hover
+          700: '#1e40af',
+          800: '#1e3a8a',
+          900: '#1e293b',
+        },
+        secondary: {
+          50: '#f9fafb',
+          100: '#f3f4f6',
+          200: '#e5e7eb',
+          300: '#d1d5db',
+          400: '#9ca3af',
+          500: '#64748b',  // Main secondary color
+          600: '#4b5563',
+          700: '#374151',
+          800: '#1f2937',
+          900: '#111827',
+        },
+        accent: {
+          50: '#ecfdf5',
+          100: '#d1fae5',
+          200: '#a7f3d0',
+          300: '#6ee7b7',
+          400: '#34d399',
+          500: '#059669',  // Success/evaluation green
+          600: '#047857',
+          700: '#065f46',
+          800: '#064e3b',
+          900: '#022c22',
+        },
+        warning: {
+          50: '#fffbeb',
+          100: '#fef3c7',
+          200: '#fde68a',
+          300: '#fcd34d',
+          400: '#fbbf24',
+          500: '#d97706',  // Warning orange
+          600: '#b45309',
+          700: '#92400e',
+          800: '#78350f',
+          900: '#451a03',
+        },
+        danger: {
+          50: '#fef2f2',
+          100: '#fee2e2',
+          200: '#fecaca',
+          300: '#fca5a5',
+          400: '#f87171',
+          500: '#dc2626',  // Danger red
+          600: '#b91c1c',
+          700: '#991b1b',
+          800: '#7f1d1d',
+          900: '#450a0a',
+        },
+        // Legacy Apple-inspired colors for compatibility
         apple: {
           gray: {
             50: '#fafafa',
@@ -30,37 +91,6 @@ module.exports = {
             600: '#0051d5',
             700: '#003d99',
           },
-          green: {
-            500: '#30d158',
-            600: '#28cd41',
-          },
-          red: {
-            500: '#ff3b30',
-            600: '#d70015',
-          },
-          orange: {
-            500: '#ff9500',
-            600: '#ff8c00',
-          },
-          purple: {
-            500: '#af52de',
-            600: '#9d3ac8',
-          }
-        },
-        // Legacy colors for compatibility
-        primary: {
-          50: '#e6f3ff',
-          500: '#007aff',
-          600: '#0051d5',
-          700: '#003d99',
-        },
-        secondary: {
-          50: '#fafafa',
-          100: '#f5f5f7',
-          200: '#e8e8ed',
-          500: '#86868b',
-          600: '#6e6e73',
-          700: '#515154',
         }
       },
       spacing: {
@@ -87,6 +117,9 @@ module.exports = {
         '6xl': ['3.75rem', { lineHeight: '1', letterSpacing: '-0.05em' }],
       },
       boxShadow: {
+        'soft': '0 2px 8px rgba(0, 0, 0, 0.06)',
+        'medium': '0 4px 16px rgba(0, 0, 0, 0.08)',
+        'strong': '0 8px 32px rgba(0, 0, 0, 0.12)',
         'apple': '0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24)',
         'apple-md': '0 4px 6px rgba(0, 0, 0, 0.07), 0 2px 4px rgba(0, 0, 0, 0.05)',
         'apple-lg': '0 10px 25px rgba(0, 0, 0, 0.1), 0 6px 10px rgba(0, 0, 0, 0.05)',

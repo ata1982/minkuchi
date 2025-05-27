@@ -1,29 +1,24 @@
 import { NextResponse } from 'next/server'
-import { prisma } from '@/lib/prisma'
+import { prisma } from '@/lib/core'
 
 export async function GET() {
   try {
-    // データベース接続確認
+    // データベース接続テスト
     await prisma.$queryRaw`SELECT 1`
     
-    return NextResponse.json({
-      status: 'ok',
+    return NextResponse.json({ 
+      status: 'healthy',
       timestamp: new Date().toISOString(),
-      database: 'connected',
-      environment: process.env.NODE_ENV,
-      uptime: process.uptime(),
-      version: process.env.npm_package_version || '1.0.0'
+      database: 'connected'
     })
-  } catch {
-    console.error('Health check failed')
-    
+  } catch (error) {
+    console.error('Health check failed:', error)
     return NextResponse.json(
-      {
-        status: 'error',
+      { 
+        status: 'unhealthy',
         timestamp: new Date().toISOString(),
         database: 'disconnected',
-        error: 'Database connection failed',
-        uptime: process.uptime()
+        error: 'Database connection failed'
       },
       { status: 500 }
     )

@@ -1,11 +1,14 @@
 import type { Metadata } from 'next'
+import { Inter } from 'next/font/google'
 import './globals.css'
-import { AppProvider } from '@/components/providers/app-provider'
+import { AppProvider } from '@/components/providers'
 import { Toaster } from '@/components/ui'
 
+const inter = Inter({ subsets: ['latin'] })
+
 export const metadata: Metadata = {
-  title: 'ミンクチ - 最高のサービスを見つけよう',
-  description: 'ユーザーの生の声で選ぶ、信頼できるサービスガイド',
+  title: 'Minkuchi - 地域サービス口コミプラットフォーム',
+  description: 'あなたの街のサービスを見つけよう。リアルな口コミで地域の隠れた名店を発見。',
 }
 
 export default function RootLayout({
@@ -14,8 +17,8 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="ja" className="scroll-smooth">
-      <body className="font-sans antialiased">
+    <html lang="ja">
+      <body className={inter.className}>
         <AppProvider>
           {children}
           <Toaster />
