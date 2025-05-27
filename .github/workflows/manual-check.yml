@@ -1,0 +1,17 @@
+name: 🔍 Quick Check
+
+on:
+  workflow_dispatch:
+  
+jobs:
+  quick-check:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - name: 🚀 Status
+      run: |
+        echo "✅ GitHub Actions is working!"
+        echo "📂 Project structure:"
+        ls -la
+        echo "📁 Static site files:"
+        ls -la static-site/
