@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minkuchi - あなたの街の隠れた名店を発見しよう</title>
+    <meta name="description" content="地域の人々による本物の口コミで、信頼できるサービスを見つけるプラットフォーム">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path fill='%232563eb' d='M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z'/></svg>">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-container">
+            <div class="header-content">
+                <div class="header-left">
+                    <!-- Logo -->
+                    <div class="logo">
+                        <div class="logo-icon">
+                            <svg class="star-icon" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                            </svg>
+                        </div>
+                        <h1 class="logo-text">Minkuchi</h1>
+                    </div>
+                    
+                    <!-- Navigation -->
+                    <nav class="nav">
+                        <a href="#" class="nav-link">ホーム</a>
+                        <a href="#" class="nav-link">サービス検索</a>
+                        <a href="#" class="nav-link">カテゴリ一覧</a>
+                        <a href="#" class="nav-link">人気ランキング</a>
+                        <a href="#" class="nav-link">最新レビュー</a>
+                    </nav>
+                </div>
+                
+                <!-- Search Bar -->
+                <div class="header-search">
+                    <div class="search-container">
+                        <input type="text" placeholder="サービス名やキーワードで検索" class="search-input">
+                        <button class="search-button">
+                            <svg class="search-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Auth Buttons -->
+                <div class="header-auth">
+                    <a href="#" class="btn-ghost">ログイン</a>
+                    <a href="#" class="btn-primary">新規登録</a>
+                </div>
+                
+                <!-- Mobile Menu Button -->
+                <button class="mobile-menu-btn">
+                    <svg class="menu-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+        <!-- Hero Section -->
+        <section class="hero">
+            <!-- Background Effects -->
+            <div class="hero-bg"></div>
+            <div class="hero-blur hero-blur-1"></div>
+            <div class="hero-blur hero-blur-2"></div>
+            
+            <div class="hero-container">
+                <div class="hero-badge">
+                    🎯 地域密着型口コミプラットフォーム
+                </div>
+                
+                <h1 class="hero-title">
+                    あなたの街の
+                    <span class="hero-highlight">隠れた名店</span>
+                    を発見しよう
+                </h1>
+                
+                <p class="hero-subtitle">
+                    地域の人々による本物の口コミで、信頼できるサービスを見つけましょう。<br>
+                    あなたの体験もシェアして、コミュニティを豊かにしませんか？
+                </p>
+
+                <!-- Search Bar -->
+                <div class="hero-search">
+                    <div class="hero-search-container">
+                        <input type="text" placeholder="サービス名・店名・地域で検索..." class="hero-search-input">
+                        <button class="hero-search-button">
+                            <svg class="search-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- CTA Buttons -->
+                <div class="hero-buttons">
+                    <a href="#" class="btn-primary-large">サービスを探す</a>
+                    <a href="#" class="btn-secondary-large">口コミを投稿する</a>
+                </div>
+
+                <!-- Statistics -->
+                <div class="hero-stats">
+                    <div class="stat-item">
+                        <div class="stat-number">10,000+</div>
+                        <div class="stat-label">登録サービス</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">50,000+</div>
+                        <div class="stat-label">口コミ投稿</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">5,000+</div>
+                        <div class="stat-label">アクティブユーザー</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Features Section -->
+        <section class="features">
+            <div class="features-container">
+                <h2 class="section-title">Minkuchiの特徴</h2>
+                <div class="features-grid">
+                    <div class="feature-card feature-card-1">
+                        <div class="feature-icon feature-icon-1">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z"/>
+                            </svg>
+                        </div>
+                        <h3 class="feature-title">地域密着</h3>
+                        <p class="feature-description">地域の人々による、地域のための口コミプラットフォーム</p>
+                    </div>
+                    <div class="feature-card feature-card-2">
+                        <div class="feature-icon feature-icon-2">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"/>
+                            </svg>
+                        </div>
+                        <h3 class="feature-title">信頼性</h3>
+                        <p class="feature-description">実際に利用した人の正直なレビューで安心して選べる</p>
+                    </div>
+                    <div class="feature-card feature-card-3">
+                        <div class="feature-icon feature-icon-3">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                            </svg>
+                        </div>
+                        <h3 class="feature-title">簡単操作</h3>
+                        <p class="feature-description">直感的なインターフェースで誰でも簡単に利用可能</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Categories Section -->
+        <section class="categories">
+            <div class="categories-container">
+                <div class="categories-header">
+                    <h2 class="section-title">人気カテゴリから探す</h2>
+                    <p class="section-subtitle">地域で人気のサービスカテゴリをチェックして、あなたにぴったりのサービスを見つけましょう</p>
+                </div>
+                
+                <div class="categories-grid">
+                    <a href="#" class="category-card">
+                        <div class="category-icon">🍽️</div>
+                        <h3 class="category-name">レストラン</h3>
+                        <p class="category-count">2,450件</p>
+                    </a>
+                    <a href="#" class="category-card">
+                        <div class="category-icon">💄</div>
+                        <h3 class="category-name">美容・健康</h3>
+                        <p class="category-count">1,820件</p>
+                    </a>
+                    <a href="#" class="category-card">
+                        <div class="category-icon">🛍️</div>
+                        <h3 class="category-name">ショッピング</h3>
+                        <p class="category-count">1,650件</p>
+                    </a>
+                    <a href="#" class="category-card">
+                        <div class="category-icon">📚</div>
+                        <h3 class="category-name">教育・学習</h3>
+                        <p class="category-count">980件</p>
+                    </a>
+                    <a href="#" class="category-card">
+                        <div class="category-icon">🏥</div>
+                        <h3 class="category-name">医療・介護</h3>
+                        <p class="category-count">760件</p>
+                    </a>
+                    <a href="#" class="category-card">
+                        <div class="category-icon">🎬</div>
+                        <h3 class="category-name">エンタメ</h3>
+                        <p class="category-count">1,240件</p>
+                    </a>
+                    <a href="#" class="category-card">
+                        <div class="category-icon">⚽</div>
+                        <h3 class="category-name">スポーツ</h3>
+                        <p class="category-count">890件</p>
+                    </a>
+                    <a href="#" class="category-card">
+                        <div class="category-icon">🐕</div>
+                        <h3 class="category-name">ペット</h3>
+                        <p class="category-count">450件</p>
+                    </a>
+                    <a href="#" class="category-card">
+                        <div class="category-icon">🚗</div>
+                        <h3 class="category-name">自動車</h3>
+                        <p class="category-count">320件</p>
+                    </a>
+                    <a href="#" class="category-card">
+                        <div class="category-icon">🏠</div>
+                        <h3 class="category-name">住まい</h3>
+                        <p class="category-count">680件</p>
+                    </a>
+                    <a href="#" class="category-card">
+                        <div class="category-icon">💼</div>
+                        <h3 class="category-name">ビジネス</h3>
+                        <p class="category-count">540件</p>
+                    </a>
+                    <a href="#" class="category-card">
+                        <div class="category-icon">✨</div>
+                        <h3 class="category-name">その他</h3>
+                        <p class="category-count">290件</p>
+                    </a>
+                </div>
+                
+                <div class="categories-cta">
+                    <a href="#" class="btn-outline-large">
+                        すべてのカテゴリを見る
+                        <svg class="btn-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA Section -->
+        <section class="cta">
+            <div class="cta-container">
+                <h2 class="cta-title">あなたの体験をシェアしませんか？</h2>
+                <p class="cta-subtitle">利用したサービスの口コミを投稿して、地域コミュニティに貢献しましょう</p>
+                <a href="#" class="btn-cta">今すぐ始める</a>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4 class="footer-title">会社情報</h4>
+                    <ul class="footer-links">
+                        <li><a href="#" class="footer-link">Minkuchiについて</a></li>
+                        <li><a href="#" class="footer-link">利用規約</a></li>
+                        <li><a href="#" class="footer-link">プライバシーポリシー</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4 class="footer-title">サービス</h4>
+                    <ul class="footer-links">
+                        <li><a href="#" class="footer-link">サービス検索</a></li>
+                        <li><a href="#" class="footer-link">カテゴリ一覧</a></li>
+                        <li><a href="#" class="footer-link">人気ランキング</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4 class="footer-title">サポート</h4>
+                    <ul class="footer-links">
+                        <li><a href="#" class="footer-link">ヘルプ</a></li>
+                        <li><a href="#" class="footer-link">お問い合わせ</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p class="footer-copyright">© 2025 Minkuchi. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

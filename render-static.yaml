@@ -1,0 +1,47 @@
+services:
+  - type: web
+    name: minkuchi-static
+    runtime: static
+    staticPublishPath: ./static-site
+    # 🚀 超軽量ビルドコマンド（5秒未満）
+    buildCommand: |
+      echo "🔧 Optimizing static files..."
+      # CSS圧縮（オプション）
+      # npx csso static-site/styles.css --output static-site/styles.css
+      # JS圧縮（オプション）
+      # npx terser static-site/script.js --output static-site/script.js --compress --mangle
+      echo "✅ Static site optimized and ready!"
+    
+    # 🔧 環境変数（最小限）
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: APP_NAME
+        value: Minkuchi
+    
+    # 🛡️ セキュリティヘッダー
+    headers:
+      - path: /*
+        name: X-Frame-Options
+        value: DENY
+      - path: /*
+        name: X-Content-Type-Options
+        value: nosniff
+      - path: /*
+        name: Referrer-Policy
+        value: strict-origin-when-cross-origin
+      - path: /index.html
+        name: Cache-Control
+        value: no-cache
+      - path: /*.css
+        name: Cache-Control
+        value: public, max-age=31536000, immutable
+      - path: /*.js
+        name: Cache-Control
+        value: public, max-age=31536000, immutable
+    
+    # 🗂️ ルーティング設定
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
