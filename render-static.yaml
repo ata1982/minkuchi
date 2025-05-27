@@ -3,14 +3,8 @@ services:
     name: minkuchi-static
     runtime: static
     staticPublishPath: ./static-site
-    # 🚀 超軽量ビルドコマンド（5秒未満）
-    buildCommand: |
-      echo "🔧 Optimizing static files..."
-      # CSS圧縮（オプション）
-      # npx csso static-site/styles.css --output static-site/styles.css
-      # JS圧縮（オプション）
-      # npx terser static-site/script.js --output static-site/script.js --compress --mangle
-      echo "✅ Static site optimized and ready!"
+    # 🚀 npm scriptを使用したビルドコマンド
+    buildCommand: npm run build:render
     
     # 🔧 環境変数（最小限）
     envVars:
