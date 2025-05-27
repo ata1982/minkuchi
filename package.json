@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "地域サービス口コミ・レビューWebアプリケーション（静的サイト版）",
   "scripts": {
-    "start": "python -m http.server 8000 --directory static-site",
+    "start": "python -m http.server ${PORT:-8000} --directory static-site",
     "serve": "python -m http.server 8000 --directory static-site",
     "build": "echo 'Static site ready for deployment'",
     "build:render": "echo '✅ Render.com build completed - Static site ready!'",
