@@ -96,20 +96,24 @@ jobs:
           url: ${{ secrets.RENDER_DEPLOY_HOOK_URL }}
           method: 'POST'
           customHeaders: '{"Content-Type": "application/json"}'
-          timeout: 60000
+          timeout: 90000
         continue-on-error: true
           
       - name: Check deploy result
         run: |
           echo "Deploy status: ${{ steps.deploy.outputs.status }}"
+          echo "Deploy response: ${{ steps.deploy.outputs.response }}"
           if [ "${{ steps.deploy.outcome }}" != "success" ]; then
-            echo "Deploy request failed, but continuing to verify service..."
+            echo "⚠️ Deploy request failed, but continuing to verify service..."
+            echo "Error details: ${{ steps.deploy.outputs.error }}"
           else
-            echo "Deploy request successful"
+            echo "✅ Deploy request successful"
           fi
           
-      - name: Wait for deployment to start
-        run: sleep 30
+      - name: Wait for deployment to process
+        run: |
+          echo "⏳ Waiting for deployment to process..."
+          sleep 60
         
       - name: Verify service status
         id: status-check
@@ -118,13 +122,19 @@ jobs:
           url: 'https://api.render.com/v1/services/${{ secrets.RENDER_SERVICE_ID }}'
           method: 'GET'
           customHeaders: '{"Authorization": "Bearer ${{ secrets.RENDER_API_KEY }}"}'
-          timeout: 30000
+          timeout: 45000
         continue-on-error: true
         
       - name: Show service status
         run: |
           echo "Service status check: ${{ steps.status-check.outputs.status }}"
-          echo "Service response: ${{ steps.status-check.outputs.response }}"
+          if [ "${{ steps.status-check.outcome }}" = "success" ]; then
+            echo "✅ Service status retrieved successfully"
+            echo "Service response: ${{ steps.status-check.outputs.response }}"
+          else
+            echo "⚠️ Service status check failed"
+            echo "Error: ${{ steps.status-check.outputs.error }}"
+          fi
           
   verify:
     name: Verify Deployment
@@ -133,11 +143,81 @@ jobs:
     if: github.ref == 'refs/heads/main'
     
     steps:
-      - name: Health Check
+      - name: Wait for service to be ready
+        run: |
+          echo "⏳ Waiting for service to be fully ready..."
+          sleep 120
+          
+      - name: Health Check (Attempt 1)
+        id: health-check-1
         uses: fjogeleit/http-request-action@v1
         with:
           url: ${{ secrets.HEALTH_CHECK_URL }}
           method: 'GET'
-          timeout: 30000
-          retry: 3
-          retryWait: 10000
+          timeout: 60000
+        continue-on-error: true
+        
+      - name: Health Check Result 1
+        run: |
+          echo "Health check attempt 1: ${{ steps.health-check-1.outputs.status }}"
+          if [ "${{ steps.health-check-1.outcome }}" = "success" ]; then
+            echo "✅ Health check successful!"
+            echo "Response: ${{ steps.health-check-1.outputs.response }}"
+          else
+            echo "❌ Health check failed, will retry..."
+            echo "Error: ${{ steps.health-check-1.outputs.error }}"
+          fi
+          
+      - name: Wait before retry
+        if: steps.health-check-1.outcome != 'success'
+        run: |
+          echo "⏳ Waiting 30 seconds before retry..."
+          sleep 30
+          
+      - name: Health Check (Attempt 2)
+        if: steps.health-check-1.outcome != 'success'
+        id: health-check-2
+        uses: fjogeleit/http-request-action@v1
+        with:
+          url: ${{ secrets.HEALTH_CHECK_URL }}
+          method: 'GET'
+          timeout: 60000
+        continue-on-error: true
+        
+      - name: Health Check Result 2
+        if: steps.health-check-1.outcome != 'success'
+        run: |
+          echo "Health check attempt 2: ${{ steps.health-check-2.outputs.status }}"
+          if [ "${{ steps.health-check-2.outcome }}" = "success" ]; then
+            echo "✅ Health check successful on retry!"
+            echo "Response: ${{ steps.health-check-2.outputs.response }}"
+          else
+            echo "❌ Health check failed again, will make final attempt..."
+            echo "Error: ${{ steps.health-check-2.outputs.error }}"
+          fi
+          
+      - name: Wait before final attempt
+        if: steps.health-check-1.outcome != 'success' && steps.health-check-2.outcome != 'success'
+        run: |
+          echo "⏳ Waiting 60 seconds before final attempt..."
+          sleep 60
+          
+      - name: Health Check (Final Attempt)
+        if: steps.health-check-1.outcome != 'success' && steps.health-check-2.outcome != 'success'
+        id: health-check-3
+        uses: fjogeleit/http-request-action@v1
+        with:
+          url: ${{ secrets.HEALTH_CHECK_URL }}
+          method: 'GET'
+          timeout: 90000
+        continue-on-error: false
+        
+      - name: Final Health Check Result
+        run: |
+          if [ "${{ steps.health-check-1.outcome }}" = "success" ] || [ "${{ steps.health-check-2.outcome }}" = "success" ] || [ "${{ steps.health-check-3.outcome }}" = "success" ]; then
+            echo "🎉 Deployment verification successful!"
+          else
+            echo "💥 All health check attempts failed"
+            echo "This may indicate a deployment issue or the service is still starting up"
+            exit 1
+          fi

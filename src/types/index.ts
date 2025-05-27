@@ -1,6 +1,20 @@
 // 型定義統合ファイル
 export * from './next-auth'
-export * from './socket'
+
+// Socket.IO関連型定義
+import { NextApiResponse } from 'next'
+import { Server as NetServer } from 'net'
+import { Socket } from 'net'
+import { Server as SocketIOServer } from 'socket.io'
+import { Server as HTTPServer } from 'http'
+
+export type NextApiResponseServerIO = NextApiResponse & {
+  socket: Socket & {
+    server: NetServer & HTTPServer & {
+      io: SocketIOServer
+    }
+  }
+}
 
 // アプリケーション共通型定義
 export interface User {
