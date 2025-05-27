@@ -41,9 +41,12 @@ export const authOptions: NextAuthOptions = {
 }
 
 // AI Service Setup
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-})
+// CI環境や環境変数がない場合でも正常にビルドできるよう条件付き初期化
+const openai = process.env.OPENAI_API_KEY 
+  ? new OpenAI({
+      apiKey: process.env.OPENAI_API_KEY,
+    })
+  : null
 
 // ElevenLabsクライアントの型定義
 interface ElevenLabsClient {
@@ -71,6 +74,11 @@ if (typeof window === 'undefined' && process.env.ELEVENLABS_API_KEY) {
 export class AIService {
   // レビュー感情分析とキーワード抽出
   static async analyzeReview(content: string) {
+    if (!openai) {
+      console.warn('OpenAI client not initialized')
+      return null
+    }
+
     try {
       const completion = await openai.chat.completions.create({
         model: "gpt-3.5-turbo",
@@ -98,6 +106,11 @@ export class AIService {
 
   // サービス説明の自動生成
   static async generateServiceDescription(serviceName: string, category: string, address: string) {
+    if (!openai) {
+      console.warn('OpenAI client not initialized')
+      return null
+    }
+
     try {
       const completion = await openai.chat.completions.create({
         model: "gpt-3.5-turbo",
@@ -145,6 +158,11 @@ export class AIService {
 
   // チャットボット応答
   static async getChatbotResponse(message: string, context: string) {
+    if (!openai) {
+      console.warn('OpenAI client not initialized')
+      return "申し訳ございません。現在、AI機能が利用できません。"
+    }
+
     try {
       const completion = await openai.chat.completions.create({
         model: "gpt-3.5-turbo",

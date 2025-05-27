@@ -1,4 +1,5 @@
 import { ReactNode } from 'react'
+import Image from 'next/image'
 
 // Header Props
 interface HeaderProps {
@@ -73,12 +74,14 @@ export function Header({ user }: HeaderProps) {
                   口コミを書く
                 </button>
                 <div className="flex items-center space-x-2">
-                  <div className="w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center">
+                  <div className="w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center overflow-hidden">
                     {user.image ? (
-                      <img 
+                      <Image 
                         src={user.image} 
                         alt={user.name || 'ユーザー'} 
-                        className="w-8 h-8 rounded-full object-cover"
+                        width={32}
+                        height={32}
+                        className="rounded-full object-cover"
                       />
                     ) : (
                       <span className="text-xs font-semibold text-secondary-600">
