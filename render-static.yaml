@@ -1,17 +1,8 @@
 services:
-  - type: web
+  - type: static_site
     name: minkuchi-static
-    runtime: static
-    staticPublishPath: ./static-site
-    # 🚀 npm scriptを使用したビルドコマンド
     buildCommand: npm run build:render
-    
-    # 🔧 環境変数（最小限）
-    envVars:
-      - key: NODE_ENV
-        value: production
-      - key: APP_NAME
-        value: Minkuchi
+    publishPath: ./static-site
     
     # 🛡️ セキュリティヘッダー
     headers:
@@ -34,7 +25,7 @@ services:
         name: Cache-Control
         value: public, max-age=31536000, immutable
     
-    # 🗂️ ルーティング設定
+    # 🗂️ ルーティング設定（SPA用）
     routes:
       - type: rewrite
         source: /*
