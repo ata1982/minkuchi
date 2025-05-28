@@ -11,7 +11,6 @@ Minkuchiは企業や商品に対するユーザーレビューを収集・表示
 - **フロントエンド**: HTML5, CSS3, Vanilla JavaScript
 - **認証**: Firebase Auth（Google OAuth）
 - **データベース**: Firebase Firestore
-- **ホスティング**: Render（静的サイト）
 - **画像管理**: Firebase Storage
 
 ## 📁 プロジェクト構造
@@ -44,7 +43,6 @@ minkuchi/
 │           └── products.js       # 商品一覧機能
 │
 ├── package.json
-├── render-static.yaml             # Render設定ファイル
 └── README.md
 ```
 
@@ -102,15 +100,6 @@ const firebaseConfig = {
 # Live Server拡張を使用（VS Code）
 # または任意のローカルサーバーで static-site/ ディレクトリを配信
 ```
-
-### 4. Renderデプロイ
-
-1. [Render](https://render.com/) でアカウント作成
-2. New > Static Site を選択
-3. GitHubリポジトリを連携
-4. 設定:
-   - **Build Command**: （空欄）
-   - **Publish directory**: `static-site`
 
 ## 📊 データ構造
 

@@ -1,6 +1,0 @@
-services:
-  - type: web
-    name: minkuchi-static
-    env: static
-    buildCommand: ./build.sh
-    staticPublishPath: ./static-site
