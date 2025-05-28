@@ -1,14 +1,24 @@
-services:
-  - type: static_site
-    name: minkuchi-static
-    buildCommand: echo "✅ Static site ready"
-    publishPath: ./static-site
-    
-    # 🛡️ 基本的なセキュリティヘッダー
+name: minkuchi-static-site
+type: static_site
+
+buildCommand: echo "Static site - no build required"
+publishDir: static-site
+
+domains:
+  - minkuchi.onrender.com
+
+headers:
+  - path: /*
     headers:
-      - path: /*
-        name: X-Frame-Options
-        value: DENY
-      - path: /*
-        name: X-Content-Type-Options
-        value: nosniff
+      X-Frame-Options: DENY
+      X-Content-Type-Options: nosniff
+      Referrer-Policy: strict-origin-when-cross-origin
+      Permissions-Policy: geolocation=(), microphone=(), camera=()
+
+redirects:
+  - source: /api/*
+    destination: https://api.minkuchi.com/:splat
+    status: 200
+  - source: /*
+    destination: /index.html
+    status: 200

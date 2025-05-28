@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minkuchiについて - Minkuchi</title>
+    <meta name="description" content="Minkuchiの理念、ミッション、チーム紹介">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="stylesheet" href="../companies.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path fill='%232563eb' d='M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z'/></svg>">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-container">
+            <div class="header-content">
+                <div class="header-left">
+                    <!-- Logo -->
+                    <div class="logo">
+                        <div class="logo-icon">
+                            <svg class="star-icon" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                            </svg>
+                        </div>
+                        <h1 class="logo-text"><a href="../index.html">Minkuchi</a></h1>
+                    </div>
+                    
+                    <!-- Navigation -->
+                    <nav class="nav">
+                        <a href="../index.html" class="nav-link">ホーム</a>
+                        <a href="../companies/index.html" class="nav-link">企業一覧</a>
+                        <a href="../products/index.html" class="nav-link">商品一覧</a>
+                        <a href="../categories/index.html" class="nav-link">カテゴリ</a>
+                        <a href="../search/index.html" class="nav-link">検索</a>
+                    </nav>
+                </div>
+                
+                <!-- Search Bar -->
+                <div class="header-search">
+                    <div class="search-container">
+                        <input type="text" placeholder="サービスを検索" class="search-input" id="headerSearchInput">
+                        <button class="search-button" id="headerSearchBtn">
+                            <svg class="search-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Auth Buttons -->
+                <div class="header-auth">
+                    <button id="loginBtn" class="btn-ghost">ログイン</button>
+                    <div id="userMenu" class="user-menu hidden">
+                        <span id="userName"></span>
+                        <button id="logoutBtn" class="btn-ghost">ログアウト</button>
+                    </div>
+                </div>
+                
+                <!-- Mobile Menu Button -->
+                <button class="mobile-menu-btn">
+                    <svg class="menu-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main">
+        <div class="container">
+            <!-- Hero Section -->
+            <section class="about-hero">
+                <div class="hero-content">
+                    <h1 class="hero-title">Minkuchiについて</h1>
+                    <p class="hero-subtitle">信頼できる口コミで、より良い選択を</p>
+                </div>
+            </section>
+
+            <!-- Mission Section -->
+            <section class="mission-section">
+                <div class="mission-content">
+                    <div class="mission-text">
+                        <h2 class="section-title">私たちのミッション</h2>
+                        <p class="mission-description">
+                            Minkuchiは、利用者の皆様が日々の生活の中で直面する「どのサービスを選ぶべきか」という疑問に答えるプラットフォームです。
+                            実際の体験に基づいた信頼できる口コミ情報を通じて、より良い選択をサポートします。
+                        </p>
+                        <div class="mission-points">
+                            <div class="mission-point">
+                                <div class="point-icon">🎯</div>
+                                <div class="point-content">
+                                    <h3>透明性</h3>
+                                    <p>実際の利用者による正直なレビューを重視し、透明性の高い情報提供を行います。</p>
+                                </div>
+                            </div>
+                            <div class="mission-point">
+                                <div class="point-icon">🤝</div>
+                                <div class="point-content">
+                                    <h3>コミュニティ</h3>
+                                    <p>利用者同士が助け合い、有益な情報を共有できるコミュニティを築きます。</p>
+                                </div>
+                            </div>
+                            <div class="mission-point">
+                                <div class="point-icon">⚡</div>
+                                <div class="point-content">
+                                    <h3>利便性</h3>
+                                    <p>直感的で使いやすいインターフェースで、必要な情報に素早くアクセスできます。</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mission-image">
+                        <div class="image-placeholder">
+                            <div class="placeholder-icon">🌟</div>
+                            <p>Community Reviews</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Features Section -->
+            <section class="features-section">
+                <h2 class="section-title">Minkuchiの特徴</h2>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">🔍</div>
+                        <h3>豊富な検索機能</h3>
+                        <p>企業、商品、サービスを横断した包括的な検索で、欲しい情報を素早く見つけられます。</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">⭐</div>
+                        <h3>詳細な評価システム</h3>
+                        <p>総合評価だけでなく、項目別の詳細評価で多角的にサービスを評価できます。</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">📱</div>
+                        <h3>モバイル最適化</h3>
+                        <p>スマートフォンからでも快適に利用できる、レスポンシブなデザインを採用しています。</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🛡️</div>
+                        <h3>信頼性の確保</h3>
+                        <p>ユーザー認証やレビューの品質管理により、信頼できる情報環境を維持しています。</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">📊</div>
+                        <h3>データ分析</h3>
+                        <p>蓄積されたレビューデータから有益なインサイトを提供し、トレンドを把握できます。</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🌐</div>
+                        <h3>地域密着</h3>
+                        <p>地域ごとの特色あるサービスや店舗の情報を、地元の視点から提供します。</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Statistics Section -->
+            <section class="stats-section">
+                <h2 class="section-title">Minkuchiの実績</h2>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-number">25,000+</div>
+                        <div class="stat-label">登録サービス数</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">150,000+</div>
+                        <div class="stat-label">総レビュー数</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">50,000+</div>
+                        <div class="stat-label">アクティブユーザー</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">4.7★</div>
+                        <div class="stat-label">平均満足度</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Team Section -->
+            <section class="team-section">
+                <h2 class="section-title">チーム紹介</h2>
+                <div class="team-grid">
+                    <div class="team-member">
+                        <div class="member-avatar">👨‍💼</div>
+                        <h3>田中 太郎</h3>
+                        <p class="member-role">CEO / Founder</p>
+                        <p class="member-bio">テクノロジーとコミュニティの力で、より良い選択を支援したいという想いでMinkuchiを立ち上げました。</p>
+                    </div>
+                    <div class="team-member">
+                        <div class="member-avatar">👩‍💻</div>
+                        <h3>佐藤 花子</h3>
+                        <p class="member-role">CTO</p>
+                        <p class="member-bio">ユーザーエクスペリエンスを重視したプロダクト開発を通じて、使いやすいサービスを提供しています。</p>
+                    </div>
+                    <div class="team-member">
+                        <div class="member-avatar">👨‍🎨</div>
+                        <h3>山田 次郎</h3>
+                        <p class="member-role">Head of Design</p>
+                        <p class="member-bio">直感的で美しいデザインで、ユーザーの皆様にとって親しみやすいプラットフォームを作っています。</p>
+                    </div>
+                    <div class="team-member">
+                        <div class="member-avatar">👩‍💼</div>
+                        <h3>鈴木 美咲</h3>
+                        <p class="member-role">Head of Community</p>
+                        <p class="member-bio">健全なコミュニティ運営とユーザーサポートを通じて、信頼できる情報環境を維持しています。</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Contact Section -->
+            <section class="contact-section">
+                <div class="contact-content">
+                    <h2 class="section-title">お問い合わせ</h2>
+                    <p class="contact-description">
+                        ご質問、ご要望、パートナーシップについてなど、お気軽にお問い合わせください。
+                    </p>
+                    <div class="contact-info">
+                        <div class="contact-item">
+                            <div class="contact-icon">📧</div>
+                            <div class="contact-details">
+                                <h3>メール</h3>
+                                <p>hello@minkuchi.com</p>
+                            </div>
+                        </div>
+                        <div class="contact-item">
+                            <div class="contact-icon">🏢</div>
+                            <div class="contact-details">
+                                <h3>オフィス</h3>
+                                <p>〒150-0001<br>東京都渋谷区神宮前1-1-1</p>
+                            </div>
+                        </div>
+                        <div class="contact-item">
+                            <div class="contact-icon">📱</div>
+                            <div class="contact-details">
+                                <h3>SNS</h3>
+                                <div class="social-links">
+                                    <a href="#" class="social-link">Twitter</a>
+                                    <a href="#" class="social-link">Facebook</a>
+                                    <a href="#" class="social-link">Instagram</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4 class="footer-title">会社情報</h4>
+                    <ul class="footer-links">
+                        <li><a href="index.html" class="footer-link">Minkuchiについて</a></li>
+                        <li><a href="#" class="footer-link">利用規約</a></li>
+                        <li><a href="#" class="footer-link">プライバシーポリシー</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4 class="footer-title">サービス</h4>
+                    <ul class="footer-links">
+                        <li><a href="../companies/index.html" class="footer-link">企業検索</a></li>
+                        <li><a href="../products/index.html" class="footer-link">商品検索</a></li>
+                        <li><a href="../categories/index.html" class="footer-link">カテゴリ一覧</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4 class="footer-title">サポート</h4>
+                    <ul class="footer-links">
+                        <li><a href="#" class="footer-link">ヘルプ</a></li>
+                        <li><a href="#" class="footer-link">お問い合わせ</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p class="footer-copyright">© 2025 Minkuchi. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    
+    <!-- Custom JS -->
+    <script src="../script.js"></script>
+    <script src="../assets/js/auth.js"></script>
+</body>
+</html>

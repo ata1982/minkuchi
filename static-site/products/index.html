@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>商品一覧 - Minkuchi</title>
+    <meta name="description" content="商品の口コミ・評価を確認して、信頼できる商品を見つけましょう">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="stylesheet" href="../companies.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path fill='%232563eb' d='M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z'/></svg>">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-container">
+            <div class="header-content">
+                <div class="header-left">
+                    <!-- Logo -->
+                    <div class="logo">
+                        <div class="logo-icon">
+                            <svg class="star-icon" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                            </svg>
+                        </div>
+                        <h1 class="logo-text"><a href="../index.html">Minkuchi</a></h1>
+                    </div>
+                    
+                    <!-- Navigation -->
+                    <nav class="nav">
+                        <a href="../index.html" class="nav-link">ホーム</a>
+                        <a href="../companies/index.html" class="nav-link">企業一覧</a>
+                        <a href="index.html" class="nav-link active">商品一覧</a>
+                        <a href="../categories/index.html" class="nav-link">カテゴリ</a>
+                        <a href="../search/index.html" class="nav-link">検索</a>
+                    </nav>
+                </div>
+                
+                <!-- Search Bar -->
+                <div class="header-search">
+                    <div class="search-container">
+                        <input type="text" placeholder="商品名で検索" class="search-input" id="headerSearchInput">
+                        <button class="search-button" id="headerSearchBtn">
+                            <svg class="search-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Auth Buttons -->
+                <div class="header-auth">
+                    <button id="loginBtn" class="btn-ghost">ログイン</button>
+                    <div id="userMenu" class="user-menu hidden">
+                        <span id="userName"></span>
+                        <button id="logoutBtn" class="btn-ghost">ログアウト</button>
+                    </div>
+                </div>
+                
+                <!-- Mobile Menu Button -->
+                <button class="mobile-menu-btn">
+                    <svg class="menu-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main">
+        <div class="container">
+            <!-- Page Header -->
+            <div class="page-header">
+                <h1 class="page-title">商品一覧</h1>
+                <p class="page-subtitle">実際に使った人の口コミで、信頼できる商品を見つけましょう</p>
+            </div>
+
+            <!-- Filters and Search -->
+            <div class="filter-section">
+                <div class="search-filter">
+                    <input type="text" id="searchInput" placeholder="商品名で検索..." class="filter-input">
+                </div>
+                
+                <div class="filter-controls">
+                    <select id="categoryFilter" class="filter-select">
+                        <option value="">すべてのカテゴリ</option>
+                        <option value="家電">家電</option>
+                        <option value="食品・飲料">食品・飲料</option>
+                        <option value="美容・健康">美容・健康</option>
+                        <option value="ファッション">ファッション</option>
+                        <option value="スポーツ">スポーツ</option>
+                        <option value="本・音楽">本・音楽</option>
+                        <option value="ホーム・ガーデン">ホーム・ガーデン</option>
+                        <option value="おもちゃ・ゲーム">おもちゃ・ゲーム</option>
+                        <option value="自動車・バイク">自動車・バイク</option>
+                        <option value="その他">その他</option>
+                    </select>
+                    
+                    <select id="priceFilter" class="filter-select">
+                        <option value="">すべての価格帯</option>
+                        <option value="0-1000">1,000円未満</option>
+                        <option value="1000-5000">1,000円〜5,000円</option>
+                        <option value="5000-10000">5,000円〜10,000円</option>
+                        <option value="10000-50000">10,000円〜50,000円</option>
+                        <option value="50000-100000">50,000円〜100,000円</option>
+                        <option value="100000+">100,000円以上</option>
+                    </select>
+                    
+                    <select id="sortFilter" class="filter-select">
+                        <option value="rating">評価順</option>
+                        <option value="reviews">レビュー数順</option>
+                        <option value="name">商品名順</option>
+                        <option value="price-low">価格の安い順</option>
+                        <option value="price-high">価格の高い順</option>
+                        <option value="newest">新着順</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Products Grid -->
+            <div class="products-grid" id="productsGrid">
+                <!-- Products will be loaded here by JavaScript -->
+            </div>
+
+            <!-- Pagination -->
+            <div class="pagination" id="pagination">
+                <!-- Pagination will be generated by JavaScript -->
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4 class="footer-title">会社情報</h4>
+                    <ul class="footer-links">
+                        <li><a href="../about/index.html" class="footer-link">Minkuchiについて</a></li>
+                        <li><a href="#" class="footer-link">利用規約</a></li>
+                        <li><a href="#" class="footer-link">プライバシーポリシー</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4 class="footer-title">サービス</h4>
+                    <ul class="footer-links">
+                        <li><a href="../search/index.html" class="footer-link">サービス検索</a></li>
+                        <li><a href="../categories/index.html" class="footer-link">カテゴリ一覧</a></li>
+                        <li><a href="#" class="footer-link">人気ランキング</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4 class="footer-title">サポート</h4>
+                    <ul class="footer-links">
+                        <li><a href="#" class="footer-link">ヘルプ</a></li>
+                        <li><a href="#" class="footer-link">お問い合わせ</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p class="footer-copyright">© 2025 Minkuchi. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    
+    <!-- Custom JS -->
+    <script src="../script.js"></script>
+    <script src="../assets/js/auth.js"></script>
+    <script src="../assets/js/products.js"></script>
+</body>
+</html>

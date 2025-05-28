@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>企業一覧 - Minkuchi</title>
+    <meta name="description" content="企業の口コミ・評価を検索・比較できるプラットフォーム">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="stylesheet" href="companies.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path fill='%232563eb' d='M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z'/></svg>">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-container">
+            <div class="header-content">
+                <div class="header-left">
+                    <!-- Logo -->
+                    <div class="logo">
+                        <div class="logo-icon">
+                            <svg class="star-icon" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                            </svg>
+                        </div>
+                        <h1 class="logo-text">Minkuchi</h1>
+                    </div>
+                    
+                    <!-- Navigation -->
+                    <nav class="nav">
+                        <a href="../index.html" class="nav-link">ホーム</a>
+                        <a href="companies.html" class="nav-link active">企業一覧</a>
+                        <a href="products.html" class="nav-link">商品一覧</a>
+                        <a href="categories.html" class="nav-link">カテゴリ</a>
+                        <a href="search.html" class="nav-link">検索</a>
+                    </nav>
+                </div>
+                
+                <!-- Search Bar -->
+                <div class="header-search">
+                    <div class="search-container">
+                        <input type="text" placeholder="企業名で検索" class="search-input" id="company-search">
+                        <button class="search-button">
+                            <svg class="search-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Auth Buttons -->
+                <div class="header-auth">
+                    <a href="../auth/login.html" class="btn-ghost">ログイン</a>
+                    <a href="../auth/register.html" class="btn-primary">新規登録</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="companies-main">
+        <!-- Page Header -->
+        <section class="page-header">
+            <div class="container">
+                <div class="breadcrumb">
+                    <a href="../index.html">ホーム</a>
+                    <span>/</span>
+                    <span>企業一覧</span>
+                </div>
+                <h1 class="page-title">企業一覧</h1>
+                <p class="page-subtitle">信頼できる企業情報と実際の口コミをチェック</p>
+            </div>
+        </section>
+
+        <!-- Filters Section -->
+        <section class="filters-section">
+            <div class="container">
+                <div class="filters-header">
+                    <h2 class="filters-title">フィルター</h2>
+                    <button class="filters-toggle" id="filters-toggle">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.207A1 1 0 013 6.5V4z"/>
+                        </svg>
+                        フィルター
+                    </button>
+                </div>
+                
+                <div class="filters-content" id="filters-content">
+                    <!-- Industry Filter -->
+                    <div class="filter-group">
+                        <h3 class="filter-label">業界</h3>
+                        <div class="filter-options">
+                            <label class="filter-option">
+                                <input type="checkbox" value="IT・ソフトウェア">
+                                <span>IT・ソフトウェア</span>
+                            </label>
+                            <label class="filter-option">
+                                <input type="checkbox" value="金融">
+                                <span>金融</span>
+                            </label>
+                            <label class="filter-option">
+                                <input type="checkbox" value="製造業">
+                                <span>製造業</span>
+                            </label>
+                            <label class="filter-option">
+                                <input type="checkbox" value="サービス業">
+                                <span>サービス業</span>
+                            </label>
+                            <label class="filter-option">
+                                <input type="checkbox" value="小売業">
+                                <span>小売業</span>
+                            </label>
+                            <label class="filter-option">
+                                <input type="checkbox" value="飲食・フード">
+                                <span>飲食・フード</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Rating Filter -->
+                    <div class="filter-group">
+                        <h3 class="filter-label">評価</h3>
+                        <div class="filter-options">
+                            <label class="filter-option">
+                                <input type="radio" name="rating" value="4+">
+                                <span>⭐ 4.0以上</span>
+                            </label>
+                            <label class="filter-option">
+                                <input type="radio" name="rating" value="3+">
+                                <span>⭐ 3.0以上</span>
+                            </label>
+                            <label class="filter-option">
+                                <input type="radio" name="rating" value="all">
+                                <span>すべて</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Sort Options -->
+                    <div class="filter-group">
+                        <h3 class="filter-label">並び順</h3>
+                        <select class="sort-select" id="sort-select">
+                            <option value="rating">評価順</option>
+                            <option value="reviews">レビュー数順</option>
+                            <option value="name">名前順</option>
+                            <option value="newest">新着順</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Companies Grid -->
+        <section class="companies-grid-section">
+            <div class="container">
+                <div class="results-header">
+                    <p class="results-count" id="results-count">158社の企業が見つかりました</p>
+                </div>
+
+                <div class="companies-grid" id="companies-grid">
+                    <!-- Company Cards will be populated by JavaScript -->
+                </div>
+
+                <!-- Pagination -->
+                <div class="pagination" id="pagination">
+                    <button class="pagination-btn pagination-prev" disabled>
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+                        </svg>
+                        前へ
+                    </button>
+                    <div class="pagination-numbers">
+                        <button class="pagination-number active">1</button>
+                        <button class="pagination-number">2</button>
+                        <button class="pagination-number">3</button>
+                        <span class="pagination-dots">...</span>
+                        <button class="pagination-number">10</button>
+                    </div>
+                    <button class="pagination-btn pagination-next">
+                        次へ
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4 class="footer-title">会社情報</h4>
+                    <ul class="footer-links">
+                        <li><a href="../about.html" class="footer-link">Minkuchiについて</a></li>
+                        <li><a href="#" class="footer-link">利用規約</a></li>
+                        <li><a href="#" class="footer-link">プライバシーポリシー</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4 class="footer-title">サービス</h4>
+                    <ul class="footer-links">
+                        <li><a href="companies.html" class="footer-link">企業一覧</a></li>
+                        <li><a href="products.html" class="footer-link">商品一覧</a></li>
+                        <li><a href="categories.html" class="footer-link">カテゴリ一覧</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4 class="footer-title">サポート</h4>
+                    <ul class="footer-links">
+                        <li><a href="#" class="footer-link">ヘルプ</a></li>
+                        <li><a href="#" class="footer-link">お問い合わせ</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p class="footer-copyright">© 2025 Minkuchi. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="../script.js"></script>
+    <script src="companies.js"></script>
+</body>
+</html>

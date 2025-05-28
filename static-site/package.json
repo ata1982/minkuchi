@@ -1,0 +1,30 @@
+{
+  "name": "minkuchi-static",
+  "version": "1.0.0",
+  "description": "Minkuchi 静的サイト版 - Google OAuth認証対応",
+  "scripts": {
+    "dev": "python3 -m http.server 8081",
+    "serve": "python3 -m http.server 8081",
+    "test": "echo 'Testing static site...' && curl -s -o /dev/null -w '%{http_code}' http://localhost:8081/",
+    "validate": "echo 'Validating HTML/CSS/JS files...' && find . -name '*.html' -o -name '*.js' -o -name '*.css' | wc -l",
+    "deploy:render": "echo 'Ready for Render deployment from static-site folder'"
+  },
+  "keywords": [
+    "static-site",
+    "google-oauth",
+    "html",
+    "javascript",
+    "css",
+    "review-platform"
+  ],
+  "author": "Minkuchi Team",
+  "license": "MIT",
+  "engines": {
+    "python": ">=3.7.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/your-username/minkuchi.git",
+    "directory": "static-site"
+  }
+}

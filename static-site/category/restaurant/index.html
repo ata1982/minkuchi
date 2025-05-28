@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>レストラン・飲食店 - Minkuchi</title>
+    <meta name="description" content="地域のレストラン・飲食店のレビューと口コミを確認できます">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../styles.css">
+    <link rel="stylesheet" href="../../companies.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path fill='%232563eb' d='M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z'/></svg>">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-container">
+            <div class="header-content">
+                <div class="header-left">
+                    <!-- Logo -->
+                    <div class="logo">
+                        <div class="logo-icon">
+                            <svg class="star-icon" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                            </svg>
+                        </div>
+                        <h1 class="logo-text"><a href="../../index.html">Minkuchi</a></h1>
+                    </div>
+                    
+                    <!-- Navigation -->
+                    <nav class="nav">
+                        <a href="../../index.html" class="nav-link">ホーム</a>
+                        <a href="../../companies/index.html" class="nav-link">企業一覧</a>
+                        <a href="../../products/index.html" class="nav-link">商品一覧</a>
+                        <a href="../../categories/index.html" class="nav-link">カテゴリ</a>
+                        <a href="../../search/index.html" class="nav-link">検索</a>
+                    </nav>
+                </div>
+                
+                <!-- Search Bar -->
+                <div class="header-search">
+                    <div class="search-container">
+                        <input type="text" placeholder="レストラン・飲食店を検索" class="search-input" id="headerSearchInput">
+                        <button class="search-button" id="headerSearchBtn">
+                            <svg class="search-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Auth Buttons -->
+                <div class="header-auth">
+                    <button id="loginBtn" class="btn-ghost">ログイン</button>
+                    <div id="userMenu" class="user-menu hidden">
+                        <span id="userName"></span>
+                        <button id="logoutBtn" class="btn-ghost">ログアウト</button>
+                    </div>
+                </div>
+                
+                <!-- Mobile Menu Button -->
+                <button class="mobile-menu-btn">
+                    <svg class="menu-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main">
+        <div class="container">
+            <!-- Breadcrumb -->
+            <nav class="breadcrumb">
+                <a href="../../index.html">ホーム</a>
+                <span class="separator">></span>
+                <a href="../../categories/index.html">カテゴリ</a>
+                <span class="separator">></span>
+                <span class="current">レストラン・飲食店</span>
+            </nav>
+
+            <!-- Category Header -->
+            <div class="category-header">
+                <div class="category-hero">
+                    <div class="category-icon">🍽️</div>
+                    <div class="category-info">
+                        <h1 class="category-title">レストラン・飲食店</h1>
+                        <p class="category-description">地域のおいしいレストラン、カフェ、居酒屋など、飲食店の口コミと評価をチェックしよう</p>
+                        <div class="category-stats">
+                            <span class="stat-item"><strong>2,450</strong>店舗</span>
+                            <span class="stat-item"><strong>15,680</strong>件のレビュー</span>
+                            <span class="stat-item">平均評価 <strong>4.2</strong>★</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sub Categories -->
+            <section class="sub-categories">
+                <h2 class="section-title">料理のジャンル</h2>
+                <div class="sub-category-grid">
+                    <a href="#" class="sub-category-card" data-subcategory="和食">
+                        <div class="sub-icon">🍱</div>
+                        <h3>和食</h3>
+                        <p>782店舗</p>
+                    </a>
+                    <a href="#" class="sub-category-card" data-subcategory="洋食">
+                        <div class="sub-icon">🍝</div>
+                        <h3>洋食</h3>
+                        <p>524店舗</p>
+                    </a>
+                    <a href="#" class="sub-category-card" data-subcategory="中華">
+                        <div class="sub-icon">🥟</div>
+                        <h3>中華</h3>
+                        <p>368店舗</p>
+                    </a>
+                    <a href="#" class="sub-category-card" data-subcategory="カフェ">
+                        <div class="sub-icon">☕</div>
+                        <h3>カフェ</h3>
+                        <p>456店舗</p>
+                    </a>
+                    <a href="#" class="sub-category-card" data-subcategory="居酒屋">
+                        <div class="sub-icon">🍻</div>
+                        <h3>居酒屋</h3>
+                        <p>298店舗</p>
+                    </a>
+                    <a href="#" class="sub-category-card" data-subcategory="ファストフード">
+                        <div class="sub-icon">🍔</div>
+                        <h3>ファストフード</h3>
+                        <p>156店舗</p>
+                    </a>
+                </div>
+            </section>
+
+            <!-- Filters and Controls -->
+            <div class="filters-section">
+                <div class="filters-header">
+                    <h2>レストラン一覧</h2>
+                    <div class="results-count" id="resultsCount">2,450件のレストラン</div>
+                </div>
+                
+                <div class="filters-controls">
+                    <div class="filter-group">
+                        <label for="areaFilter">エリア</label>
+                        <select id="areaFilter" class="filter-select">
+                            <option value="">すべてのエリア</option>
+                            <option value="渋谷">渋谷</option>
+                            <option value="新宿">新宿</option>
+                            <option value="池袋">池袋</option>
+                            <option value="原宿">原宿</option>
+                            <option value="恵比寿">恵比寿</option>
+                            <option value="代官山">代官山</option>
+                        </select>
+                    </div>
+                    
+                    <div class="filter-group">
+                        <label for="priceFilter">価格帯</label>
+                        <select id="priceFilter" class="filter-select">
+                            <option value="">すべての価格帯</option>
+                            <option value="1">～1,000円</option>
+                            <option value="2">1,000～3,000円</option>
+                            <option value="3">3,000～5,000円</option>
+                            <option value="4">5,000円～</option>
+                        </select>
+                    </div>
+                    
+                    <div class="filter-group">
+                        <label for="genreFilter">ジャンル</label>
+                        <select id="genreFilter" class="filter-select">
+                            <option value="">すべてのジャンル</option>
+                            <option value="和食">和食</option>
+                            <option value="洋食">洋食</option>
+                            <option value="中華">中華</option>
+                            <option value="カフェ">カフェ</option>
+                            <option value="居酒屋">居酒屋</option>
+                            <option value="ファストフード">ファストフード</option>
+                        </select>
+                    </div>
+                    
+                    <div class="filter-group">
+                        <label for="sortFilter">並び順</label>
+                        <select id="sortFilter" class="filter-select">
+                            <option value="rating">評価順</option>
+                            <option value="reviews">レビュー数順</option>
+                            <option value="name">名前順</option>
+                            <option value="newest">新着順</option>
+                        </select>
+                    </div>
+                    
+                    <button class="filter-reset" id="resetFilters">リセット</button>
+                </div>
+            </div>
+
+            <!-- Restaurant List -->
+            <div class="restaurants-grid" id="restaurantsGrid">
+                <!-- レストラン一覧がここに表示される -->
+            </div>
+
+            <!-- Pagination -->
+            <div class="pagination" id="pagination">
+                <!-- ページネーションがここに表示される -->
+            </div>
+
+            <!-- Popular Reviews Section -->
+            <section class="popular-reviews">
+                <h2 class="section-title">人気のレビュー</h2>
+                <div class="reviews-grid">
+                    <div class="review-card">
+                        <div class="review-header">
+                            <div class="reviewer-info">
+                                <div class="reviewer-avatar">👤</div>
+                                <div class="reviewer-details">
+                                    <h4>グルメ太郎</h4>
+                                    <span class="review-date">2024年12月15日</span>
+                                </div>
+                            </div>
+                            <div class="review-rating">
+                                <span class="rating-stars">★★★★★</span>
+                                <span class="rating-value">5.0</span>
+                            </div>
+                        </div>
+                        <div class="review-content">
+                            <h5 class="review-title">最高の和食体験でした！</h5>
+                            <p class="review-text">料理はもちろん、サービスも雰囲気も完璧でした。特に季節の食材を使った懐石コースは絶品。記念日にまた利用したいと思います。</p>
+                            <div class="review-restaurant">
+                                <span class="restaurant-name">銀座 味心</span>
+                                <span class="restaurant-genre">和食</span>
+                            </div>
+                        </div>
+                        <div class="review-actions">
+                            <button class="helpful-btn">
+                                <span class="icon">👍</span>
+                                参考になった (24)
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="review-card">
+                        <div class="review-header">
+                            <div class="reviewer-info">
+                                <div class="reviewer-avatar">👤</div>
+                                <div class="reviewer-details">
+                                    <h4>カフェ好き花子</h4>
+                                    <span class="review-date">2024年12月10日</span>
+                                </div>
+                            </div>
+                            <div class="review-rating">
+                                <span class="rating-stars">★★★★☆</span>
+                                <span class="rating-value">4.0</span>
+                            </div>
+                        </div>
+                        <div class="review-content">
+                            <h5 class="review-title">落ち着いた雰囲気のカフェ</h5>
+                            <p class="review-text">仕事の合間に利用しました。Wi-Fiも完備で作業しやすく、コーヒーも本格的。ただし週末は少し混雑するので平日利用がおすすめです。</p>
+                            <div class="review-restaurant">
+                                <span class="restaurant-name">青山 Coffee & Work</span>
+                                <span class="restaurant-genre">カフェ</span>
+                            </div>
+                        </div>
+                        <div class="review-actions">
+                            <button class="helpful-btn">
+                                <span class="icon">👍</span>
+                                参考になった (18)
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="review-card">
+                        <div class="review-header">
+                            <div class="reviewer-info">
+                                <div class="reviewer-avatar">👤</div>
+                                <div class="reviewer-details">
+                                    <h4>パスタマニア</h4>
+                                    <span class="review-date">2024年12月8日</span>
+                                </div>
+                            </div>
+                            <div class="review-rating">
+                                <span class="rating-stars">★★★★★</span>
+                                <span class="rating-value">5.0</span>
+                            </div>
+                        </div>
+                        <div class="review-content">
+                            <h5 class="review-title">本格イタリアンがこの価格で！</h5>
+                            <p class="review-text">シェフが本場で修行したというだけあって、パスタの茹で加減から味付けまで完璧。コスパも最高で定期的に通いたいお店です。</p>
+                            <div class="review-restaurant">
+                                <span class="restaurant-name">恵比寿 トラットリア・ベッラ</span>
+                                <span class="restaurant-genre">洋食</span>
+                            </div>
+                        </div>
+                        <div class="review-actions">
+                            <button class="helpful-btn">
+                                <span class="icon">👍</span>
+                                参考になった (31)
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4 class="footer-title">会社情報</h4>
+                    <ul class="footer-links">
+                        <li><a href="../../about/index.html" class="footer-link">Minkuchiについて</a></li>
+                        <li><a href="#" class="footer-link">利用規約</a></li>
+                        <li><a href="#" class="footer-link">プライバシーポリシー</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4 class="footer-title">サービス</h4>
+                    <ul class="footer-links">
+                        <li><a href="../../companies/index.html" class="footer-link">企業検索</a></li>
+                        <li><a href="../../products/index.html" class="footer-link">商品検索</a></li>
+                        <li><a href="../../categories/index.html" class="footer-link">カテゴリ一覧</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4 class="footer-title">サポート</h4>
+                    <ul class="footer-links">
+                        <li><a href="#" class="footer-link">ヘルプ</a></li>
+                        <li><a href="#" class="footer-link">お問い合わせ</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p class="footer-copyright">© 2025 Minkuchi. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    
+    <!-- Custom JS -->
+    <script src="../../script.js"></script>
+    <script src="../../assets/js/auth.js"></script>
+    <script src="../../assets/js/category-restaurant.js"></script>
+</body>
+</html>
