@@ -1,0 +1,22 @@
+services:
+  - type: web
+    name: minkuchi-static
+    env: static
+    buildCommand: echo "Building static site..." && echo "Build complete"
+    staticPublishPath: ./static-site
+    domains:
+      - minkuchi.onrender.com
+    headers:
+      - path: /*
+        name: X-Frame-Options
+        value: DENY
+      - path: /*
+        name: X-Content-Type-Options
+        value: nosniff
+      - path: /*
+        name: Referrer-Policy
+        value: strict-origin-when-cross-origin
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html

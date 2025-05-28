@@ -1,0 +1,47 @@
+# Development files
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# IDE
+.vscode/
+.idea/
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Testing
+coverage/
+.nyc_output
+
+# Build artifacts (will be rebuilt)
+.next/
+out/
+
+# Documentation
+README.md
+docs/
+*.md
+!RENDER_DEPLOY.md
+
+# Git
+.git/
+.gitignore
+
+# Misc
+.DS_Store
+Thumbs.db
+
+# Next.js関連ファイルを無視
+src/
+.next/
+node_modules/
+package.json.nextjs-backup
+README.md
+
+# 静的サイト以外のファイルを無視
+*.md
+!static-site/
