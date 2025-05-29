@@ -1,74 +1,16 @@
 'use client'
 
 import Link from 'next/link'
-import { useState, useEffect } from 'react'
+import { Header } from '@/components/layout/header'
+import { useAuth } from '@/contexts/AuthContext'
 
 export default function HomePage() {
-  const [isAuthenticated, setIsAuthenticated] = useState(false)
-
-  useEffect(() => {
-    // 認証状態の確認（後で実装）
-    // setIsAuthenticated(checkAuthStatus())
-  }, [])
+  const { user } = useAuth()
 
   return (
     <>
-      {/* Header */}
-      <header className="bg-white border-b border-slate-200 sticky top-0 z-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16">
-            <div className="flex items-center space-x-8">
-              {/* Logo */}
-              <div className="flex items-center space-x-2">
-                <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
-                  <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
-                  </svg>
-                </div>
-                <h1 className="text-xl font-bold text-slate-900">Minkuchi</h1>
-              </div>
-              
-              {/* Navigation */}
-              <nav className="flex items-center space-x-8">
-                <Link href="/" className="text-slate-700 hover:text-blue-600 font-medium transition-colors">ホーム</Link>
-                <Link href="/companies" className="text-slate-700 hover:text-blue-600 font-medium transition-colors">企業一覧</Link>
-                <Link href="/companies" className="text-slate-700 hover:text-blue-600 font-medium transition-colors">商品一覧</Link>
-                <Link href="/companies" className="text-slate-700 hover:text-blue-600 font-medium transition-colors">カテゴリ</Link>
-                <Link href="/companies" className="text-slate-700 hover:text-blue-600 font-medium transition-colors">検索</Link>
-              </nav>
-            </div>
-            
-            {/* Search Bar */}
-            <div className="hidden lg:flex flex-1 max-w-md mx-8">
-              <div className="relative w-full">
-                <input 
-                  type="text" 
-                  placeholder="サービス名やキーワードで検索" 
-                  className="w-full pl-10 pr-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500" 
-                />
-                <button className="absolute left-3 top-1/2 transform -translate-y-1/2">
-                  <svg className="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
-                  </svg>
-                </button>
-              </div>
-            </div>
-            
-            {/* Auth Buttons */}
-            <div className="hidden md:flex items-center space-x-3" id="headerAuth">
-              <Link href="/companies" className="btn-ghost">ログイン</Link>
-              <Link href="/companies" className="btn-primary">新規登録</Link>
-            </div>
-            
-            {/* Mobile Menu Button */}
-            <button className="md:hidden p-2 rounded-lg hover:bg-slate-100">
-              <svg className="w-6 h-6 text-slate-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16"/>
-              </svg>
-            </button>
-          </div>
-        </div>
-      </header>
+      {/* Use Header Component */}
+      <Header user={user} />
 
       {/* Main Content */}
       <main>

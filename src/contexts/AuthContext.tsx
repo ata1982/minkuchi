@@ -1,8 +1,8 @@
 // 認証コンテキスト
 'use client'
 
-import { createContext, useContext, useEffect, useState, ReactNode, Suspense } from 'react'
-import { User } from '@/types'
+import { createContext, useContext, useEffect, useState, ReactNode } from 'react'
+import { User } from '@/types/index'
 import { mockUsers } from '@/lib/mockData'
 
 interface AuthContextType {
@@ -19,7 +19,7 @@ interface AuthProviderProps {
   children: ReactNode
 }
 
-function AuthProviderContent({ children }: AuthProviderProps) {
+export function AuthProvider({ children }: AuthProviderProps) {
   const [user, setUser] = useState<User | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
@@ -51,7 +51,7 @@ function AuthProviderContent({ children }: AuthProviderProps) {
 
     try {
       // モックユーザーでのログイン処理
-      await new Promise(resolve => setTimeout(resolve, 1000)) // API呼び出しのシミュレーション
+      await new Promise(resolve => setTimeout(resolve, 500)) // 短縮化
       
       if (email === 'user@example.com' && password === 'password123') {
         const userData = mockUsers[0]
@@ -91,10 +91,7 @@ function AuthProviderContent({ children }: AuthProviderProps) {
   if (loading) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
-          <p className="text-gray-600">認証情報を確認中...</p>
-        </div>
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
       </div>
     )
   }
@@ -103,18 +100,6 @@ function AuthProviderContent({ children }: AuthProviderProps) {
     <AuthContext.Provider value={value}>
       {children}
     </AuthContext.Provider>
-  )
-}
-
-export function AuthProvider({ children }: AuthProviderProps) {
-  return (
-    <Suspense fallback={
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
-      </div>
-    }>
-      <AuthProviderContent>{children}</AuthProviderContent>
-    </Suspense>
   )
 }
 

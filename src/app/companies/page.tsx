@@ -2,7 +2,8 @@
 
 import Link from 'next/link'
 import { useState, useEffect, Suspense } from 'react'
-import { Company } from '@/types'
+import { Company } from '@/types/index'
+import { mockCompanies } from '@/lib/mockData'
 
 function CompaniesContent() {
   const [companies, setCompanies] = useState<Company[]>([])
@@ -17,30 +18,7 @@ function CompaniesContent() {
         setLoading(true)
         setError(null)
         // TODO: APIから企業データを取得
-        const mockData: Company[] = [
-          {
-            id: '1',
-            name: 'カフェ・ブルーマウンテン',
-            category: 'restaurant',
-            rating: 4.5,
-            reviewCount: 128,
-            description: '地元で愛される老舗カフェ。自家焙煎のコーヒーが自慢です。',
-            location: '東京都渋谷区',
-            website: 'https://example.com',
-            imageUrl: '/api/placeholder/300/200'
-          },
-          {
-            id: '2',
-            name: 'ビューティーサロン花音',
-            category: 'beauty',
-            rating: 4.8,
-            reviewCount: 95,
-            description: '女性専用の完全個室サロン。リラックスできる空間で美を追求。',
-            location: '東京都新宿区',
-            imageUrl: '/api/placeholder/300/200'
-          }
-        ]
-        setCompanies(mockData)
+        setCompanies(mockCompanies)
       } catch (error) {
         console.error('企業データの取得に失敗しました:', error)
         setError('企業データの取得に失敗しました。しばらくしてから再度お試しください。')

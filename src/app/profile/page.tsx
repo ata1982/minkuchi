@@ -2,12 +2,14 @@
 
 import { Suspense } from 'react'
 import { useAuth } from '@/contexts/AuthContext'
-import { User } from '@/types'
+
+// ビルド時の静的生成を無効化
+export const dynamic = 'force-dynamic'
 
 function ProfileContent() {
-  const { user, isLoading } = useAuth()
+  const { user, loading } = useAuth()
 
-  if (isLoading) {
+  if (loading) {
     return (
       <div className="min-h-screen bg-slate-50 flex items-center justify-center">
         <div className="text-center">
@@ -61,7 +63,7 @@ function ProfileContent() {
                 </div>
                 <div className="text-center">
                   <div className="text-2xl font-bold text-purple-600">
-                    {user.role === 'admin' ? '管理者' : user.role === 'owner' ? '店舗オーナー' : 'ユーザー'}
+                    {user.role === 'admin' ? '管理者' : user.role === 'company_owner' ? '店舗オーナー' : 'ユーザー'}
                   </div>
                   <div className="text-sm text-slate-500">役割</div>
                 </div>

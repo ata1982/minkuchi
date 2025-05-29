@@ -1,5 +1,5 @@
 // モックデータとユーティリティ関数
-import { Company, Review, Event, User } from '@/types'
+import { Company, Review, Event, User, Category } from '@/types/index'
 
 // モック企業データ
 export const mockCompanies: Company[] = [
@@ -190,6 +190,58 @@ export const mockEvents: Event[] = [
   }
 ]
 
+// モックカテゴリデータ
+export const mockCategories: Category[] = [
+  {
+    id: 'restaurant',
+    name: 'レストラン・飲食',
+    emoji: '🍽️',
+    description: 'レストラン、カフェ、居酒屋など',
+    isActive: true,
+    subcategories: [
+      { id: 'french', name: 'フレンチ', description: 'フランス料理' },
+      { id: 'italian', name: 'イタリアン', description: 'イタリア料理' },
+      { id: 'japanese', name: '和食', description: '日本料理' }
+    ]
+  },
+  {
+    id: 'beauty',
+    name: '美容・ヘルスケア',
+    emoji: '💄',
+    description: '美容院、エステ、マッサージなど',
+    isActive: true,
+    subcategories: [
+      { id: 'hair', name: 'ヘアサロン', description: '美容院・理容院' },
+      { id: 'nail', name: 'ネイルサロン', description: 'ネイルケア' },
+      { id: 'massage', name: 'マッサージ', description: 'リラクゼーション' }
+    ]
+  },
+  {
+    id: 'retail',
+    name: '小売・ショッピング',
+    emoji: '🛍️',
+    description: '衣料品、雑貨、家電など',
+    isActive: true,
+    subcategories: [
+      { id: 'clothing', name: 'ファッション', description: '衣料品・アクセサリー' },
+      { id: 'electronics', name: '家電', description: '電化製品' },
+      { id: 'books', name: '書籍', description: '本・雑誌' }
+    ]
+  },
+  {
+    id: 'service',
+    name: 'サービス',
+    emoji: '🔧',
+    description: '修理、清掃、配送など',
+    isActive: true,
+    subcategories: [
+      { id: 'repair', name: '修理サービス', description: 'スマホ・PC修理など' },
+      { id: 'cleaning', name: 'クリーニング', description: '清掃・洗濯サービス' },
+      { id: 'delivery', name: '配送', description: '宅配・配送サービス' }
+    ]
+  }
+]
+
 // ユーティリティ関数
 export function formatRelativeTime(date: Date): string {
   const now = new Date()
@@ -222,4 +274,26 @@ export function formatTime(date: Date): string {
     hour: '2-digit',
     minute: '2-digit'
   })
+}
+
+export function getBusinessStatus(hours: Company['hours']): { isOpen: boolean; nextChange: string } {
+  const now = new Date()
+  const currentDay = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'][now.getDay()] as keyof typeof hours
+  const currentTime = now.getHours() * 100 + now.getMinutes()
+  
+  const todayHours = hours[currentDay]
+  
+  if (todayHours.closed) {
+    return { isOpen: false, nextChange: '定休日' }
+  }
+  
+  const openTime = parseInt(todayHours.open.replace(':', ''))
+  const closeTime = parseInt(todayHours.close.replace(':', ''))
+  
+  const isOpen = currentTime >= openTime && currentTime < closeTime
+  
+  return {
+    isOpen,
+    nextChange: isOpen ? `${todayHours.close}に閉店` : `${todayHours.open}に開店`
+  }
 }
