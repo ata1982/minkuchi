@@ -36,22 +36,16 @@ lerna-debug.log*
 *.temp
 .cache/
 
-# Build artifacts (if any)
+# Build artifacts
 /dist/
 /build/
+.next/
+out/
 
-# Node.js related files (prevent Node.js detection)
-package.json
-package-lock.json
-yarn.lock
+# Node.js dependencies
 node_modules/
 .npm/
 .yarn/
-
-# Next.js related files (prevent framework detection)
-.next/
-out/
-next-env.d.ts
 
 # Backup files
 *.backup
