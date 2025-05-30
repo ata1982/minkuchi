@@ -54,17 +54,33 @@ function ProfileContent() {
   const fetchProfile = async () => {
     try {
       setLoading(true)
-      const response = await fetch('/api/user/profile')
-      if (response.ok) {
-        const data = await response.json()
-        setProfile(data)
-        setEditData({
-          name: data.name || '',
-          location: data.preferences?.location || '',
-          categories: data.preferences?.categories || [],
-          notifications: data.preferences?.notifications || true
-        })
+      // Mock profile data
+      const mockData = {
+        id: user?.id || 'mock-user-id',
+        name: user?.name || 'ユーザー',
+        email: user?.email || 'user@example.com',
+        role: user?.role || 'USER' as const,
+        points: 150,
+        createdAt: new Date().toISOString(),
+        badges: [
+          { id: '1', name: 'レビュアー', description: '最初のレビューを投稿', icon: '⭐', unlockedAt: new Date().toISOString() },
+          { id: '2', name: 'アクティブ', description: '5件以上のレビューを投稿', icon: '🔥', unlockedAt: new Date().toISOString() }
+        ],
+        preferences: {
+          location: '東京都',
+          categories: ['restaurant'],
+          notifications: true,
+          theme: 'light',
+          language: 'ja'
+        }
       }
+      setProfile(mockData)
+      setEditData({
+        name: mockData.name || '',
+        location: mockData.preferences?.location || '',
+        categories: mockData.preferences?.categories || [],
+        notifications: mockData.preferences?.notifications || true
+      })
     } catch (error) {
       console.error('Failed to fetch profile:', error)
     } finally {
@@ -74,18 +90,27 @@ function ProfileContent() {
 
   const handleSave = async () => {
     try {
-      const response = await fetch('/api/user/profile', {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(editData),
-      })
-
-      if (response.ok) {
-        await fetchProfile()
-        setEditing(false)
+      // Mock save operation - just update local state
+      const updatedProfile = {
+        ...profile,
+        id: profile?.id || 'mock-user-id',
+        name: editData.name,
+        email: profile?.email || 'user@example.com',
+        role: profile?.role || 'USER' as const,
+        points: profile?.points || 150,
+        createdAt: profile?.createdAt || new Date().toISOString(),
+        badges: profile?.badges || [],
+        preferences: {
+          ...profile?.preferences,
+          location: editData.location,
+          categories: editData.categories,
+          notifications: editData.notifications,
+          theme: profile?.preferences?.theme || 'light',
+          language: profile?.preferences?.language || 'ja'
+        }
       }
+      setProfile(updatedProfile)
+      setEditing(false)
     } catch (error) {
       console.error('Failed to update profile:', error)
     }

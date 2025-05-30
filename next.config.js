@@ -14,7 +14,7 @@ const nextConfig = {
     formats: ['image/webp', 'image/avif']
   },
   experimental: {
-    optimizeCss: true
+    // optimizeCss: true // Disabled due to critters module issues
   }
 }
 

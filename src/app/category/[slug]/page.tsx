@@ -221,19 +221,40 @@ export default function CategoryPage() {
   ]
 
   useEffect(() => {
-    const fetchCompanies = async () => {
-      try {
-        const response = await fetch(`/api/companies?category=${slug}`)
-        const data = await response.json()
-        setCompanies(data)
-      } catch (error) {
-        console.error('Failed to fetch companies:', error)
-      } finally {
-        setLoading(false)
+    // Mock data for demonstration
+    const mockCompanies = [
+      {
+        id: '1',
+        name: `${categoryConfigs[slug as keyof typeof categoryConfigs]?.name || 'カテゴリ'}のサンプル会社1`,
+        description: 'サンプルの会社説明です。',
+        rating: 4.5,
+        reviewCount: 25,
+        location: '東京都',
+        address: '東京都新宿区1-1-1',
+        category: slug as string,
+        imageUrl: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=300&fit=crop',
+        verified: true,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },
+      {
+        id: '2', 
+        name: `${categoryConfigs[slug as keyof typeof categoryConfigs]?.name || 'カテゴリ'}のサンプル会社2`,
+        description: 'もう一つのサンプル会社です。',
+        rating: 4.2,
+        reviewCount: 18,
+        location: '大阪府',
+        address: '大阪府大阪市中央区2-2-2',
+        category: slug as string,
+        imageUrl: 'https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=400&h=300&fit=crop',
+        verified: true,
+        createdAt: new Date(),
+        updatedAt: new Date()
       }
-    }
-
-    fetchCompanies()
+    ]
+    
+    setCompanies(mockCompanies)
+    setLoading(false)
   }, [slug])
 
   const filteredCompanies = companies.filter(company => {
