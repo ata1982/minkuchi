@@ -107,10 +107,10 @@ export class AIReviewScraperService {
       const response = await geminiClient.generateStructuredContent(prompt);
       const parsedResponse = await this.parseAIResponse(response, { reviews: this.getFallbackReviews(restaurantName) });
       
-      return parsedResponse.reviews.map((review: Record<string, unknown>) => ({
+      return (parsedResponse.reviews as Record<string, unknown>[]).map((review: Record<string, unknown>) => ({
         ...review,
         id: `gemini_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`
-      }));
+      })) as ExternalReview[];
     } catch (error) {
       console.error('Gemini レビュー生成エラー:', error);
       return this.getFallbackReviews(restaurantName);
@@ -159,10 +159,10 @@ export class AIReviewScraperService {
       const response = await grokClient.generateStructuredContent(prompt);
       const parsedResponse = await this.parseAIResponse(response, { posts: this.getFallbackTwitterPosts(restaurantName) });
       
-      return parsedResponse.posts.map((post: Record<string, unknown>) => ({
+      return (parsedResponse.posts as Record<string, unknown>[]).map((post: Record<string, unknown>) => ({
         ...post,
         id: `grok_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`
-      }));
+      })) as TwitterPost[];
     } catch (error) {
       console.error('Grok Twitter生成エラー:', error);
       return this.getFallbackTwitterPosts(restaurantName);
@@ -200,12 +200,21 @@ export class AIReviewScraperService {
 重要：回答は純粋なJSON形式のみで、マークダウン記法は一切使用しないでください。`;
 
       const response = await geminiClient.generateStructuredContent(prompt);
-      const fallbackData = {
-        sentiment: 'neutral' as const,
+      const fallbackData: {
+        sentiment: 'positive' | 'negative' | 'neutral';
+        confidence: number;
+        keywords: string[];
+      } = {
+        sentiment: 'neutral',
         confidence: 0.5,
         keywords: []
       };
-      return await this.parseAIResponse(response, fallbackData);
+      const result = await this.parseAIResponse(response, fallbackData);
+      return {
+        sentiment: (result.sentiment as 'positive' | 'negative' | 'neutral') || 'neutral',
+        confidence: (result.confidence as number) || 0.5,
+        keywords: (result.keywords as string[]) || []
+      };
     } catch (error) {
       console.error('感情分析エラー:', error);
       return {

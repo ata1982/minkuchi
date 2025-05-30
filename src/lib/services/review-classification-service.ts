@@ -10,7 +10,7 @@ export interface ClassifiedReview extends Review {
   classificationReason?: string
 }
 
-interface BusinessEssenceConfig {
+interface LocalBusinessEssenceConfig {
   name: string
   essenceAspects: string[]
   otherAspects: string[]
@@ -24,7 +24,11 @@ class ReviewClassificationService {
   private getGeminiClient(): GeminiClient | null {
     try {
       if (!this.geminiClient) {
-        this.geminiClient = new GeminiClient(getAIConfig('gemini'))
+        const config = getAIConfig('gemini')
+        if (!config.apiKey) {
+          return null
+        }
+        this.geminiClient = new GeminiClient(config)
       }
       return this.geminiClient
     } catch (error) {
@@ -37,7 +41,16 @@ class ReviewClassificationService {
    * レビューを本質評価とその他に分類
    */
   async classifyReviews(reviews: Review[], categoryId: string): Promise<ClassifiedReview[]> {
-    const config = getBusinessEssenceConfig(categoryId)
+    const originalConfig = getBusinessEssenceConfig(categoryId)
+    
+    // 型を変換
+    const config: LocalBusinessEssenceConfig | null = originalConfig ? {
+      name: originalConfig.categoryName,
+      essenceAspects: originalConfig.essenceAspects,
+      otherAspects: originalConfig.otherAspects,
+      essenceKeywords: originalConfig.keywords.essence,
+      otherKeywords: originalConfig.keywords.other
+    } as LocalBusinessEssenceConfig : null
     
     if (!config) {
       // 設定がない場合は全て「その他」として分類
@@ -61,7 +74,7 @@ class ReviewClassificationService {
    */
   private async classifySingleReview(
     review: Review, 
-    config: BusinessEssenceConfig
+    config: LocalBusinessEssenceConfig
   ): Promise<ClassifiedReview> {
     try {
       // キーワードベースの基本分類
@@ -99,7 +112,7 @@ class ReviewClassificationService {
   /**
    * キーワードベースのスコア計算
    */
-  private calculateKeywordScore(review: Review, config: BusinessEssenceConfig): number {
+  private calculateKeywordScore(review: Review, config: LocalBusinessEssenceConfig): number {
     const text = `${review.title} ${review.content}`.toLowerCase()
     
     let essenceScore = 0
@@ -128,7 +141,7 @@ class ReviewClassificationService {
   /**
    * AI分析による分類
    */
-  private async analyzeWithAI(review: Review, config: BusinessEssenceConfig): Promise<{
+  private async analyzeWithAI(review: Review, config: LocalBusinessEssenceConfig): Promise<{
     score: number
     reason: string
   }> {

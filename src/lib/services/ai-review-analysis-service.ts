@@ -196,7 +196,7 @@ JSON形式で返答してください。
       const response = await this.getGeminiClient()?.generateText(prompt)
       
       // Geminiの応答をパースしてレビューデータに変換
-      const reviews = this.parseGeminiReviewResponse(response, businessName)
+      const reviews = this.parseGeminiReviewResponse(response || '', businessName)
       
       return reviews
     } catch (error) {
@@ -243,7 +243,7 @@ JSON形式で返答してください。
       const response = await this.getGrokClient()?.generateText(prompt)
       
       // Grokの応答をパースしてレビューデータに変換
-      const reviews = this.parseGrokTwitterResponse(response, businessName)
+      const reviews = this.parseGrokTwitterResponse(response || '', businessName)
       
       return reviews
     } catch (error) {
@@ -651,7 +651,15 @@ ${reviewsText}
 3-5個の重要な洞察を箇条書きで提供してください。
       `
 
-      const response = await this.getGeminiClient()?.generateContent(prompt)
+      const client = this.getGeminiClient()
+      const response = client ? await client.generateContent(prompt) : null
+      if (!response) {
+        return [
+          '顧客満足度は概ね良好な傾向にあります',
+          'サービス品質に関する言及が多く見られます',
+          '価格とサービスのバランスが評価のポイントとなっています'
+        ]
+      }
       return response.split('\n').filter(line => line.trim().startsWith('•') || line.trim().startsWith('-')).slice(0, 5)
     } catch (error) {
       return [
@@ -676,7 +684,15 @@ ${reviewsText}
 具体的で実行可能な改善提案を箇条書きで提供してください。
       `
 
-      const response = await this.getGeminiClient()?.generateContent(prompt)
+      const client = this.getGeminiClient()
+      const response = client ? await client.generateContent(prompt) : null
+      if (!response) {
+        return [
+          'カスタマーサービスの向上に注力することをお勧めします',
+          '顧客フィードバックの収集と分析を定期的に実施してください',
+          'ポジティブなレビューへの感謝の表明を検討してください'
+        ]
+      }
       return response.split('\n').filter(line => line.trim().startsWith('•') || line.trim().startsWith('-')).slice(0, 5)
     } catch (error) {
       return [
