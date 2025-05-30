@@ -122,69 +122,65 @@ export default function HomePage() {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-16">
               <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4">人気カテゴリから探す</h2>
-              <p className="text-lg text-slate-600 max-w-3xl mx-auto">地域で人気のサービスカテゴリをチェックして、あなたにぴったりのサービスを見つけましょう</p>
+              <p className="text-lg text-slate-600">あなたが探しているサービスのカテゴリを選択してください</p>
             </div>
-            
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-6xl mx-auto">
-              {/* 住宅・不動産 */}
-              <Link href="/category/housing" className="bg-white rounded-xl p-6 text-center hover:shadow-lg transition-all hover:-translate-y-1 group">
-                <div className="text-4xl mb-3">🏠</div>
-                <h3 className="font-semibold text-slate-800 group-hover:text-blue-600 transition-colors">住宅・不動産</h3>
-              </Link>
 
-              {/* レストラン・飲食 */}
-              <Link href="/category/restaurant" className="bg-white rounded-xl p-6 text-center hover:shadow-lg transition-all hover:-translate-y-1 group">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+              {/* レストラン・飲食店 */}
+              <Link href="/category/restaurant" className="bg-white rounded-xl p-6 text-center hover:shadow-lg transition-shadow group">
                 <div className="text-4xl mb-3">🍽️</div>
-                <h3 className="font-semibold text-slate-800 group-hover:text-blue-600 transition-colors">レストラン・飲食</h3>
+                <h3 className="font-semibold text-slate-800">レストラン・飲食店</h3>
+                <p className="text-xs text-slate-500 mt-2 group-hover:text-orange-600">グルメ・カフェ</p>
               </Link>
 
               {/* 小売・ショッピング */}
-              <Link href="/category/retail" className="bg-white rounded-xl p-6 text-center hover:shadow-lg transition-all hover:-translate-y-1 group">
+              <Link href="/category/retail" className="bg-white rounded-xl p-6 text-center hover:shadow-lg transition-shadow group">
                 <div className="text-4xl mb-3">🛍️</div>
-                <h3 className="font-semibold text-slate-800 group-hover:text-blue-600 transition-colors">小売・ショッピング</h3>
+                <h3 className="font-semibold text-slate-800">小売・ショッピング</h3>
+                <p className="text-xs text-slate-500 mt-2 group-hover:text-purple-600">ファッション・雑貨</p>
+              </Link>
+
+              {/* 住宅・不動産 */}
+              <Link href="/category/housing" className="bg-white rounded-xl p-6 text-center hover:shadow-lg transition-shadow group">
+                <div className="text-4xl mb-3">🏠</div>
+                <h3 className="font-semibold text-slate-800">住宅・不動産</h3>
+                <p className="text-xs text-slate-500 mt-2 group-hover:text-green-600">賃貸・売買・リフォーム</p>
               </Link>
 
               {/* 美容・健康 */}
-              <div className="bg-white rounded-xl p-6 text-center opacity-50 cursor-not-allowed">
+              <Link href="/category/beauty" className="bg-white rounded-xl p-6 text-center hover:shadow-lg transition-shadow group">
                 <div className="text-4xl mb-3">💄</div>
                 <h3 className="font-semibold text-slate-800">美容・健康</h3>
-                <p className="text-xs text-slate-500 mt-2">準備中</p>
-              </div>
+                <p className="text-xs text-slate-500 mt-2 group-hover:text-pink-600">サロン・フィットネス</p>
+              </Link>
 
               {/* 教育・学習 */}
-              <div className="bg-white rounded-xl p-6 text-center opacity-50 cursor-not-allowed">
+              <Link href="/category/education" className="bg-white rounded-xl p-6 text-center hover:shadow-lg transition-shadow group">
                 <div className="text-4xl mb-3">📚</div>
                 <h3 className="font-semibold text-slate-800">教育・学習</h3>
-                <p className="text-xs text-slate-500 mt-2">準備中</p>
-              </div>
+                <p className="text-xs text-slate-500 mt-2 group-hover:text-purple-600">学校・塾・スクール</p>
+              </Link>
 
               {/* 医療・ヘルスケア */}
-              <div className="bg-white rounded-xl p-6 text-center opacity-50 cursor-not-allowed">
+              <Link href="/category/healthcare" className="bg-white rounded-xl p-6 text-center hover:shadow-lg transition-shadow group">
                 <div className="text-4xl mb-3">🏥</div>
                 <h3 className="font-semibold text-slate-800">医療・ヘルスケア</h3>
-                <p className="text-xs text-slate-500 mt-2">準備中</p>
-              </div>
+                <p className="text-xs text-slate-500 mt-2 group-hover:text-green-600">病院・クリニック・薬局</p>
+              </Link>
 
               {/* エンターテインメント */}
-              <div className="bg-white rounded-xl p-6 text-center opacity-50 cursor-not-allowed">
+              <Link href="/category/entertainment" className="bg-white rounded-xl p-6 text-center hover:shadow-lg transition-shadow group">
                 <div className="text-4xl mb-3">🎬</div>
                 <h3 className="font-semibold text-slate-800">エンターテインメント</h3>
-                <p className="text-xs text-slate-500 mt-2">準備中</p>
-              </div>
+                <p className="text-xs text-slate-500 mt-2 group-hover:text-red-600">映画・音楽・レジャー</p>
+              </Link>
 
               {/* スポーツ・フィットネス */}
-              <div className="bg-white rounded-xl p-6 text-center opacity-50 cursor-not-allowed">
+              <Link href="/category/sports" className="bg-white rounded-xl p-6 text-center hover:shadow-lg transition-shadow group">
                 <div className="text-4xl mb-3">⚽</div>
                 <h3 className="font-semibold text-slate-800">スポーツ・フィットネス</h3>
-                <p className="text-xs text-slate-500 mt-2">準備中</p>
-              </div>
-
-              {/* ペット */}
-              <div className="bg-white rounded-xl p-6 text-center opacity-50 cursor-not-allowed">
-                <div className="text-4xl mb-3">🐕</div>
-                <h3 className="font-semibold text-slate-800">ペット</h3>
-                <p className="text-xs text-slate-500 mt-2">準備中</p>
-              </div>
+                <p className="text-xs text-slate-500 mt-2 group-hover:text-orange-600">ジム・ヨガ・スポーツ施設</p>
+              </Link>
             </div>
           </div>
         </section>
