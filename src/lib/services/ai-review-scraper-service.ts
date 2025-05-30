@@ -31,16 +31,42 @@ export interface TwitterPost {
 }
 
 export class AIReviewScraperService {
-  private geminiClient: GeminiClient;
-  private grokClient: GrokClient;
+  private geminiClient: GeminiClient | null = null;
+  private grokClient: GrokClient | null = null;
 
-  constructor() {
-    this.geminiClient = new GeminiClient(getAIConfig('gemini'));
-    this.grokClient = new GrokClient(getAIConfig('grok'));
+  private getGeminiClient(): GeminiClient | null {
+    try {
+      if (!this.geminiClient) {
+        this.geminiClient = new GeminiClient(getAIConfig('gemini'));
+      }
+      return this.geminiClient;
+    } catch (error) {
+      console.warn('GeminiClientの初期化に失敗しました:', error);
+      return null;
+    }
+  }
+
+  private getGrokClient(): GrokClient | null {
+    try {
+      if (!this.grokClient) {
+        this.grokClient = new GrokClient(getAIConfig('grok'));
+      }
+      return this.grokClient;
+    } catch (error) {
+      console.warn('GrokClientの初期化に失敗しました:', error);
+      return null;
+    }
   }
 
   // Geminiを使用して模擬的な外部レビューデータを生成・解析
   async generateMockReviewsWithGemini(restaurantName: string, location: string = '東京'): Promise<ExternalReview[]> {
+    const geminiClient = this.getGeminiClient();
+    
+    if (!geminiClient) {
+      console.warn('GeminiClientが利用できないため、フォールバックデータを使用します');
+      return this.getFallbackReviews(restaurantName);
+    }
+
     try {
       const prompt = `レストラン「${restaurantName}」（場所：${location}）に関する、以下のプラットフォームからのリアルなレビューを模擬的に生成してください：
 - 食べログ (tabelog)
@@ -78,10 +104,10 @@ export class AIReviewScraperService {
 - 料理、サービス、雰囲気などの具体的な言及
 - ポジティブ、ネガティブ、中立の感想を混在`;
 
-      const response = await this.geminiClient.generateStructuredContent(prompt);
+      const response = await geminiClient.generateStructuredContent(prompt);
       const parsedResponse = await this.parseAIResponse(response, { reviews: this.getFallbackReviews(restaurantName) });
       
-      return parsedResponse.reviews.map((review: any) => ({
+      return parsedResponse.reviews.map((review: Record<string, unknown>) => ({
         ...review,
         id: `gemini_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`
       }));
@@ -93,6 +119,13 @@ export class AIReviewScraperService {
 
   // Grokを使用してTwitter風の口コミを生成
   async generateTwitterPostsWithGrok(restaurantName: string, hashtag: string = ''): Promise<TwitterPost[]> {
+    const grokClient = this.getGrokClient();
+    
+    if (!grokClient) {
+      console.warn('GrokClientが利用できないため、フォールバックデータを使用します');
+      return this.getFallbackTwitterPosts(restaurantName);
+    }
+
     try {
       const prompt = `レストラン「${restaurantName}」について、Twitterで実際に投稿されそうなリアルな口コミツイートを10件生成してください。
 
@@ -123,10 +156,10 @@ export class AIReviewScraperService {
 
 重要：回答は純粋なJSON形式のみで、マークダウン記法は一切使用しないでください。`;
 
-      const response = await this.grokClient.generateStructuredContent(prompt);
+      const response = await grokClient.generateStructuredContent(prompt);
       const parsedResponse = await this.parseAIResponse(response, { posts: this.getFallbackTwitterPosts(restaurantName) });
       
-      return parsedResponse.posts.map((post: any) => ({
+      return parsedResponse.posts.map((post: Record<string, unknown>) => ({
         ...post,
         id: `grok_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`
       }));
@@ -142,6 +175,16 @@ export class AIReviewScraperService {
     confidence: number;
     keywords: string[];
   }> {
+    const geminiClient = this.getGeminiClient();
+    
+    if (!geminiClient) {
+      return {
+        sentiment: 'neutral',
+        confidence: 0.5,
+        keywords: []
+      };
+    }
+
     try {
       const prompt = `以下のレビューの感情分析を行ってください：
 
@@ -156,7 +199,7 @@ export class AIReviewScraperService {
 
 重要：回答は純粋なJSON形式のみで、マークダウン記法は一切使用しないでください。`;
 
-      const response = await this.geminiClient.generateStructuredContent(prompt);
+      const response = await geminiClient.generateStructuredContent(prompt);
       const fallbackData = {
         sentiment: 'neutral' as const,
         confidence: 0.5,
@@ -322,7 +365,7 @@ export class AIReviewScraperService {
   }
 
   // より安全なJSON解析メソッド
-  private async parseAIResponse(response: string, fallbackData: any): Promise<any> {
+  private async parseAIResponse(response: string, fallbackData: Record<string, unknown>): Promise<Record<string, unknown>> {
     try {
       const cleaned = this.cleanJsonResponse(response);
       return JSON.parse(cleaned);

@@ -48,7 +48,7 @@ export interface ConversationAction {
 }
 
 export class AIConciergeChatService {
-  private aiClient = getAIClient()
+  private aiClient: any = null
   private context: ConversationContext
 
   constructor(initialContext?: Partial<ConversationContext>) {
@@ -56,6 +56,18 @@ export class AIConciergeChatService {
       conversationHistory: [],
       ...initialContext
     }
+  }
+
+  private getAIClient(): any {
+    if (!this.aiClient) {
+      try {
+        this.aiClient = getAIClient()
+      } catch (error) {
+        console.warn('AIクライアントの初期化に失敗:', error)
+        return null
+      }
+    }
+    return this.aiClient
   }
 
   /**
@@ -72,6 +84,11 @@ export class AIConciergeChatService {
     this.context.conversationHistory.push(userMsg)
 
     try {
+      const aiClient = this.getAIClient()
+      if (!aiClient) {
+        return this.getErrorResponse()
+      }
+
       // 意図解析
       const intent = await this.analyzeIntent(userMessage)
       
@@ -106,6 +123,15 @@ export class AIConciergeChatService {
     confidence: number
     entities: string[]
   }> {
+    const aiClient = this.getAIClient()
+    if (!aiClient) {
+      return {
+        type: 'other',
+        confidence: 0.5,
+        entities: []
+      }
+    }
+
     const prompt = `
 以下のユーザーメッセージから意図を分析してください：
 
@@ -128,7 +154,7 @@ export class AIConciergeChatService {
 `
 
     try {
-      const response = await this.aiClient.generateText(prompt)
+      const response = await aiClient.generateText(prompt)
       return JSON.parse(response)
     } catch (error) {
       return {
@@ -150,6 +176,11 @@ export class AIConciergeChatService {
     partySize?: number
     dietary?: string[]
   }> {
+    const aiClient = this.getAIClient()
+    if (!aiClient) {
+      return {}
+    }
+
     const prompt = `
 以下のメッセージから具体的な情報を抽出してください：
 
@@ -167,7 +198,7 @@ export class AIConciergeChatService {
 `
 
     try {
-      const response = await this.aiClient.generateText(prompt)
+      const response = await aiClient.generateText(prompt)
       return JSON.parse(response)
     } catch (error) {
       return {}
@@ -200,6 +231,13 @@ export class AIConciergeChatService {
       actions?: ConversationAction[]
     }
   }> {
+    const aiClient = this.getAIClient()
+    if (!aiClient) {
+      return {
+        content: '申し訳ございません。少し時間をおいて再度お試しください。'
+      }
+    }
+
     const conversationHistory = this.context.conversationHistory
       .slice(-5) // 直近5メッセージのみ使用
       .map(msg => `${msg.role}: ${msg.content}`)
@@ -225,7 +263,7 @@ ${conversationHistory}
 `
 
     try {
-      const content = await this.aiClient.generateText(prompt)
+      const content = await aiClient.generateText(prompt)
       
       // メタデータ生成（推薦、アクションなど）
       const metadata = await this.generateMetadata(intent, extractedInfo)

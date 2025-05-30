@@ -10,11 +10,27 @@ export interface ClassifiedReview extends Review {
   classificationReason?: string
 }
 
-class ReviewClassificationService {
-  private geminiClient: GeminiClient
+interface BusinessEssenceConfig {
+  name: string
+  essenceAspects: string[]
+  otherAspects: string[]
+  essenceKeywords: string[]
+  otherKeywords: string[]
+}
 
-  constructor() {
-    this.geminiClient = new GeminiClient(getAIConfig('gemini'))
+class ReviewClassificationService {
+  private geminiClient: GeminiClient | null = null
+
+  private getGeminiClient(): GeminiClient | null {
+    try {
+      if (!this.geminiClient) {
+        this.geminiClient = new GeminiClient(getAIConfig('gemini'))
+      }
+      return this.geminiClient
+    } catch (error) {
+      console.warn('GeminiClientの初期化に失敗しました:', error)
+      return null
+    }
   }
 
   /**
@@ -45,7 +61,7 @@ class ReviewClassificationService {
    */
   private async classifySingleReview(
     review: Review, 
-    config: any
+    config: BusinessEssenceConfig
   ): Promise<ClassifiedReview> {
     try {
       // キーワードベースの基本分類
@@ -83,7 +99,7 @@ class ReviewClassificationService {
   /**
    * キーワードベースのスコア計算
    */
-  private calculateKeywordScore(review: Review, config: any): number {
+  private calculateKeywordScore(review: Review, config: BusinessEssenceConfig): number {
     const text = `${review.title} ${review.content}`.toLowerCase()
     
     let essenceScore = 0
@@ -112,10 +128,19 @@ class ReviewClassificationService {
   /**
    * AI分析による分類
    */
-  private async analyzeWithAI(review: Review, config: any): Promise<{
+  private async analyzeWithAI(review: Review, config: BusinessEssenceConfig): Promise<{
     score: number
     reason: string
   }> {
+    const geminiClient = this.getGeminiClient()
+    
+    if (!geminiClient) {
+      return {
+        score: 0.5,
+        reason: 'AIクライアントが利用できないため、キーワードベースで判定'
+      }
+    }
+
     try {
       const prompt = `
 以下のレビューを分析し、${config.name}における本質的な評価かどうかを判定してください。
@@ -135,7 +160,7 @@ class ReviewClassificationService {
 }
 `
 
-      const response = await this.geminiClient.generateContent(prompt)
+      const response = await geminiClient.generateContent(prompt)
       const result = JSON.parse(response)
       
       return {

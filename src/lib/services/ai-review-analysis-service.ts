@@ -76,13 +76,51 @@ export interface ReviewInsights {
 }
 
 export class AIReviewAnalysisService {
-  private geminiClient: GeminiClient
-  private grokClient: GrokClient
-  private aiClient = getAIClient()
+  private geminiClient: GeminiClient | null = null
+  private grokClient: GrokClient | null = null
+  private aiClient: any = null
 
   constructor() {
-    this.geminiClient = new GeminiClient(getAIConfig('gemini'))
-    this.grokClient = new GrokClient(getAIConfig('grok'))
+    // AIクライアントの初期化を遅延させる
+  }
+
+  private getGeminiClient(): GeminiClient | null {
+    if (!this.geminiClient) {
+      try {
+        const config = getAIConfig('gemini')
+        if (config.apiKey) {
+          this.geminiClient = new GeminiClient(config)
+        }
+      } catch (error) {
+        console.warn('Geminiクライアントの初期化に失敗:', error)
+      }
+    }
+    return this.geminiClient
+  }
+
+  private getGrokClient(): GrokClient | null {
+    if (!this.grokClient) {
+      try {
+        const config = getAIConfig('grok')
+        if (config.apiKey) {
+          this.grokClient = new GrokClient(config)
+        }
+      } catch (error) {
+        console.warn('Grokクライアントの初期化に失敗:', error)
+      }
+    }
+    return this.grokClient
+  }
+
+  private getAIClient(): any {
+    if (!this.aiClient) {
+      try {
+        this.aiClient = getAIClient()
+      } catch (error) {
+        console.warn('AIクライアントの初期化に失敗:', error)
+      }
+    }
+    return this.aiClient
   }
 
   // 利用可能なレビューソースを取得
@@ -155,7 +193,7 @@ ${location ? `所在地: ${location}` : ''}
 JSON形式で返答してください。
       `
 
-      const response = await this.geminiClient.generateText(prompt)
+      const response = await this.getGeminiClient()?.generateText(prompt)
       
       // Geminiの応答をパースしてレビューデータに変換
       const reviews = this.parseGeminiReviewResponse(response, businessName)
@@ -202,7 +240,7 @@ ${hashtags ? `関連ハッシュタグ: ${hashtags.join(', ')}` : ''}
 JSON形式で返答してください。
       `
 
-      const response = await this.grokClient.generateText(prompt)
+      const response = await this.getGrokClient()?.generateText(prompt)
       
       // Grokの応答をパースしてレビューデータに変換
       const reviews = this.parseGrokTwitterResponse(response, businessName)
@@ -306,7 +344,7 @@ JSON形式で返答してください。
 }
 `
 
-      const response = await this.aiClient.generateText(prompt)
+      const response = await this.getAIClient()?.generateText(prompt)
       return JSON.parse(response)
     } catch (error) {
       console.error('感情分析エラー:', error)
@@ -343,7 +381,7 @@ JSON形式で返答してください。
 - helpfulnessScore: 他のユーザーにとっての有用性
 `
 
-      const response = await this.aiClient.generateText(prompt)
+      const response = await this.getAIClient()?.generateText(prompt)
       return JSON.parse(response)
     } catch (error) {
       console.error('レビュー分類エラー:', error)
@@ -376,7 +414,7 @@ JSON形式で返答してください。
 - responseRecommendation: 企業が返信する場合の推奨文例
 `
 
-      const response = await this.aiClient.generateText(prompt)
+      const response = await this.getAIClient()?.generateText(prompt)
       return JSON.parse(response)
     } catch (error) {
       console.error('インサイト抽出エラー:', error)
@@ -416,7 +454,7 @@ ${reviewsText}
 }
 `
 
-      const response = await this.aiClient.generateText(prompt)
+      const response = await this.getAIClient()?.generateText(prompt)
       const result = JSON.parse(response)
       
       return {
@@ -465,7 +503,7 @@ ${reviewsText}
 返信文のみを出力してください。
 `
 
-      return await this.aiClient.generateText(prompt)
+      return await this.getAIClient()?.generateText(prompt)
     } catch (error) {
       console.error('返信生成エラー:', error)
       return 'この度は貴重なご意見をいただき、ありがとうございます。いただいたフィードバックを真摯に受け止め、サービス向上に努めてまいります。'
@@ -613,7 +651,7 @@ ${reviewsText}
 3-5個の重要な洞察を箇条書きで提供してください。
       `
 
-      const response = await this.geminiClient.generateContent(prompt)
+      const response = await this.getGeminiClient()?.generateContent(prompt)
       return response.split('\n').filter(line => line.trim().startsWith('•') || line.trim().startsWith('-')).slice(0, 5)
     } catch (error) {
       return [
@@ -638,7 +676,7 @@ ${reviewsText}
 具体的で実行可能な改善提案を箇条書きで提供してください。
       `
 
-      const response = await this.geminiClient.generateContent(prompt)
+      const response = await this.getGeminiClient()?.generateContent(prompt)
       return response.split('\n').filter(line => line.trim().startsWith('•') || line.trim().startsWith('-')).slice(0, 5)
     } catch (error) {
       return [

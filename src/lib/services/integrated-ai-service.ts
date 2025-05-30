@@ -70,12 +70,31 @@ export interface RestaurantSearchResult {
  * 統合AIサービス - すべてのAI機能を一元管理
  */
 export class IntegratedAIService {
-  private geminiClient: GeminiClient;
-  private grokClient: GrokClient;
+  private geminiClient: GeminiClient | null = null;
+  private grokClient: GrokClient | null = null;
 
-  constructor() {
-    this.geminiClient = new GeminiClient(getAIConfig('gemini'));
-    this.grokClient = new GrokClient(getAIConfig('grok'));
+  private getGeminiClient(): GeminiClient | null {
+    try {
+      if (!this.geminiClient) {
+        this.geminiClient = new GeminiClient(getAIConfig('gemini'));
+      }
+      return this.geminiClient;
+    } catch (error) {
+      console.warn('GeminiClientの初期化に失敗しました:', error);
+      return null;
+    }
+  }
+
+  private getGrokClient(): GrokClient | null {
+    try {
+      if (!this.grokClient) {
+        this.grokClient = new GrokClient(getAIConfig('grok'));
+      }
+      return this.grokClient;
+    } catch (error) {
+      console.warn('GrokClientの初期化に失敗しました:', error);
+      return null;
+    }
   }
 
   // === レビュー生成・収集機能 ===
@@ -84,6 +103,13 @@ export class IntegratedAIService {
    * 模擬的な外部レビューデータを生成
    */
   async generateMockReviews(restaurantName: string, location: string = '東京'): Promise<ExternalReview[]> {
+    const geminiClient = this.getGeminiClient();
+    
+    if (!geminiClient) {
+      console.warn('GeminiClientが利用できないため、フォールバックデータを使用します');
+      return this.getFallbackReviews(restaurantName);
+    }
+
     try {
       const prompt = `レストラン「${restaurantName}」（場所：${location}）に関する、以下のプラットフォームからのリアルなレビューを模擬的に生成してください：
 - 食べログ (tabelog)
@@ -112,7 +138,7 @@ export class IntegratedAIService {
   ]
 }`;
 
-      const response = await this.geminiClient.generateStructuredContent(prompt);
+      const response = await geminiClient.generateStructuredContent(prompt);
       const parsedResponse = await this.parseAIResponse(response, { reviews: this.getFallbackReviews(restaurantName) });
       
       return parsedResponse.reviews.map((review: ExternalReview) => ({
@@ -129,6 +155,13 @@ export class IntegratedAIService {
    * Twitter風の口コミを生成
    */
   async generateTwitterPosts(restaurantName: string): Promise<TwitterPost[]> {
+    const grokClient = this.getGrokClient();
+    
+    if (!grokClient) {
+      console.warn('GrokClientが利用できないため、フォールバックデータを使用します');
+      return this.getFallbackTwitterPosts(restaurantName);
+    }
+
     try {
       const prompt = `レストラン「${restaurantName}」について、Twitterで実際に投稿されそうなリアルな口コミツイートを10件生成してください。
 
@@ -150,7 +183,7 @@ export class IntegratedAIService {
   ]
 }`;
 
-      const response = await this.grokClient.generateStructuredContent(prompt);
+      const response = await grokClient.generateStructuredContent(prompt);
       const parsedResponse = await this.parseAIResponse(response, { posts: this.getFallbackTwitterPosts(restaurantName) });
       
       return parsedResponse.posts.map((post: TwitterPost) => ({
@@ -169,6 +202,18 @@ export class IntegratedAIService {
    * レビュー内容の感情分析
    */
   async analyzeReviewSentiment(reviewContent: string): Promise<ReviewAnalysis> {
+    const geminiClient = this.getGeminiClient();
+    
+    if (!geminiClient) {
+      return {
+        sentiment: 'neutral',
+        confidence: 0.5,
+        keywords: [],
+        essenceScore: 50,
+        qualityFactors: { taste: 50, service: 50, atmosphere: 50, value: 50 }
+      };
+    }
+
     try {
       const prompt = `以下のレビューの詳細分析を行ってください：
 
@@ -188,7 +233,7 @@ export class IntegratedAIService {
   }
 }`;
 
-      const response = await this.geminiClient.generateStructuredContent(prompt);
+      const response = await geminiClient.generateStructuredContent(prompt);
       const fallbackData: ReviewAnalysis = {
         sentiment: 'neutral',
         confidence: 0.5,
@@ -213,6 +258,17 @@ export class IntegratedAIService {
    * ビジネス本質分析
    */
   async analyzeBusinessEssence(category: string, description: string): Promise<BusinessEssenceAnalysis> {
+    const geminiClient = this.getGeminiClient();
+    
+    if (!geminiClient) {
+      return {
+        category,
+        essentialQualities: ['品質', 'サービス', '雰囲気'],
+        weightings: { taste: 25, service: 25, atmosphere: 25, value: 25 },
+        analysisPrompt: '総合的な顧客体験を評価してください。'
+      };
+    }
+
     try {
       const prompt = `カテゴリ「${category}」のビジネス「${description}」について、本質的な品質要素を分析してください。
 
@@ -229,7 +285,7 @@ export class IntegratedAIService {
   "analysisPrompt": "この企業の本質的価値を評価するための分析指針"
 }`;
 
-      const response = await this.geminiClient.generateStructuredContent(prompt);
+      const response = await geminiClient.generateStructuredContent(prompt);
       const fallbackData: BusinessEssenceAnalysis = {
         category,
         essentialQualities: ['品質', 'サービス', '雰囲気'],
@@ -254,6 +310,17 @@ export class IntegratedAIService {
    * AI支援による企業情報抽出・最適化
    */
   async optimizeCompanyRegistration(rawData: Partial<CompanyRegistrationData>): Promise<CompanyRegistrationData> {
+    const geminiClient = this.getGeminiClient();
+    
+    if (!geminiClient) {
+      return {
+        name: rawData.name || '企業名',
+        description: rawData.description || '企業の説明',
+        category: rawData.category || 'その他',
+        location: rawData.location || '東京都'
+      };
+    }
+
     try {
       const prompt = `以下の企業情報を整理・最適化してください：
 
@@ -273,7 +340,7 @@ export class IntegratedAIService {
   }
 }`;
 
-      const response = await this.geminiClient.generateStructuredContent(prompt);
+      const response = await geminiClient.generateStructuredContent(prompt);
       const fallbackData: CompanyRegistrationData = {
         name: rawData.name || '企業名',
         description: rawData.description || '企業の説明',
@@ -298,6 +365,12 @@ export class IntegratedAIService {
    * AI支援レストラン検索
    */
   async searchRestaurants(query: string, location: string, preferences?: string[]): Promise<RestaurantSearchResult[]> {
+    const geminiClient = this.getGeminiClient();
+    
+    if (!geminiClient) {
+      return [];
+    }
+
     try {
       const prompt = `検索クエリ「${query}」、場所「${location}」${preferences ? `、好み「${preferences.join(', ')}」` : ''}に基づいて、適切なレストランを提案してください。
 
@@ -316,7 +389,7 @@ export class IntegratedAIService {
   ]
 }`;
 
-      const response = await this.geminiClient.generateStructuredContent(prompt);
+      const response = await geminiClient.generateStructuredContent(prompt);
       const parsedResponse = await this.parseAIResponse(response, { restaurants: [] });
       return parsedResponse.restaurants || [];
     } catch (error) {
