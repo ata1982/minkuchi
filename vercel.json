@@ -1,15 +1,24 @@
 {
+  "framework": "nextjs",
   "buildCommand": "npm run build",
   "outputDirectory": ".next",
   "installCommand": "npm ci",
-  "framework": "nextjs",
+  "devCommand": "npm run dev",
   "nodejs": "18.x",
+  "regions": ["hnd1"],
   "env": {
-    "SKIP_ENV_VALIDATION": "1"
+    "SKIP_ENV_VALIDATION": "1",
+    "NODE_ENV": "production"
   },
   "build": {
     "env": {
-      "SKIP_ENV_VALIDATION": "1"
+      "SKIP_ENV_VALIDATION": "1",
+      "NODE_ENV": "production"
+    }
+  },
+  "functions": {
+    "app/api/**/*.ts": {
+      "maxDuration": 60
     }
   }
 }
