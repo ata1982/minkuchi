@@ -1,0 +1,30 @@
+name: 🔧 GitHub Actions Test
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  test:
+    name: Test GitHub Actions
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: 📦 Checkout
+        uses: actions/checkout@v4
+        
+      - name: ✅ Simple Test
+        run: |
+          echo "GitHub Actions is working!"
+          echo "Current date: $(date)"
+          echo "Repository: ${{ github.repository }}"
+          echo "Branch: ${{ github.ref }}"
+          echo "Event: ${{ github.event_name }}"
+          
+      - name: 📁 Check Files
+        run: |
+          echo "Checking project files..."
+          ls -la
+          echo "Package.json exists:"
+          cat package.json | head -10
