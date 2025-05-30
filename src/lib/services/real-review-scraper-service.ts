@@ -50,12 +50,41 @@ export interface ReviewFilterResults {
 }
 
 export class RealReviewScraperService {
-  private geminiClient: GeminiClient;
-  private grokClient: GrokClient;
+  private geminiClient: GeminiClient | null = null;
+  private grokClient: GrokClient | null = null;
 
   constructor() {
-    this.geminiClient = new GeminiClient(getAIConfig('gemini'));
-    this.grokClient = new GrokClient(getAIConfig('grok'));
+    // AI clients are initialized lazily to avoid errors during build
+  }
+
+  private getGeminiClient(): GeminiClient | null {
+    try {
+      if (!this.geminiClient) {
+        const config = getAIConfig('gemini');
+        if (config.apiKey) {
+          this.geminiClient = new GeminiClient(config);
+        }
+      }
+      return this.geminiClient;
+    } catch (error) {
+      console.warn('GeminiClient initialization failed:', error);
+      return null;
+    }
+  }
+
+  private getGrokClient(): GrokClient | null {
+    try {
+      if (!this.grokClient) {
+        const config = getAIConfig('grok');
+        if (config.apiKey) {
+          this.grokClient = new GrokClient(config);
+        }
+      }
+      return this.grokClient;
+    } catch (error) {
+      console.warn('GrokClient initialization failed:', error);
+      return null;
+    }
   }
 
   // Google Maps風のリアルなレビューを生成（実際のスクレイピングの代替）
@@ -89,7 +118,11 @@ export class RealReviewScraperService {
   ]
 }`;
 
-      const response = await this.geminiClient.generateStructuredContent(prompt);
+      const client = this.getGeminiClient();
+      if (!client) {
+        throw new Error('Gemini client is not available');
+      }
+      const response = await client.generateStructuredContent(prompt);
       const parsedResponse = await this.parseAIResponse(response, { reviews: [] });
       
       return parsedResponse.reviews.map((review: any) => ({
@@ -135,7 +168,11 @@ export class RealReviewScraperService {
   ]
 }`;
 
-      const response = await this.geminiClient.generateStructuredContent(prompt);
+      const client = this.getGeminiClient();
+      if (!client) {
+        throw new Error('Gemini client is not available');
+      }
+      const response = await client.generateStructuredContent(prompt);
       const parsedResponse = await this.parseAIResponse(response, { reviews: [] });
       
       return parsedResponse.reviews.map((review: any) => ({
@@ -252,7 +289,11 @@ ${type === 'high' ? `
   "reasoning": "分析理由"
 }`;
 
-      const response = await this.geminiClient.generateStructuredContent(prompt);
+      const client = this.getGeminiClient();
+      if (!client) {
+        throw new Error('Gemini client is not available');
+      }
+      const response = await client.generateStructuredContent(prompt);
       const analysis = await this.parseAIResponse(response, {
         trustScore: 50,
         riskFlags: type === 'high' ? ['potential_fake'] : ['potential_attack'],
@@ -342,7 +383,11 @@ ${type === 'high' ? `
   ]
 }`;
 
-      const response = await this.grokClient.generateStructuredContent(prompt);
+      const client = this.getGrokClient();
+      if (!client) {
+        throw new Error('Grok client is not available');
+      }
+      const response = await client.generateStructuredContent(prompt);
       const parsedResponse = await this.parseAIResponse(response, { posts: [] });
       
       return parsedResponse.posts.map((post: any) => ({
