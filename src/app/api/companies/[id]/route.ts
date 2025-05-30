@@ -22,8 +22,7 @@ export async function GET(
           select: {
             id: true,
             name: true,
-            email: true,
-            verified: true
+            email: true
           }
         },
         reviews: {
@@ -34,7 +33,7 @@ export async function GET(
             user: {
               select: {
                 name: true,
-                avatar: true
+                image: true
               }
             },
             response: true
@@ -97,12 +96,12 @@ export async function GET(
         helpfulCount: review.helpfulCount,
         verified: review.verified,
         userName: review.user.name,
-        userAvatar: review.user.avatar,
+        userAvatar: review.user.image,
         createdAt: review.createdAt.toISOString(),
-        response: review.response ? {
-          id: review.response.id,
-          content: review.response.content,
-          createdAt: review.response.createdAt.toISOString()
+        response: review.response && review.response.length > 0 && review.response[0] ? {
+          id: review.response[0].id,
+          content: review.response[0].content,
+          createdAt: review.response[0].createdAt.toISOString()
         } : null
       })),
       upcomingEvents: company.events.map(event => ({

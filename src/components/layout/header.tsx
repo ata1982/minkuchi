@@ -28,6 +28,18 @@ export function Header({ user }: HeaderProps) {
               企業を探す
             </Link>
             <Link 
+              href="/restaurants/search" 
+              className="text-slate-600 hover:text-slate-900 transition-colors font-medium"
+            >
+              🍽️ レストラン検索
+            </Link>
+            <Link 
+              href="/companies/register" 
+              className="text-slate-600 hover:text-slate-900 transition-colors font-medium"
+            >
+              🤖 AI企業登録
+            </Link>
+            <Link 
               href="/category/restaurant" 
               className="text-slate-600 hover:text-slate-900 transition-colors"
             >
@@ -38,12 +50,6 @@ export function Header({ user }: HeaderProps) {
               className="text-slate-600 hover:text-slate-900 transition-colors"
             >
               ショッピング
-            </Link>
-            <Link 
-              href="/category/housing" 
-              className="text-slate-600 hover:text-slate-900 transition-colors"
-            >
-              住まい
             </Link>
           </nav>
 
@@ -56,8 +62,8 @@ export function Header({ user }: HeaderProps) {
                   className="flex items-center space-x-2 p-2 rounded-lg hover:bg-slate-100 transition-colors"
                 >
                   <img
-                    src={user.avatar || '/api/placeholder/32/32'}
-                    alt={user.name}
+                    src={user.image || '/api/placeholder/32/32'}
+                    alt={user.name || 'User'}
                     className="w-8 h-8 rounded-full"
                   />
                   <span className="text-slate-700 text-sm font-medium hidden sm:block">
@@ -84,11 +90,6 @@ export function Header({ user }: HeaderProps) {
                     <div className="px-4 py-2 border-b border-slate-100">
                       <p className="text-sm font-medium text-slate-900">{user.name}</p>
                       <p className="text-xs text-slate-500">{user.email}</p>
-                      {user.points && (
-                        <p className="text-xs text-blue-600 mt-1">
-                          ポイント: {user.points}pt
-                        </p>
-                      )}
                     </div>
                     
                     <Link
@@ -99,6 +100,35 @@ export function Header({ user }: HeaderProps) {
                       <span className="mr-2">👤</span>
                       プロフィール
                     </Link>
+                    
+                    <Link
+                      href="/restaurants/search"
+                      className="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-100"
+                      onClick={() => setIsMenuOpen(false)}
+                    >
+                      <span className="mr-2">🍽️</span>
+                      レストラン検索
+                    </Link>
+                    
+                    <Link
+                      href="/companies/register"
+                      className="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-100"
+                      onClick={() => setIsMenuOpen(false)}
+                    >
+                      <span className="mr-2">🤖</span>
+                      AI企業登録
+                    </Link>
+                    
+                    {user.role === 'ADMIN' && (
+                      <Link
+                        href="/admin"
+                        className="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-100"
+                        onClick={() => setIsMenuOpen(false)}
+                      >
+                        <span className="mr-2">⚙️</span>
+                        管理者ダッシュボード
+                      </Link>
+                    )}
                     
                     <Link
                       href="/profile"
@@ -193,6 +223,20 @@ export function Header({ user }: HeaderProps) {
                 企業を探す
               </Link>
               <Link 
+                href="/restaurants/search" 
+                className="block px-4 py-2 text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-lg font-medium"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                🍽️ レストラン検索
+              </Link>
+              <Link 
+                href="/companies/register" 
+                className="block px-4 py-2 text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-lg font-medium"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                🤖 AI企業登録
+              </Link>
+              <Link 
                 href="/category/restaurant" 
                 className="block px-4 py-2 text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-lg"
                 onClick={() => setIsMenuOpen(false)}
@@ -205,13 +249,6 @@ export function Header({ user }: HeaderProps) {
                 onClick={() => setIsMenuOpen(false)}
               >
                 ショッピング
-              </Link>
-              <Link 
-                href="/category/housing" 
-                className="block px-4 py-2 text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-lg"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                住まい
               </Link>
             </nav>
           </div>

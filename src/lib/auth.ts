@@ -59,7 +59,7 @@ export const authOptions: NextAuthOptions = {
     strategy: "jwt",
   },
   callbacks: {
-    async jwt({ token, user, account }) {
+    async jwt({ token, user }) {
       if (user) {
         token.id = user.id
         token.role = user.role
@@ -73,7 +73,7 @@ export const authOptions: NextAuthOptions = {
       }
       return session
     },
-    async signIn({ user, account, profile }) {
+    async signIn({ user, account }) {
       if (account?.provider === "google") {
         try {
           // Check if user exists
@@ -87,7 +87,7 @@ export const authOptions: NextAuthOptions = {
               data: {
                 email: user.email!,
                 name: user.name!,
-                image: user.image,
+                image: user.image || null,
                 role: UserRole.USER,
               }
             })
@@ -102,7 +102,6 @@ export const authOptions: NextAuthOptions = {
   },
   pages: {
     signIn: "/auth/signin",
-    signUp: "/auth/signup",
   },
-  secret: process.env.NEXTAUTH_SECRET,
+  secret: process.env.NEXTAUTH_SECRET!,
 }

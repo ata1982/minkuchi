@@ -63,8 +63,8 @@ export default function SignUpPage() {
       } else {
         router.push('/')
       }
-    } catch (error: any) {
-      setError(error.message || 'アカウントの作成に失敗しました')
+    } catch (error: unknown) {
+      setError(error instanceof Error ? error.message : 'アカウントの作成に失敗しました')
     } finally {
       setLoading(false)
     }

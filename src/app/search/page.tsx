@@ -27,7 +27,7 @@ function SearchContent() {
       results = results.filter(company =>
         company.name.toLowerCase().includes(query) ||
         company.description.toLowerCase().includes(query) ||
-        company.tags.some(tag => tag.toLowerCase().includes(query)) ||
+        (company.tags ? (typeof company.tags === 'string' ? JSON.parse(company.tags) : company.tags) : []).some((tag: string) => tag.toLowerCase().includes(query)) ||
         company.address.toLowerCase().includes(query)
       )
     }
@@ -89,7 +89,8 @@ function SearchContent() {
     if (company.description.toLowerCase().includes(queryLower)) score += 50
 
     // タグでの一致
-    company.tags.forEach(tag => {
+    const parsedTags = company.tags ? (typeof company.tags === 'string' ? JSON.parse(company.tags) : company.tags) : []
+    parsedTags.forEach((tag: string) => {
       if (tag.toLowerCase().includes(queryLower)) score += 30
     })
 
@@ -327,7 +328,7 @@ function SearchContent() {
                 >
                   <div className="aspect-video bg-slate-200 rounded-lg mb-4 overflow-hidden">
                     <img
-                      src={company.images[0] || '/api/placeholder/400/200'}
+                      src={(company.images ? (typeof company.images === 'string' ? JSON.parse(company.images)[0] : company.images[0]) : null) || '/api/placeholder/400/200'}
                       alt={company.name}
                       className="w-full h-full object-cover"
                     />
@@ -374,7 +375,7 @@ function SearchContent() {
                   </div>
 
                   <div className="flex flex-wrap gap-1">
-                    {company.tags.slice(0, 3).map((tag, index) => (
+                    {(company.tags ? (typeof company.tags === 'string' ? JSON.parse(company.tags) : company.tags) : []).slice(0, 3).map((tag: string, index: number) => (
                       <span
                         key={index}
                         className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-slate-100 text-slate-700"
@@ -382,9 +383,9 @@ function SearchContent() {
                         {tag}
                       </span>
                     ))}
-                    {company.tags.length > 3 && (
+                    {(company.tags ? (typeof company.tags === 'string' ? JSON.parse(company.tags) : company.tags) : []).length > 3 && (
                       <span className="text-xs text-slate-500">
-                        +{company.tags.length - 3}
+                        +{(company.tags ? (typeof company.tags === 'string' ? JSON.parse(company.tags) : company.tags) : []).length - 3}
                       </span>
                     )}
                   </div>

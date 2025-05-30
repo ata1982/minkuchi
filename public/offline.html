@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>オフライン - Minkuchi</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 500px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .icon {
+            font-size: 80px;
+            margin-bottom: 20px;
+            opacity: 0.8;
+        }
+
+        h1 {
+            font-size: 28px;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        p {
+            font-size: 16px;
+            line-height: 1.6;
+            margin-bottom: 30px;
+            opacity: 0.9;
+        }
+
+        .retry-btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            padding: 12px 30px;
+            border-radius: 50px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .retry-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            border-color: rgba(255, 255, 255, 0.5);
+            transform: translateY(-2px);
+        }
+
+        .offline-tips {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .offline-tips h3 {
+            font-size: 18px;
+            margin-bottom: 15px;
+        }
+
+        .offline-tips ul {
+            text-align: left;
+            list-style: none;
+        }
+
+        .offline-tips li {
+            margin-bottom: 8px;
+            padding-left: 20px;
+            position: relative;
+            font-size: 14px;
+            opacity: 0.8;
+        }
+
+        .offline-tips li::before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            color: #ffd700;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.8; }
+            50% { opacity: 1; }
+        }
+
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 30px 20px;
+            }
+            
+            .icon {
+                font-size: 60px;
+            }
+            
+            h1 {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="icon pulse">📡</div>
+        <h1>オフラインです</h1>
+        <p>
+            インターネット接続を確認してください。<br>
+            接続が復旧次第、自動的にページが更新されます。
+        </p>
+        
+        <button class="retry-btn" onclick="retryConnection()">
+            再接続を試す
+        </button>
+        
+        <div class="offline-tips">
+            <h3>💡 オフライン中でも可能なこと</h3>
+            <ul>
+                <li>以前に閲覧したページの確認</li>
+                <li>下書き中のレビューの編集</li>
+                <li>お気に入りの確認</li>
+                <li>アプリの設定変更</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        function retryConnection() {
+            const btn = document.querySelector('.retry-btn');
+            btn.textContent = '接続中...';
+            btn.disabled = true;
+            
+            // 現在のページをリロード
+            setTimeout(() => {
+                window.location.reload();
+            }, 1000);
+        }
+
+        // オンライン状態の監視
+        window.addEventListener('online', () => {
+            document.querySelector('.retry-btn').textContent = '接続が復旧しました！';
+            setTimeout(() => {
+                window.location.reload();
+            }, 1500);
+        });
+
+        // 定期的な接続チェック
+        let retryCount = 0;
+        const maxRetries = 10;
+        
+        function checkConnection() {
+            if (navigator.onLine && retryCount < maxRetries) {
+                fetch('/', { 
+                    method: 'HEAD',
+                    cache: 'no-cache'
+                })
+                .then(() => {
+                    window.location.reload();
+                })
+                .catch(() => {
+                    retryCount++;
+                    setTimeout(checkConnection, 5000 * retryCount); // 段階的に間隔を延長
+                });
+            } else if (retryCount < maxRetries) {
+                retryCount++;
+                setTimeout(checkConnection, 5000 * retryCount);
+            }
+        }
+
+        // 5秒後から接続チェック開始
+        setTimeout(checkConnection, 5000);
+    </script>
+</body>
+</html>

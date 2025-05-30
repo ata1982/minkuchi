@@ -26,20 +26,20 @@ declare module "next-auth/jwt" {
 
 // コンポーネント関連の型
 export interface HeaderProps {
-  user?: User | null
+  user?: { id: string; name?: string | null; email?: string | null; image?: string | null; role: UserRole } | null
   showSearch?: boolean
 }
 
 export interface User {
   id: string
-  name: string
-  email: string
-  avatar?: string
-  role: 'user' | 'admin' | 'company_owner'
+  name: string | null
+  email: string | null
+  image?: string | null
+  role: UserRole
   createdAt: Date
-  preferences: UserPreferences
+  preferences?: UserPreferences | null
   points: number
-  badges: Badge[]
+  badges?: Badge[]
 }
 
 export interface UserPreferences {
@@ -67,16 +67,23 @@ export interface Company {
   description: string
   location: string
   address: string
-  phone?: string
-  website?: string
-  imageUrl?: string
-  images: string[]
-  hours: BusinessHours
-  tags: string[]
+  phone?: string | null
+  website?: string | null
+  imageUrl?: string | null
+  images?: string | null
+  businessHours?: string | null
+  tags?: string | null
   verified: boolean
   createdAt: Date
   updatedAt: Date
+  ownerId?: string | null
   owner?: CompanyOwner
+  reviews?: Review[]
+  events?: Event[]
+  _count?: {
+    reviews: number
+    events: number
+  }
 }
 
 export interface BusinessHours {
@@ -109,14 +116,14 @@ export interface Review {
   rating: number
   title: string
   content: string
-  images: string[]
-  tags: string[]
+  images?: string[]
+  tags?: string[]
   helpfulCount: number
   createdAt: Date
   updatedAt: Date
   user: User
   verified: boolean
-  response?: CompanyResponse
+  response?: CompanyResponse[]
 }
 
 export interface CompanyResponse {
@@ -124,6 +131,8 @@ export interface CompanyResponse {
   content: string
   createdAt: Date
   companyOwnerId: string
+  reviewId: string
+  companyId: string
 }
 
 export interface Category {
@@ -192,4 +201,57 @@ export interface PaginatedResponse<T> {
   page: number
   limit: number
   totalPages: number
+}
+
+// 業種別本質評価の定義
+export interface CategoryEssenceConfig {
+  id: string;
+  name: string;
+  emoji: string;
+  essenceAspect: {
+    name: string; // 例: "味", "コスパ", "思いやり"
+    description: string;
+    weight: number; // 重要度 (0-1)
+  };
+  otherAspects: {
+    name: string;
+    description: string;
+    weight: number;
+  }[];
+  reviewQuestions: {
+    essence: string[]; // 本質に関する質問
+    other: string[]; // その他の質問
+  };
+}
+
+// レビュー分類結果
+export interface ReviewClassification {
+  id: string;
+  reviewId: string;
+  isEssenceFocused: boolean; // 本質的評価かどうか
+  essenceScore: number; // 本質評価スコア (1-5)
+  otherAspectScores: Record<string, number>; // その他の側面のスコア
+  confidence: number; // 分類の信頼度 (0-1)
+  extractedKeywords: string[];
+  sentiment: 'positive' | 'negative' | 'neutral';
+  noiseLevel: number; // ノイズレベル (0-1, 高いほどノイズ)
+}
+
+// 分類されたレビュー表示用
+export interface CategorizedReviews {
+  essenceReviews: Review[]; // 本質評価レビュー
+  otherReviews: Review[]; // その他のレビュー
+  essenceStatistics: {
+    averageRating: number;
+    totalCount: number;
+    sentimentDistribution: Record<string, number>;
+  };
+  otherStatistics: {
+    averageRating: number;
+    totalCount: number;
+    aspectBreakdown: Record<string, {
+      averageRating: number;
+      count: number;
+    }>;
+  };
 }

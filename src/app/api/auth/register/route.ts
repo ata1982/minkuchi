@@ -60,7 +60,8 @@ export async function POST(request: NextRequest) {
     })
 
     // パスワードを除外してレスポンス
-    const { password: _, ...userWithoutPassword } = user
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { password: _password, ...userWithoutPassword } = user
 
     return NextResponse.json({
       message: 'アカウントが正常に作成されました',

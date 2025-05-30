@@ -34,7 +34,8 @@ export async function GET() {
     }
 
     // パスワードを除外してレスポンス
-    const { password, ...userWithoutPassword } = user
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { password: _password, ...userWithoutPassword } = user
 
     // バッジデータの整形
     const badges = user.badges.map(userBadge => ({

@@ -15,7 +15,8 @@ export async function GET(request: NextRequest) {
     const skip = (page - 1) * limit
 
     // クエリ条件を構築
-    const where: any = {}
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const where: Record<string, any> = {}
 
     if (category) {
       where.category = category
@@ -46,7 +47,8 @@ export async function GET(request: NextRequest) {
     }
 
     // ソート条件を構築
-    const orderBy: any = {}
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const orderBy: Record<string, any> = {}
     
     switch (sortBy) {
       case 'rating':

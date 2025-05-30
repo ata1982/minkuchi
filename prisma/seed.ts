@@ -145,13 +145,13 @@ async function main() {
         description: company.description,
         location: company.location,
         address: company.address,
-        phone: company.phone,
-        website: company.website,
-        imageUrl: company.imageUrl,
+        phone: company.phone || null,
+        website: company.website || null,
+        imageUrl: company.imageUrl || null,
         images: JSON.stringify(company.images),
         tags: JSON.stringify(company.tags),
         verified: company.verified,
-        businessHours: JSON.stringify(company.hours),
+        businessHours: company.businessHours || "{}",
         ownerId: company.owner ? 'user2' : null, // 一部の企業にオーナーを設定
       }
     })
@@ -200,12 +200,12 @@ async function main() {
         id: event.id,
         title: event.title,
         description: event.description,
-        companyId: event.companyId,
+        companyId: event.companyId || null,
         location: event.location,
         startDate: event.startDate,
         endDate: event.endDate,
         category: event.category,
-        imageUrl: event.imageUrl,
+        imageUrl: event.imageUrl || null,
         tags: JSON.stringify(event.tags),
         attendeeCount: event.attendeeCount,
       }

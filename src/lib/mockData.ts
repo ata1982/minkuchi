@@ -1,5 +1,5 @@
 // モックデータとユーティリティ関数
-import { Company, Review, Event, User, Category } from '@/types/index'
+import { Company, Review, Event, User, Category, CategoryEssenceConfig, BusinessHours } from '@/types/index'
 
 // モック企業データ
 export const mockCompanies: Company[] = [
@@ -15,8 +15,8 @@ export const mockCompanies: Company[] = [
     phone: '03-1234-5678',
     website: 'https://cafe-de-paris.jp',
     imageUrl: '/api/placeholder/400/300',
-    images: ['/api/placeholder/400/300', '/api/placeholder/400/300'],
-    hours: {
+    images: JSON.stringify(['/api/placeholder/400/300', '/api/placeholder/400/300']),
+    businessHours: JSON.stringify({
       monday: { open: '09:00', close: '22:00', closed: false },
       tuesday: { open: '09:00', close: '22:00', closed: false },
       wednesday: { open: '09:00', close: '22:00', closed: false },
@@ -24,11 +24,12 @@ export const mockCompanies: Company[] = [
       friday: { open: '09:00', close: '23:00', closed: false },
       saturday: { open: '08:00', close: '23:00', closed: false },
       sunday: { open: '08:00', close: '22:00', closed: false }
-    },
-    tags: ['フレンチ', 'カフェ', 'おしゃれ'],
+    }),
+    tags: JSON.stringify(['フレンチ', 'カフェ', 'おしゃれ']),
     verified: true,
     createdAt: new Date('2023-01-15'),
     updatedAt: new Date('2024-01-15'),
+    ownerId: 'owner1',
     owner: {
       id: 'owner1',
       name: '田中オーナー',
@@ -48,8 +49,8 @@ export const mockCompanies: Company[] = [
     phone: '03-2345-6789',
     website: 'https://luxe-salon.jp',
     imageUrl: '/api/placeholder/400/300',
-    images: ['/api/placeholder/400/300'],
-    hours: {
+    images: JSON.stringify(['/api/placeholder/400/300']),
+    businessHours: JSON.stringify({
       monday: { open: '10:00', close: '20:00', closed: false },
       tuesday: { open: '10:00', close: '20:00', closed: false },
       wednesday: { open: '10:00', close: '20:00', closed: false },
@@ -57,8 +58,8 @@ export const mockCompanies: Company[] = [
       friday: { open: '10:00', close: '21:00', closed: false },
       saturday: { open: '09:00', close: '21:00', closed: false },
       sunday: { open: '09:00', close: '19:00', closed: false }
-    },
-    tags: ['美容院', 'ヘアサロン', '高級'],
+    }),
+    tags: JSON.stringify(['美容院', 'ヘアサロン', '高級']),
     verified: true,
     createdAt: new Date('2023-03-10'),
     updatedAt: new Date('2024-01-20')
@@ -74,8 +75,8 @@ export const mockCompanies: Company[] = [
     address: '東京都千代田区外神田1-8-9',
     phone: '03-3456-7890',
     imageUrl: '/api/placeholder/400/300',
-    images: ['/api/placeholder/400/300'],
-    hours: {
+    images: JSON.stringify(['/api/placeholder/400/300']),
+    businessHours: JSON.stringify({
       monday: { open: '10:00', close: '19:00', closed: false },
       tuesday: { open: '10:00', close: '19:00', closed: false },
       wednesday: { open: '10:00', close: '19:00', closed: false },
@@ -83,8 +84,8 @@ export const mockCompanies: Company[] = [
       friday: { open: '10:00', close: '19:00', closed: false },
       saturday: { open: '10:00', close: '18:00', closed: false },
       sunday: { open: '11:00', close: '17:00', closed: false }
-    },
-    tags: ['修理', 'スマホ', 'パソコン'],
+    }),
+    tags: JSON.stringify(['修理', 'スマホ', 'パソコン']),
     verified: false,
     createdAt: new Date('2023-06-20'),
     updatedAt: new Date('2024-01-10')
@@ -103,8 +104,8 @@ export const mockCompanies: Company[] = [
     phone: '03-5555-1111',
     website: 'https://meishin-juku.jp',
     imageUrl: '/api/placeholder/400/300',
-    images: ['/api/placeholder/400/300', '/api/placeholder/400/300'],
-    hours: {
+    images: JSON.stringify(['/api/placeholder/400/300', '/api/placeholder/400/300']),
+    businessHours: JSON.stringify({
       monday: { open: '15:00', close: '22:00', closed: false },
       tuesday: { open: '15:00', close: '22:00', closed: false },
       wednesday: { open: '15:00', close: '22:00', closed: false },
@@ -112,11 +113,18 @@ export const mockCompanies: Company[] = [
       friday: { open: '15:00', close: '22:00', closed: false },
       saturday: { open: '09:00', close: '19:00', closed: false },
       sunday: { open: '09:00', close: '17:00', closed: false }
-    },
-    tags: ['進学塾', '個別指導', '受験対策'],
+    }),
+    tags: JSON.stringify(['進学塾', '個別指導', '受験対策']),
     verified: true,
     createdAt: new Date('2022-04-01'),
-    updatedAt: new Date('2024-01-25')
+    updatedAt: new Date('2024-01-25'),
+    ownerId: 'owner2',
+    owner: {
+      id: 'owner2',
+      name: '鈴木オーナー',
+      email: 'owner@meishin-juku.jp',
+      verified: true
+    }
   },
   {
     id: 'edu-2',
@@ -130,8 +138,8 @@ export const mockCompanies: Company[] = [
     phone: '03-6666-2222',
     website: 'https://ecc.jp/shibuya',
     imageUrl: '/api/placeholder/400/300',
-    images: ['/api/placeholder/400/300'],
-    hours: {
+    images: JSON.stringify(['/api/placeholder/400/300']),
+    businessHours: JSON.stringify({
       monday: { open: '10:00', close: '21:00', closed: false },
       tuesday: { open: '10:00', close: '21:00', closed: false },
       wednesday: { open: '10:00', close: '21:00', closed: false },
@@ -139,11 +147,18 @@ export const mockCompanies: Company[] = [
       friday: { open: '10:00', close: '21:00', closed: false },
       saturday: { open: '10:00', close: '19:00', closed: false },
       sunday: { open: '10:00', close: '18:00', closed: false }
-    },
-    tags: ['英会話', 'ネイティブ講師', 'TOEIC'],
+    }),
+    tags: JSON.stringify(['英会話', 'ネイティブ講師', 'TOEIC']),
     verified: true,
     createdAt: new Date('2021-09-15'),
-    updatedAt: new Date('2024-01-18')
+    updatedAt: new Date('2024-01-18'),
+    ownerId: 'owner3',
+    owner: {
+      id: 'owner3',
+      name: '佐藤オーナー',
+      email: 'owner@ecc.jp',
+      verified: true
+    }
   },
   {
     id: 'edu-3',
@@ -157,8 +172,8 @@ export const mockCompanies: Company[] = [
     phone: '03-7777-3333',
     website: 'https://pc-wakaru.jp',
     imageUrl: '/api/placeholder/400/300',
-    images: ['/api/placeholder/400/300'],
-    hours: {
+    images: JSON.stringify(['/api/placeholder/400/300']),
+    businessHours: JSON.stringify({
       monday: { open: '10:00', close: '20:00', closed: false },
       tuesday: { open: '10:00', close: '20:00', closed: false },
       wednesday: { open: '10:00', close: '20:00', closed: false },
@@ -166,11 +181,18 @@ export const mockCompanies: Company[] = [
       friday: { open: '10:00', close: '20:00', closed: false },
       saturday: { open: '10:00', close: '17:00', closed: false },
       sunday: { open: '10:00', close: '17:00', closed: false }
-    },
-    tags: ['パソコン教室', 'シニア向け', '資格取得'],
+    }),
+    tags: JSON.stringify(['パソコン教室', 'シニア向け', '資格取得']),
     verified: true,
     createdAt: new Date('2022-11-20'),
-    updatedAt: new Date('2024-01-12')
+    updatedAt: new Date('2024-01-12'),
+    ownerId: 'owner4',
+    owner: {
+      id: 'owner4',
+      name: '高橋オーナー',
+      email: 'owner@pc-wakaru.jp',
+      verified: true
+    }
   },
 
   // 医療・ヘルスケアカテゴリ
@@ -186,8 +208,8 @@ export const mockCompanies: Company[] = [
     phone: '03-8888-4444',
     website: 'https://aozora-clinic.jp',
     imageUrl: '/api/placeholder/400/300',
-    images: ['/api/placeholder/400/300', '/api/placeholder/400/300'],
-    hours: {
+    images: JSON.stringify(['/api/placeholder/400/300', '/api/placeholder/400/300']),
+    businessHours: JSON.stringify({
       monday: { open: '09:00', close: '18:00', closed: false },
       tuesday: { open: '09:00', close: '18:00', closed: false },
       wednesday: { open: '09:00', close: '18:00', closed: false },
@@ -195,11 +217,18 @@ export const mockCompanies: Company[] = [
       friday: { open: '09:00', close: '18:00', closed: false },
       saturday: { open: '09:00', close: '15:00', closed: false },
       sunday: { open: '09:00', close: '15:00', closed: false }
-    },
-    tags: ['内科', '小児科', '土日診療'],
+    }),
+    tags: JSON.stringify(['内科', '小児科', '土日診療']),
     verified: true,
     createdAt: new Date('2020-03-01'),
-    updatedAt: new Date('2024-01-30')
+    updatedAt: new Date('2024-01-30'),
+    ownerId: 'owner5',
+    owner: {
+      id: 'owner5',
+      name: '中村オーナー',
+      email: 'owner@aozora-clinic.jp',
+      verified: true
+    }
   },
   {
     id: 'med-2',
@@ -213,8 +242,8 @@ export const mockCompanies: Company[] = [
     phone: '03-9999-5555',
     website: 'https://smile-dental.jp',
     imageUrl: '/api/placeholder/400/300',
-    images: ['/api/placeholder/400/300'],
-    hours: {
+    images: JSON.stringify(['/api/placeholder/400/300']),
+    businessHours: JSON.stringify({
       monday: { open: '09:30', close: '19:00', closed: false },
       tuesday: { open: '09:30', close: '19:00', closed: false },
       wednesday: { open: '09:30', close: '19:00', closed: false },
@@ -222,11 +251,18 @@ export const mockCompanies: Company[] = [
       friday: { open: '09:30', close: '19:00', closed: false },
       saturday: { open: '09:00', close: '17:00', closed: false },
       sunday: { open: '09:00', close: '15:00', closed: false }
-    },
-    tags: ['歯科', 'インプラント', '審美歯科'],
+    }),
+    tags: JSON.stringify(['歯科', 'インプラント', '審美歯科']),
     verified: true,
     createdAt: new Date('2019-07-10'),
-    updatedAt: new Date('2024-01-22')
+    updatedAt: new Date('2024-01-22'),
+    ownerId: 'owner6',
+    owner: {
+      id: 'owner6',
+      name: '佐々木オーナー',
+      email: 'owner@smile-dental.jp',
+      verified: true
+    }
   },
   {
     id: 'med-3',
@@ -240,8 +276,8 @@ export const mockCompanies: Company[] = [
     phone: '03-1111-6666',
     website: 'https://sakura-pharmacy.jp',
     imageUrl: '/api/placeholder/400/300',
-    images: ['/api/placeholder/400/300'],
-    hours: {
+    images: JSON.stringify(['/api/placeholder/400/300']),
+    businessHours: JSON.stringify({
       monday: { open: '09:00', close: '20:00', closed: false },
       tuesday: { open: '09:00', close: '20:00', closed: false },
       wednesday: { open: '09:00', close: '20:00', closed: false },
@@ -249,11 +285,18 @@ export const mockCompanies: Company[] = [
       friday: { open: '09:00', close: '20:00', closed: false },
       saturday: { open: '09:00', close: '18:00', closed: false },
       sunday: { open: '10:00', close: '17:00', closed: false }
-    },
-    tags: ['調剤薬局', '健康相談', '在宅医療'],
+    }),
+    tags: JSON.stringify(['調剤薬局', '健康相談', '在宅医療']),
     verified: true,
     createdAt: new Date('2021-05-20'),
-    updatedAt: new Date('2024-01-15')
+    updatedAt: new Date('2024-01-15'),
+    ownerId: 'owner7',
+    owner: {
+      id: 'owner7',
+      name: '伊藤オーナー',
+      email: 'owner@sakura-pharmacy.jp',
+      verified: true
+    }
   },
 
   // エンターテインメントカテゴリ
@@ -269,8 +312,8 @@ export const mockCompanies: Company[] = [
     phone: '03-2222-7777',
     website: 'https://tohocinemas.jp/shibuya',
     imageUrl: '/api/placeholder/400/300',
-    images: ['/api/placeholder/400/300', '/api/placeholder/400/300'],
-    hours: {
+    images: JSON.stringify(['/api/placeholder/400/300', '/api/placeholder/400/300']),
+    businessHours: JSON.stringify({
       monday: { open: '09:00', close: '24:00', closed: false },
       tuesday: { open: '09:00', close: '24:00', closed: false },
       wednesday: { open: '09:00', close: '24:00', closed: false },
@@ -278,11 +321,18 @@ export const mockCompanies: Company[] = [
       friday: { open: '09:00', close: '25:00', closed: false },
       saturday: { open: '09:00', close: '25:00', closed: false },
       sunday: { open: '09:00', close: '24:00', closed: false }
-    },
-    tags: ['映画館', 'IMAX', '4DX'],
+    }),
+    tags: JSON.stringify(['映画館', 'IMAX', '4DX']),
     verified: true,
     createdAt: new Date('2018-12-01'),
-    updatedAt: new Date('2024-01-28')
+    updatedAt: new Date('2024-01-28'),
+    ownerId: 'owner8',
+    owner: {
+      id: 'owner8',
+      name: '渡辺オーナー',
+      email: 'owner@tohocinemas.jp',
+      verified: true
+    }
   },
   {
     id: 'ent-2',
@@ -296,8 +346,8 @@ export const mockCompanies: Company[] = [
     phone: '03-3333-8888',
     website: 'https://bigecho.jp/shinjuku',
     imageUrl: '/api/placeholder/400/300',
-    images: ['/api/placeholder/400/300'],
-    hours: {
+    images: JSON.stringify(['/api/placeholder/400/300']),
+    businessHours: JSON.stringify({
       monday: { open: '11:00', close: '05:00', closed: false },
       tuesday: { open: '11:00', close: '05:00', closed: false },
       wednesday: { open: '11:00', close: '05:00', closed: false },
@@ -305,11 +355,18 @@ export const mockCompanies: Company[] = [
       friday: { open: '11:00', close: '06:00', closed: false },
       saturday: { open: '11:00', close: '06:00', closed: false },
       sunday: { open: '11:00', close: '05:00', closed: false }
-    },
-    tags: ['カラオケ', 'パーティー', '深夜営業'],
+    }),
+    tags: JSON.stringify(['カラオケ', 'パーティー', '深夜営業']),
     verified: true,
     createdAt: new Date('2020-08-15'),
-    updatedAt: new Date('2024-01-20')
+    updatedAt: new Date('2024-01-20'),
+    ownerId: 'owner9',
+    owner: {
+      id: 'owner9',
+      name: '山本オーナー',
+      email: 'owner@bigecho.jp',
+      verified: true
+    }
   },
   {
     id: 'ent-3',
@@ -323,8 +380,8 @@ export const mockCompanies: Company[] = [
     phone: '03-4444-9999',
     website: 'https://sega.jp/akihabara',
     imageUrl: '/api/placeholder/400/300',
-    images: ['/api/placeholder/400/300'],
-    hours: {
+    images: JSON.stringify(['/api/placeholder/400/300']),
+    businessHours: JSON.stringify({
       monday: { open: '10:00', close: '24:00', closed: false },
       tuesday: { open: '10:00', close: '24:00', closed: false },
       wednesday: { open: '10:00', close: '24:00', closed: false },
@@ -332,11 +389,18 @@ export const mockCompanies: Company[] = [
       friday: { open: '10:00', close: '25:00', closed: false },
       saturday: { open: '10:00', close: '25:00', closed: false },
       sunday: { open: '10:00', close: '24:00', closed: false }
-    },
-    tags: ['ゲームセンター', 'e-sports', 'クレーンゲーム'],
+    }),
+    tags: JSON.stringify(['ゲームセンター', 'e-sports', 'クレーンゲーム']),
     verified: true,
     createdAt: new Date('2019-11-30'),
-    updatedAt: new Date('2024-01-25')
+    updatedAt: new Date('2024-01-25'),
+    ownerId: 'owner10',
+    owner: {
+      id: 'owner10',
+      name: '小林オーナー',
+      email: 'owner@sega.jp',
+      verified: true
+    }
   },
 
   // スポーツ・フィットネスカテゴリ
@@ -352,8 +416,8 @@ export const mockCompanies: Company[] = [
     phone: '03-5555-1111',
     website: 'https://megalos.co.jp',
     imageUrl: '/api/placeholder/400/300',
-    images: ['/api/placeholder/400/300', '/api/placeholder/400/300'],
-    hours: {
+    images: JSON.stringify(['/api/placeholder/400/300', '/api/placeholder/400/300']),
+    businessHours: JSON.stringify({
       monday: { open: '06:00', close: '23:00', closed: false },
       tuesday: { open: '06:00', close: '23:00', closed: false },
       wednesday: { open: '06:00', close: '23:00', closed: false },
@@ -361,11 +425,18 @@ export const mockCompanies: Company[] = [
       friday: { open: '06:00', close: '23:00', closed: false },
       saturday: { open: '09:00', close: '21:00', closed: false },
       sunday: { open: '09:00', close: '21:00', closed: false }
-    },
-    tags: ['フィットネス', 'プール', 'サウナ'],
+    }),
+    tags: JSON.stringify(['フィットネス', 'プール', 'サウナ']),
     verified: true,
     createdAt: new Date('2020-02-01'),
-    updatedAt: new Date('2024-01-29')
+    updatedAt: new Date('2024-01-29'),
+    ownerId: 'owner11',
+    owner: {
+      id: 'owner11',
+      name: '松本オーナー',
+      email: 'owner@megalos.co.jp',
+      verified: true
+    }
   },
   {
     id: 'sports-2',
@@ -379,8 +450,8 @@ export const mockCompanies: Company[] = [
     phone: '03-6666-2222',
     website: 'https://yoga-lava.com',
     imageUrl: '/api/placeholder/400/300',
-    images: ['/api/placeholder/400/300'],
-    hours: {
+    images: JSON.stringify(['/api/placeholder/400/300']),
+    businessHours: JSON.stringify({
       monday: { open: '07:00', close: '22:30', closed: false },
       tuesday: { open: '07:00', close: '22:30', closed: false },
       wednesday: { open: '07:00', close: '22:30', closed: false },
@@ -388,11 +459,18 @@ export const mockCompanies: Company[] = [
       friday: { open: '07:00', close: '22:30', closed: false },
       saturday: { open: '08:00', close: '19:30', closed: false },
       sunday: { open: '08:00', close: '19:30', closed: false }
-    },
-    tags: ['ホットヨガ', '初心者歓迎', '女性専用'],
+    }),
+    tags: JSON.stringify(['ホットヨガ', '初心者歓迎', '女性専用']),
     verified: true,
     createdAt: new Date('2021-06-15'),
-    updatedAt: new Date('2024-01-24')
+    updatedAt: new Date('2024-01-24'),
+    ownerId: 'owner12',
+    owner: {
+      id: 'owner12',
+      name: '井上オーナー',
+      email: 'owner@yoga-lava.com',
+      verified: true
+    }
   },
   {
     id: 'sports-3',
@@ -406,8 +484,8 @@ export const mockCompanies: Company[] = [
     phone: '03-7777-3333',
     website: 'https://tokyo-golf.jp',
     imageUrl: '/api/placeholder/400/300',
-    images: ['/api/placeholder/400/300'],
-    hours: {
+    images: JSON.stringify(['/api/placeholder/400/300']),
+    businessHours: JSON.stringify({
       monday: { open: '06:00', close: '18:00', closed: false },
       tuesday: { open: '06:00', close: '18:00', closed: false },
       wednesday: { open: '06:00', close: '18:00', closed: false },
@@ -415,70 +493,150 @@ export const mockCompanies: Company[] = [
       friday: { open: '06:00', close: '18:00', closed: false },
       saturday: { open: '05:30', close: '18:00', closed: false },
       sunday: { open: '05:30', close: '18:00', closed: false }
-    },
-    tags: ['ゴルフ', 'レッスン', '景観'],
+    }),
+    tags: JSON.stringify(['ゴルフ', 'レッスン', '景観']),
     verified: true,
     createdAt: new Date('2018-09-20'),
-    updatedAt: new Date('2024-01-26')
+    updatedAt: new Date('2024-01-26'),
+    ownerId: 'owner13',
+    owner: {
+      id: 'owner13',
+      name: '山崎オーナー',
+      email: 'owner@tokyo-golf.jp',
+      verified: true
+    }
   }
 ]
 
 // モックユーザーデータ
 export const mockUsers: User[] = [
   {
-    id: '1',
+    id: 'user1',
     name: '田中太郎',
     email: 'tanaka@example.com',
-    avatar: '/api/placeholder/40/40',
-    role: 'user',
+    image: '/api/placeholder/40/40',
+    role: 'USER',
     createdAt: new Date('2023-01-01'),
     preferences: {
-      location: '東京都渋谷区',
-      categories: ['restaurant', 'beauty'],
+      location: '東京都',
+      categories: ['restaurant', 'cafe'],
       notifications: true,
-      theme: 'light',
-      language: 'ja'
+      theme: 'light'
     },
-    points: 1250,
-    badges: [
-      {
-        id: '1',
-        name: 'レビューマスター',
-        description: '10件以上のレビューを投稿',
-        icon: '🏆',
-        unlockedAt: new Date('2023-06-15')
-      }
-    ]
+    points: 150,
+    badges: []
+  },
+  {
+    id: 'user2',
+    name: '佐藤花子',
+    email: 'sato@example.com',
+    image: '/api/placeholder/40/40',
+    role: 'USER',
+    createdAt: new Date('2023-02-01'),
+    preferences: {
+      location: '東京都',
+      categories: ['beauty'],
+      notifications: true,
+      theme: 'light'
+    },
+    points: 80,
+    badges: []
+  },
+  {
+    id: 'user3',
+    name: '山田母',
+    email: 'yamada@example.com',
+    image: '/api/placeholder/40/40',
+    role: 'USER',
+    createdAt: new Date('2023-03-01'),
+    preferences: {
+      location: '東京都',
+      categories: ['education'],
+      notifications: true,
+      theme: 'light'
+    },
+    points: 200,
+    badges: []
+  },
+  {
+    id: 'user4',
+    name: '高校生A',
+    email: 'student@example.com',
+    image: '/api/placeholder/40/40',
+    role: 'USER',
+    createdAt: new Date('2023-04-01'),
+    preferences: {
+      location: '東京都',
+      categories: ['education'],
+      notifications: true,
+      theme: 'light'
+    },
+    points: 50,
+    badges: []
+  },
+  {
+    id: 'user5',
+    name: 'ビジネスマン',
+    email: 'business@example.com',
+    image: '/api/placeholder/40/40',
+    role: 'USER',
+    createdAt: new Date('2023-05-01'),
+    preferences: {
+      location: '東京都',
+      categories: ['education', 'restaurant'],
+      notifications: true,
+      theme: 'light'
+    },
+    points: 120,
+    badges: []
+  },
+  {
+    id: 'user6',
+    name: '学習者B',
+    email: 'learner@example.com',
+    image: '/api/placeholder/40/40',
+    role: 'USER',
+    createdAt: new Date('2023-06-01'),
+    preferences: {
+      location: '東京都',
+      categories: ['education'],
+      notifications: true,
+      theme: 'light'
+    },
+    points: 90,
+    badges: []
   }
-]
+];
 
-// モックレビューデータ
 export const mockReviews: Review[] = [
   {
     id: '1',
     companyId: '1',
     userId: 'user1',
-    userName: '田中太郎',
-    userAvatar: '/api/placeholder/40/40',
     rating: 5,
     title: '素晴らしい雰囲気',
     content: 'フレンチの本格的な味を楽しめました。スタッフの方も親切で、また来たいと思います。',
     images: ['/api/placeholder/300/200'],
-    helpful: 12,
+    tags: ['フレンチ', 'おしゃれ', 'デート'],
+    helpfulCount: 12,
     createdAt: new Date('2024-01-10'),
+    updatedAt: new Date('2024-01-10'),
+    user: mockUsers[0]!,
     verified: true
   },
   {
     id: '2',
     companyId: '2',
     userId: 'user2',
-    userName: '佐藤花子',
-    userAvatar: '/api/placeholder/40/40',
     rating: 4,
     title: '技術力が高い',
     content: 'カットとカラーをお願いしました。仕上がりに満足しています。',
-    helpful: 8,
+    images: [],
+    tags: ['カット', 'カラー'],
+    helpfulCount: 8,
     createdAt: new Date('2024-01-08'),
+    updatedAt: new Date('2024-01-08'),
+    user: mockUsers[1]!,
     verified: false
   },
 
@@ -486,53 +644,61 @@ export const mockReviews: Review[] = [
   {
     id: 'edu-rev-1',
     companyId: 'edu-1',
-    userId: 'user-edu-1',
-    userName: '山田母',
-    userAvatar: '/api/placeholder/40/40',
+    userId: 'user3',
     rating: 5,
     title: '成績が大幅に向上しました',
     content: '息子が中学2年生からお世話になっています。個別指導のおかげで苦手だった数学の成績が大幅に上がりました。先生方も熱心で、親身になって指導してくださいます。',
-    helpful: 23,
+    images: [],
+    tags: ['個別指導', '数学', '成績向上'],
+    helpfulCount: 23,
     createdAt: new Date('2024-01-20'),
+    updatedAt: new Date('2024-01-20'),
+    user: mockUsers[2]!,
     verified: true
   },
   {
     id: 'edu-rev-2',
     companyId: 'edu-1',
-    userId: 'user-edu-2',
-    userName: '高校生A',
-    userAvatar: '/api/placeholder/40/40',
+    userId: 'user4',
     rating: 4,
     title: '自習室が使いやすい',
     content: '受験勉強で利用しています。自習室が静かで集中できるし、わからないことがあったらすぐに先生に聞けるのが良いです。',
-    helpful: 15,
+    images: [],
+    tags: ['自習室', '受験勉強'],
+    helpfulCount: 15,
     createdAt: new Date('2024-01-15'),
+    updatedAt: new Date('2024-01-15'),
+    user: mockUsers[3]!,
     verified: true
   },
   {
     id: 'edu-rev-3',
     companyId: 'edu-2',
-    userId: 'user-edu-3',
-    userName: 'ビジネスマン',
-    userAvatar: '/api/placeholder/40/40',
+    userId: 'user5',
     rating: 5,
     title: 'TOEIC対策が充実',
     content: 'TOEIC対策コースを受講しました。ネイティブ講師の実践的な指導で、目標スコアを達成できました。駅からも近くて通いやすいです。',
-    helpful: 31,
+    images: [],
+    tags: ['TOEIC', 'ネイティブ講師'],
+    helpfulCount: 31,
     createdAt: new Date('2024-01-12'),
+    updatedAt: new Date('2024-01-12'),
+    user: mockUsers[4]!,
     verified: true
   },
   {
     id: 'edu-rev-4',
     companyId: 'edu-3',
-    userId: 'user-edu-4',
-    userName: 'シニア学習者',
-    userAvatar: '/api/placeholder/40/40',
+    userId: 'user6',
     rating: 4,
     title: 'シニアにも優しい指導',
     content: '60歳からパソコンを始めました。わからないことを何度聞いても丁寧に教えてくれるので、安心して学習できています。',
-    helpful: 18,
+    images: [],
+    tags: ['シニア', 'パソコン教室'],
+    helpfulCount: 18,
     createdAt: new Date('2024-01-08'),
+    updatedAt: new Date('2024-01-08'),
+    user: mockUsers[5]!,
     verified: true
   },
 
@@ -540,53 +706,61 @@ export const mockReviews: Review[] = [
   {
     id: 'med-rev-1',
     companyId: 'med-1',
-    userId: 'user-med-1',
-    userName: '地域住民',
-    userAvatar: '/api/placeholder/40/40',
+    userId: 'user1',
     rating: 5,
     title: '土日診療が助かります',
     content: '平日は仕事で通えないので、土日診療をしてくれるのは本当に助かります。先生も看護師さんも優しく、安心して受診できます。',
-    helpful: 42,
+    images: [],
+    tags: ['土日診療', '家族診療'],
+    helpfulCount: 42,
     createdAt: new Date('2024-01-25'),
+    updatedAt: new Date('2024-01-25'),
+    user: mockUsers[0]!,
     verified: true
   },
   {
     id: 'med-rev-2',
     companyId: 'med-1',
-    userId: 'user-med-2',
-    userName: '子育てママ',
-    userAvatar: '/api/placeholder/40/40',
+    userId: 'user2',
     rating: 4,
     title: '小児科が信頼できる',
     content: '子供の風邪で受診しました。小児科の先生が子供にも優しく接してくれて、説明も分かりやすかったです。',
-    helpful: 26,
+    images: [],
+    tags: ['小児科'],
+    helpfulCount: 26,
     createdAt: new Date('2024-01-18'),
+    updatedAt: new Date('2024-01-18'),
+    user: mockUsers[1]!,
     verified: true
   },
   {
     id: 'med-rev-3',
     companyId: 'med-2',
-    userId: 'user-med-3',
-    userName: '患者さん',
-    userAvatar: '/api/placeholder/40/40',
+    userId: 'user3',
     rating: 5,
     title: '痛みの少ない治療',
     content: '虫歯の治療で通っています。本当に痛みが少なくて驚きました。設備も新しく、清潔感があります。',
-    helpful: 35,
+    images: [],
+    tags: ['無痛治療', '最新設備'],
+    helpfulCount: 35,
     createdAt: new Date('2024-01-22'),
+    updatedAt: new Date('2024-01-22'),
+    user: mockUsers[2]!,
     verified: true
   },
   {
     id: 'med-rev-4',
     companyId: 'med-3',
-    userId: 'user-med-4',
-    userName: '薬局利用者',
-    userAvatar: '/api/placeholder/40/40',
+    userId: 'user4',
     rating: 4,
     title: '薬剤師さんが親切',
     content: '処方薬について詳しく説明してくれました。飲み合わせについても気を付けてくれて、安心して薬を受け取れます。',
-    helpful: 19,
+    images: [],
+    tags: ['薬局', '丁寧な説明'],
+    helpfulCount: 19,
     createdAt: new Date('2024-01-16'),
+    updatedAt: new Date('2024-01-16'),
+    user: mockUsers[3]!,
     verified: true
   },
 
@@ -594,53 +768,61 @@ export const mockReviews: Review[] = [
   {
     id: 'ent-rev-1',
     companyId: 'ent-1',
-    userId: 'user-ent-1',
-    userName: '映画好き',
-    userAvatar: '/api/placeholder/40/40',
+    userId: 'user5',
     rating: 5,
     title: 'IMAX体験が最高！',
     content: 'IMAX上映で映画を観ました。音響も映像も迫力満点で、映画館でしか味わえない体験でした。座席も快適です。',
-    helpful: 67,
+    images: [],
+    tags: ['IMAX', '映画館'],
+    helpfulCount: 67,
     createdAt: new Date('2024-01-28'),
+    updatedAt: new Date('2024-01-28'),
+    user: mockUsers[4]!,
     verified: true
   },
   {
     id: 'ent-rev-2',
     companyId: 'ent-1',
-    userId: 'user-ent-2',
-    userName: 'デートカップル',
-    userAvatar: '/api/placeholder/40/40',
+    userId: 'user6',
     rating: 4,
     title: 'アクセスが良い',
     content: '渋谷駅から近くてアクセスが良いです。上映スケジュールも豊富で、見たい映画がいつでも楽しめます。',
-    helpful: 34,
+    images: [],
+    tags: ['アクセス良好'],
+    helpfulCount: 34,
     createdAt: new Date('2024-01-24'),
+    updatedAt: new Date('2024-01-24'),
+    user: mockUsers[5]!,
     verified: true
   },
   {
     id: 'ent-rev-3',
     companyId: 'ent-2',
-    userId: 'user-ent-3',
-    userName: 'カラオケ好き',
-    userAvatar: '/api/placeholder/40/40',
+    userId: 'user1',
     rating: 4,
     title: '楽曲数が豊富',
     content: '最新曲から懐かしい曲まで、楽曲数がとても豊富です。音響設備も良くて、気持ちよく歌えました。',
-    helpful: 28,
+    images: [],
+    tags: ['カラオケ', '豊富な楽曲'],
+    helpfulCount: 28,
     createdAt: new Date('2024-01-21'),
+    updatedAt: new Date('2024-01-21'),
+    user: mockUsers[0]!,
     verified: true
   },
   {
     id: 'ent-rev-4',
     companyId: 'ent-3',
-    userId: 'user-ent-4',
-    userName: 'ゲーマー',
-    userAvatar: '/api/placeholder/40/40',
+    userId: 'user2',
     rating: 5,
     title: '最新ゲームが充実',
     content: '最新のアーケードゲームがすぐに導入されるので、いつ来ても新しい楽しみがあります。e-sportsエリアも本格的です。',
-    helpful: 45,
+    images: [],
+    tags: ['ゲームセンター', 'e-sports'],
+    helpfulCount: 45,
     createdAt: new Date('2024-01-26'),
+    updatedAt: new Date('2024-01-26'),
+    user: mockUsers[1]!,
     verified: true
   },
 
@@ -648,53 +830,61 @@ export const mockReviews: Review[] = [
   {
     id: 'sports-rev-1',
     companyId: 'sports-1',
-    userId: 'user-sports-1',
-    userName: 'フィットネス愛好者',
-    userAvatar: '/api/placeholder/40/40',
+    userId: 'user3',
     rating: 5,
     title: '設備が充実している',
     content: '最新のマシンが豊富で、プールやサウナも完備されています。スタッフの方も親切で、トレーニングのアドバイスもしてくれます。',
-    helpful: 52,
+    images: [],
+    tags: ['ジム', '設備充実'],
+    helpfulCount: 52,
     createdAt: new Date('2024-01-29'),
+    updatedAt: new Date('2024-01-29'),
+    user: mockUsers[2]!,
     verified: true
   },
   {
     id: 'sports-rev-2',
     companyId: 'sports-1',
-    userId: 'user-sports-2',
-    userName: '初心者',
-    userAvatar: '/api/placeholder/40/40',
+    userId: 'user4',
     rating: 4,
     title: '初心者にも優しい',
     content: 'ジム初心者でしたが、スタッフの方が丁寧にマシンの使い方を教えてくれました。初心者向けプログラムも充実しています。',
-    helpful: 38,
+    images: [],
+    tags: ['初心者向け'],
+    helpfulCount: 38,
     createdAt: new Date('2024-01-25'),
+    updatedAt: new Date('2024-01-25'),
+    user: mockUsers[3]!,
     verified: true
   },
   {
     id: 'sports-rev-3',
     companyId: 'sports-2',
-    userId: 'user-sports-3',
-    userName: 'ヨガ初心者',
-    userAvatar: '/api/placeholder/40/40',
+    userId: 'user5',
     rating: 5,
     title: '心も体もリフレッシュ',
     content: 'ホットヨガ初体験でしたが、インストラクターの方が優しく指導してくれました。汗をかいてとてもスッキリしました。',
-    helpful: 41,
+    images: [],
+    tags: ['ホットヨガ', 'リフレッシュ'],
+    helpfulCount: 41,
     createdAt: new Date('2024-01-23'),
+    updatedAt: new Date('2024-01-23'),
+    user: mockUsers[4]!,
     verified: true
   },
   {
     id: 'sports-rev-4',
     companyId: 'sports-3',
-    userId: 'user-sports-4',
-    userName: 'ゴルフ愛好者',
-    userAvatar: '/api/placeholder/40/40',
+    userId: 'user6',
     rating: 4,
     title: '景色が美しい',
     content: '都心からのアクセスも良く、コースの景観が素晴らしいです。初心者レッスンも受けましたが、プロの指導で上達を実感できました。',
-    helpful: 33,
+    images: [],
+    tags: ['ゴルフ', '景観'],
+    helpfulCount: 33,
     createdAt: new Date('2024-01-27'),
+    updatedAt: new Date('2024-01-27'),
+    user: mockUsers[5]!,
     verified: true
   }
 ]
@@ -829,6 +1019,266 @@ export const mockCategories: Category[] = [
   }
 ]
 
+// 業種別本質評価設定
+export const categoryEssenceConfigs: CategoryEssenceConfig[] = [
+  {
+    id: 'restaurant',
+    name: 'レストラン・飲食',
+    emoji: '🍽️',
+    essenceAspect: {
+      name: '味',
+      description: '料理の味・品質・調理技術',
+      weight: 0.8
+    },
+    otherAspects: [
+      { name: '接客', description: 'スタッフの対応・サービス', weight: 0.6 },
+      { name: '雰囲気', description: '店内の環境・清潔感', weight: 0.5 },
+      { name: 'コスパ', description: '価格と品質のバランス', weight: 0.7 },
+      { name: 'アクセス', description: '立地・交通の便', weight: 0.3 }
+    ],
+    reviewQuestions: {
+      essence: [
+        '料理の味はいかがでしたか？',
+        '食材の品質について教えてください',
+        '調理技術・盛り付けはどうでしたか？',
+        'メニューの豊富さはいかがでしたか？'
+      ],
+      other: [
+        'スタッフの接客態度はいかがでしたか？',
+        '店内の雰囲気・清潔感はどうでしたか？',
+        '価格は適正だと思いますか？',
+        'アクセスの良さはいかがでしたか？'
+      ]
+    }
+  },
+  {
+    id: 'service',
+    name: '引越サービス',
+    emoji: '🚚',
+    essenceAspect: {
+      name: 'コスパ',
+      description: '価格と作業品質のバランス',
+      weight: 0.9
+    },
+    otherAspects: [
+      { name: '作業品質', description: '丁寧さ・技術力', weight: 0.8 },
+      { name: '時間厳守', description: 'スケジュール通りの作業', weight: 0.7 },
+      { name: '接客', description: 'スタッフの対応', weight: 0.5 },
+      { name: '追加料金', description: '料金の透明性', weight: 0.6 }
+    ],
+    reviewQuestions: {
+      essence: [
+        '料金は妥当でしたか？',
+        'サービス内容に対して満足のいく価格でしたか？',
+        '他社と比較してコストパフォーマンスはいかがでしたか？'
+      ],
+      other: [
+        '作業は丁寧に行われましたか？',
+        '予定時間通りに作業は完了しましたか？',
+        'スタッフの対応はいかがでしたか？',
+        '追加料金などの説明は明確でしたか？'
+      ]
+    }
+  },
+  {
+    id: 'healthcare',
+    name: '葬儀サービス',
+    emoji: '🕊️',
+    essenceAspect: {
+      name: '思いやり',
+      description: '心のこもった対応・配慮',
+      weight: 0.9
+    },
+    otherAspects: [
+      { name: '料金', description: '費用の適正性・透明性', weight: 0.7 },
+      { name: '設備', description: '施設・設備の充実度', weight: 0.5 },
+      { name: '進行', description: '式の進行・段取り', weight: 0.6 },
+      { name: 'アフターケア', description: '事後のサポート', weight: 0.4 }
+    ],
+    reviewQuestions: {
+      essence: [
+        'スタッフの心配りはいかがでしたか？',
+        '故人・ご遺族への配慮は十分でしたか？',
+        '丁寧で思いやりのある対応でしたか？',
+        '悲しみに寄り添ってくれましたか？'
+      ],
+      other: [
+        '料金体系は明確でしたか？',
+        '施設・設備は充実していましたか？',
+        '式の進行はスムーズでしたか？',
+        '事後のサポートはいかがでしたか？'
+      ]
+    }
+  },
+  {
+    id: 'beauty',
+    name: '美容・ヘルスケア',
+    emoji: '💄',
+    essenceAspect: {
+      name: '技術力',
+      description: '技術・仕上がりの品質',
+      weight: 0.8
+    },
+    otherAspects: [
+      { name: '接客', description: 'カウンセリング・対応', weight: 0.6 },
+      { name: '清潔感', description: '衛生管理・環境', weight: 0.7 },
+      { name: 'コスパ', description: '価格と品質のバランス', weight: 0.6 },
+      { name: 'アクセス', description: '立地・予約の取りやすさ', weight: 0.4 }
+    ],
+    reviewQuestions: {
+      essence: [
+        '技術力・仕上がりはいかがでしたか？',
+        '期待通りの結果でしたか？',
+        'スタッフの技術レベルはどうでしたか？',
+        '持続性・品質はいかがでしたか？'
+      ],
+      other: [
+        'カウンセリングは丁寧でしたか？',
+        '店内の清潔感はいかがでしたか？',
+        '料金は適正だと思いますか？',
+        '予約は取りやすいですか？'
+      ]
+    }
+  },
+  {
+    id: 'education',
+    name: '教育・学習',
+    emoji: '📚',
+    essenceAspect: {
+      name: '教育効果',
+      description: '学習成果・成長実感',
+      weight: 0.9
+    },
+    otherAspects: [
+      { name: '講師品質', description: '指導力・専門性', weight: 0.8 },
+      { name: '教材', description: 'カリキュラム・教材の質', weight: 0.6 },
+      { name: 'サポート', description: 'フォロー体制', weight: 0.5 },
+      { name: '環境', description: '学習環境・設備', weight: 0.4 }
+    ],
+    reviewQuestions: {
+      essence: [
+        '学習効果は実感できましたか？',
+        '目標達成に役立ちましたか？',
+        '成長を感じることができましたか？',
+        '投資に見合う成果でしたか？'
+      ],
+      other: [
+        '講師の指導力はいかがでしたか？',
+        '教材・カリキュラムの質はどうでしたか？',
+        'サポート体制は充実していましたか？',
+        '学習環境は整っていましたか？'
+      ]
+    }
+  },
+  {
+    id: 'entertainment',
+    name: 'エンターテインメント',
+    emoji: '🎭',
+    essenceAspect: {
+      name: '楽しさ',
+      description: 'エンターテインメント性・満足度',
+      weight: 0.9
+    },
+    otherAspects: [
+      { name: '設備', description: '機器・施設の品質', weight: 0.6 },
+      { name: 'コスパ', description: '料金と満足度のバランス', weight: 0.7 },
+      { name: '接客', description: 'スタッフの対応', weight: 0.5 },
+      { name: 'アクセス', description: '立地・利便性', weight: 0.3 }
+    ],
+    reviewQuestions: {
+      essence: [
+        '楽しい時間を過ごせましたか？',
+        '満足のいくエンターテインメントでしたか？',
+        'また利用したいと思いますか？',
+        'ストレス発散・リフレッシュできましたか？'
+      ],
+      other: [
+        '設備・機器の品質はいかがでしたか？',
+        '料金に見合う価値でしたか？',
+        'スタッフの対応はどうでしたか？',
+        'アクセスの良さはいかがでしたか？'
+      ]
+    }
+  },
+  {
+    id: 'sports',
+    name: 'スポーツ・フィットネス',
+    emoji: '🏋️‍♀️',
+    essenceAspect: {
+      name: '効果実感',
+      description: 'トレーニング効果・健康改善',
+      weight: 0.9
+    },
+    otherAspects: [
+      { name: '設備', description: 'マシン・施設の充実度', weight: 0.7 },
+      { name: '指導', description: 'トレーナーの質・サポート', weight: 0.6 },
+      { name: '清潔感', description: '衛生管理・環境', weight: 0.6 },
+      { name: 'コスパ', description: '料金と設備のバランス', weight: 0.5 }
+    ],
+    reviewQuestions: {
+      essence: [
+        'トレーニング効果は実感できましたか？',
+        '健康状態の改善を感じますか？',
+        '目標達成に近づいていますか？',
+        '継続したいと思える内容でしたか？'
+      ],
+      other: [
+        '設備・マシンは充実していましたか？',
+        'トレーナーの指導はいかがでしたか？',
+        '施設の清潔感はどうでしたか？',
+        '料金は適正だと思いますか？'
+      ]
+    }
+  },
+  {
+    id: 'retail',
+    name: '小売・ショッピング',
+    emoji: '🛍️',
+    essenceAspect: {
+      name: '商品品質',
+      description: '商品の質・品揃え・価値',
+      weight: 0.8
+    },
+    otherAspects: [
+      { name: '接客', description: 'スタッフの対応・専門性', weight: 0.6 },
+      { name: '価格', description: '料金の適正性・コスパ', weight: 0.7 },
+      { name: '店内環境', description: '雰囲気・清潔感・利便性', weight: 0.5 },
+      { name: 'アフターサービス', description: '保証・サポート体制', weight: 0.4 }
+    ],
+    reviewQuestions: {
+      essence: [
+        '商品の品質はいかがでしたか？',
+        '品揃えは充実していましたか？',
+        '期待通りの商品でしたか？',
+        '商品の価値は感じられましたか？'
+      ],
+      other: [
+        'スタッフの対応はいかがでしたか？',
+        '価格は適正だと思いますか？',
+        '店内の環境・雰囲気はどうでしたか？',
+        'アフターサービスは充実していましたか？'
+      ]
+    }
+  }
+];
+
+// 業種別本質評価設定を取得する関数
+export function getCategoryEssenceConfig(categoryId: string): CategoryEssenceConfig | undefined {
+  return categoryEssenceConfigs.find(config => config.id === categoryId);
+}
+
+// 本質評価かどうかを判定するキーワード
+export const essenceKeywords: Record<string, string[]> = {
+  restaurant: ['味', '美味しい', 'まずい', '料理', '食事', '素材', '調理', '盛り付け', 'メニュー', '食材'],
+  service: ['料金', '価格', '安い', '高い', 'コスパ', 'コストパフォーマンス', '費用', '見積もり', '値段'],
+  healthcare: ['思いやり', '配慮', '心配り', '丁寧', '親身', '寄り添う', '優しい', '温かい', '心のこもった'],
+  beauty: ['技術', '仕上がり', '上手', '下手', 'カット', 'カラー', 'パーマ', '施術', 'テクニック'],
+  education: ['効果', '成果', '成長', '上達', '習得', '理解', '向上', '実力', '学習', '勉強'],
+  entertainment: ['楽しい', 'つまらない', '面白い', '満足', '退屈', 'エキサイティング', 'ワクワク', '興奮'],
+  sports: ['効果', '筋肉', '体力', '健康', 'ダイエット', '体重', '体型', '持久力', '筋力', 'トレーニング'],
+  retail: ['品質', '商品', '品揃え', 'クオリティ', '作り', '素材', 'ブランド', '機能性', '耐久性']
+};
+
 // ユーティリティ関数
 export function formatRelativeTime(date: Date): string {
   const now = new Date()
@@ -863,24 +1313,33 @@ export function formatTime(date: Date): string {
   })
 }
 
-export function getBusinessStatus(hours: Company['hours']): { isOpen: boolean; nextChange: string } {
-  const now = new Date()
-  const currentDay = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'][now.getDay()] as keyof typeof hours
-  const currentTime = now.getHours() * 100 + now.getMinutes()
-  
-  const todayHours = hours[currentDay]
-  
-  if (todayHours.closed) {
-    return { isOpen: false, nextChange: '定休日' }
+export function getBusinessStatus(businessHours: string | null): { isOpen: boolean; nextChange: string } {
+  if (!businessHours) {
+    return { isOpen: false, nextChange: '営業時間不明' }
   }
-  
-  const openTime = parseInt(todayHours.open.replace(':', ''))
-  const closeTime = parseInt(todayHours.close.replace(':', ''))
-  
-  const isOpen = currentTime >= openTime && currentTime < closeTime
-  
-  return {
-    isOpen,
-    nextChange: isOpen ? `${todayHours.close}に閉店` : `${todayHours.open}に開店`
+
+  try {
+    const hours = JSON.parse(businessHours) as BusinessHours
+    const now = new Date()
+    const currentDay = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'][now.getDay()] as keyof BusinessHours
+    const currentTime = now.getHours() * 100 + now.getMinutes()
+    
+    const todayHours = hours[currentDay]
+    
+    if (todayHours.closed) {
+      return { isOpen: false, nextChange: '定休日' }
+    }
+    
+    const openTime = parseInt(todayHours.open.replace(':', ''))
+    const closeTime = parseInt(todayHours.close.replace(':', ''))
+    
+    const isOpen = currentTime >= openTime && currentTime < closeTime
+    
+    return {
+      isOpen,
+      nextChange: isOpen ? `${todayHours.close}に閉店` : `${todayHours.open}に開店`
+    }
+  } catch (error) {
+    return { isOpen: false, nextChange: '営業時間不明' }
   }
 }
