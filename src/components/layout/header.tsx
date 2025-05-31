@@ -8,49 +8,43 @@ export function Header({ user }: HeaderProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
 
   return (
-    <header className="bg-white border-b border-slate-200 sticky top-0 z-50">
+    <header className="glass-nav sticky top-0 z-50 border-b border-white/10">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-16">
-          {/* Logo */}
-          <Link href="/" className="flex items-center space-x-2">
-            <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
-              <span className="text-white font-bold text-sm">M</span>
+        <div className="flex justify-between items-center h-20">
+          {/* Enhanced Logo */}
+          <Link href="/" className="flex items-center space-x-3 group">
+            <div className="relative">
+              <div className="w-12 h-12 bg-gradient-to-r from-blue-600 to-purple-600 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300 animate-glow">
+                <span className="text-white font-black text-lg">M</span>
+              </div>
+              <div className="absolute -top-1 -right-1 w-4 h-4 bg-gradient-to-r from-pink-400 to-orange-400 rounded-full animate-pulse"></div>
             </div>
-            <span className="text-xl font-bold text-slate-900">みんくち</span>
+            <div className="flex flex-col">
+              <span className="text-2xl font-black text-gradient font-['Space_Grotesk']">Minkuchi</span>
+              <span className="text-xs text-gray-500 font-medium -mt-1">AI Review Platform</span>
+            </div>
           </Link>
 
-          {/* Navigation */}
-          <nav className="hidden md:flex items-center space-x-8">
-            <Link 
-              href="/companies" 
-              className="text-slate-600 hover:text-slate-900 transition-colors"
-            >
-              企業を探す
-            </Link>
-            <Link 
-              href="/restaurants/search" 
-              className="text-slate-600 hover:text-slate-900 transition-colors font-medium"
-            >
-              🍽️ レストラン検索
-            </Link>
-            <Link 
-              href="/companies/register" 
-              className="text-slate-600 hover:text-slate-900 transition-colors font-medium"
-            >
-              🤖 AI企業登録
-            </Link>
-            <Link 
-              href="/category/restaurant" 
-              className="text-slate-600 hover:text-slate-900 transition-colors"
-            >
-              レストラン
-            </Link>
-            <Link 
-              href="/category/retail" 
-              className="text-slate-600 hover:text-slate-900 transition-colors"
-            >
-              ショッピング
-            </Link>
+          {/* Enhanced Navigation */}
+          <nav className="hidden lg:flex items-center space-x-1">
+            {[
+              { href: "/companies", label: "企業を探す", icon: "🏢" },
+              { href: "/restaurants/search", label: "レストラン", icon: "🍽️" },
+              { href: "/companies/register", label: "AI登録", icon: "🤖" },
+              { href: "/category/restaurant", label: "カテゴリ", icon: "📂" }
+            ].map((item, index) => (
+              <Link 
+                key={index}
+                href={item.href} 
+                className="group relative px-4 py-2 text-gray-700 hover:text-gray-900 transition-all duration-300 rounded-xl hover:bg-white/10"
+              >
+                <span className="flex items-center space-x-2 font-medium">
+                  <span className="group-hover:scale-110 transition-transform">{item.icon}</span>
+                  <span>{item.label}</span>
+                </span>
+                <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-0 h-0.5 bg-gradient-to-r from-blue-500 to-purple-500 group-hover:w-full transition-all duration-300"></div>
+              </Link>
+            ))}
           </nav>
 
           {/* User Actions */}
@@ -173,18 +167,18 @@ export function Header({ user }: HeaderProps) {
                 )}
               </div>
             ) : (
-              <div className="flex items-center space-x-3">
+              <div className="flex items-center space-x-4">
                 <Link
                   href="/auth/signin"
-                  className="text-slate-600 hover:text-slate-900 transition-colors"
+                  className="text-gray-700 hover:text-gray-900 transition-colors font-medium px-4 py-2 rounded-xl hover:bg-white/10"
                 >
                   ログイン
                 </Link>
                 <Link
                   href="/auth/signup"
-                  className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors"
+                  className="button-modern px-6 py-3 text-sm font-semibold rounded-full hover-lift"
                 >
-                  新規登録
+                  無料で始める
                 </Link>
               </div>
             )}

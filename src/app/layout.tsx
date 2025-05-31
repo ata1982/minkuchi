@@ -4,6 +4,8 @@ import { AuthProvider } from '@/contexts/AuthContext'
 import { SocketProvider } from '@/contexts/SocketContext'
 import FloatingConciergeButton from '@/components/FloatingConciergeButton'
 import NotificationCenter from '@/components/NotificationCenter'
+import ErrorBoundary from '@/components/ErrorBoundary'
+import WebVitalsReporter from '@/components/WebVitalsReporter'
 
 export const metadata: Metadata = {
   title: {
@@ -177,20 +179,23 @@ export default function RootLayout({
         />
       </head>
       <body className="min-h-screen bg-gray-50 antialiased">
-        <AuthProvider>
-          <SocketProvider>
-            <div className="flex flex-col min-h-screen">
-              {/* メインコンテンツ */}
-              <main className="flex-1">
-                {children}
-              </main>
-              
-              {/* グローバルコンポーネント */}
-              <NotificationCenter />
-              <FloatingConciergeButton />
-            </div>
-          </SocketProvider>
-        </AuthProvider>
+        <ErrorBoundary>
+          <AuthProvider>
+            <SocketProvider>
+              <div className="flex flex-col min-h-screen">
+                {/* メインコンテンツ */}
+                <main className="flex-1">
+                  {children}
+                </main>
+                
+                {/* グローバルコンポーネント */}
+                <NotificationCenter />
+                <FloatingConciergeButton />
+                <WebVitalsReporter />
+              </div>
+            </SocketProvider>
+          </AuthProvider>
+        </ErrorBoundary>
         
         {/* 緊急時のフォールバック */}
         <noscript>
